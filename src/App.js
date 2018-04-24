@@ -8,12 +8,20 @@ import ClientInfo from "./Components/ClientInfo";
 
 
 class App extends Component {
-
+  componentDidMount() {
+    // let stream = document.getElementById('stream');
+    // stream.style.transform = 'translateY(46.8%)';
+  }
   render() {
     return (
       <Router>
-        <div id="body-double">
+        <div id="foundation">
+          <div className="foundation-header">
+            <p>LOGO</p>
+            <p className="text-buttons">CONTACT</p>
+          </div>
           <Route exact path="/" component={ClientInfo} />
+          {/*<span className="center-point" />*/}
         </div>
       </Router>
     );
@@ -23,7 +31,8 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     client: state.clientReducer,
-    project: state.projectReducer
+    project: state.projectReducer,
+    question: state.questionReducer
   };
 };
 
