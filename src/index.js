@@ -8,14 +8,14 @@ import logger from "redux-logger";
 
 import registerServiceWorker from './registerServiceWorker';
 
-const initialClientState = {
-  company_name: null,
+const clientState= {
   contact_name: null,
+  company_name: null,
   email: null,
   phone: null,
   discount: null
 };
-const initialProjectState = {
+const projectState = {
   client_id: null,
   name: null,
   status: null,
@@ -27,13 +27,17 @@ const initialProjectState = {
   start_date: null,
   due_date: null
 };
+const questionState = {
+  currentQuestion: 0
+};
 
-const clientReducer = (state = initialClientState, action) => {
+
+const clientReducer = (state = clientState, action) => {
   switch (action.type) {
-    case "SET_CLIENT_NAME":
+    case "SET_CLIENT_OBJ":
       state = {
         ...state,
-        contact_name: action.payload
+        ...action.payload
       };
       break;
     default:
@@ -42,7 +46,7 @@ const clientReducer = (state = initialClientState, action) => {
   return state;
 };
 
-const projectReducer = (state = initialProjectState, action) => {
+const projectReducer = (state = projectState, action) => {
   switch (action.type) {
     case "SET_BUNDLE":
       state = {
@@ -56,7 +60,21 @@ const projectReducer = (state = initialProjectState, action) => {
   return state;
 };
 
-const store = createStore(combineReducers({clientReducer, projectReducer}), applyMiddleware(logger));
+const questionReducer = (state = questionState, action) => {
+  switch (action.type) {
+    case "SET_CURRENT_QUESTION":
+      state = {
+        ...state,
+        currentQuestion: action.payload
+      };
+      break;
+    default:
+      return state;
+  }
+  return state;
+};
+
+const store = createStore(combineReducers({clientReducer, projectReducer, questionReducer}), applyMiddleware(logger));
 
 store.subscribe(() => {
   console.log(store.getState());
