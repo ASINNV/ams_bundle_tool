@@ -81,7 +81,7 @@ table {
   position: relative;
 }
 
-.foundation-header {
+#foundation-header {
   position: absolute;
   top: 0;
   left: 0;
@@ -96,6 +96,73 @@ table {
 
 .text-buttons {
   cursor: pointer;
+}
+#pb-hover-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+}
+#progress-bar {
+  position: fixed;
+  bottom: -50px;
+  left: 0;
+  right: 0;
+
+  display: flex;
+
+  height: 80px;
+  background: #405ba8;
+  opacity: .5;
+  overflow: hidden;
+  cursor: default;
+
+  /*margin: 0 20px;*/
+  /*border-radius: 8px;*/
+  /*box-shadow: -5px 10px 10px 0 rgba(0,0,0,0.5);*/
+
+  will-change: transform;
+  transition: transform .5s ease-in-out, opacity .5s ease-in-out;
+}
+#pb-hover-area:hover #progress-bar {
+  transform: translateY(-50px);
+  /*transform: translateY(-70px);*/
+  opacity: 1;
+}
+.phase {
+  position: relative;
+  display: inline-block;
+  padding: 5px;
+  color: #333;
+  font-weight: 600;
+  transition: background-color .5s ease-in-out;
+}
+.triangle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transition: border .5s ease-in-out;
+}
+
+.phase:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 120px;
+  background-color: rgba(0,0,0,0.5);
+  transform: rotate(45deg) translate3d(-41px, 10px, 0);
+}
+.phase:last-child:after {
+  background-color: transparent;
+}
+
+.phase-header {
+
 }
 
 /* UBIQUITOUS ELEMENTS - END */

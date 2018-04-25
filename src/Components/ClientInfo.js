@@ -9,32 +9,47 @@ const theWindow=window,
   // theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
 
-function apiCaller(path, initObj) {
-  if (initObj !== undefined) {
-    fetch(path, initObj)
-      .then(function(res) {
-        return res.json();
-      })
-      .then(function(data) {
-        console.log(data);
-      })
-      .catch(function(err) {
-        console.log(err, ' in the app.js apiCaller if block');
-      })
-  } else {
-    fetch(path)
-      .then(function(res) {
-        return res.json();
-      })
-      .then(function(data) {
-        console.log(data);
-      })
-      .catch(function(err) {
-        console.log(err, ' in the app.js apiCaller else block');
-      })
-  }
-}
+// function apiCaller(path, initObj) {
+//   if (initObj !== undefined) {
+//     fetch(path, initObj)
+//       .then(function(res) {
+//         return res.json();
+//       })
+//       .then(function(data) {
+//         console.log(data);
+//       })
+//       .catch(function(err) {
+//         console.log(err, ' in the app.js apiCaller if block');
+//       })
+//   } else {
+//     fetch(path)
+//       .then(function(res) {
+//         return res.json();
+//       })
+//       .then(function(data) {
+//         console.log(data);
+//       })
+//       .catch(function(err) {
+//         console.log(err, ' in the app.js apiCaller else block');
+//       })
+//   }
+// }
 
+// class Question extends Component {
+//   render() {
+//     return (
+//       <div onClick={this.editAnswer.bind(this)} id="qa-couplet-0" className="qa-couplet">
+//         <div className="question">
+//           <label htmlFor="name">What is your name?</label>
+//         </div>
+//         <div className="answer">
+//           <input type="text" name="name" id="contact_name" placeholder="Your Full Name"/>
+//           {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 class ClientInfo extends Component {
 
@@ -61,6 +76,34 @@ class ClientInfo extends Component {
 
     // question.style.transform = "translateY(-50%)";
     // nextQuestion.style.transform = "translateY(-25%)";
+
+    let stream = document.getElementById('stream');
+
+    let questionArray = this.props.question.questions;
+
+    questionArray.forEach(function(questionObj) {
+      let couplet = document.createElement('div');
+      let coupletQ = document.createElement('div');
+      let coupletQLabel = document.createElement('label');
+      let coupletA = document.createElement('div');
+      let coupletAInput = document.createElement('input');
+      couplet.id = questionObj.coupletId;
+      couplet.className = 'qa-couplet';
+      coupletQ.className = 'question';
+      coupletQLabel.htmlFor = questionObj.htmlFor;
+      coupletQLabel.innerText = questionObj.question;
+      coupletA.className = 'answer';
+      coupletAInput.type = questionObj.inputType;
+      coupletAInput.name = questionObj.inputName;
+      coupletAInput.id = questionObj.inputId;
+      coupletAInput.placeholder = questionObj.inputPlaceholder;
+      coupletQ.appendChild(coupletQLabel);
+      coupletA.appendChild(coupletAInput);
+      couplet.appendChild(coupletQ);
+      couplet.appendChild(coupletA);
+      stream.appendChild(couplet);
+    });
+
 
     let couplets = document.getElementsByClassName('qa-couplet');
 
@@ -104,48 +147,36 @@ class ClientInfo extends Component {
   }
 
   nextQuestion(e) {
+    e.stopPropagation();
     console.log(e.which);
     console.log('The current question is ' + this.props.question.currentQuestion);
     if (e.which === 13 || e.which === 9) {
+      e.preventDefault();
 
       let couplets = document.getElementsByClassName('qa-couplet');
       let currentQuestion = this.props.question.currentQuestion;
 
       for (let i = 0; i < couplets.length; i++) {
 
-        // if (i < (this.props.question.currentQuestion - 1) || i > (this.props.question.currentQuestion + 1)) {
-        //   couplets.item(i).style.opacity = 0;
-        // } else if (i === this.props.question.currentQuestion || i === this.props.question.currentQuestion - 2) {
-        //   couplets.item(i).style.opacity = 0.125;
-        // } else {
-        //   couplets.item(i).style.opacity = 1;
-        //   couplets.item(i).style.color = 'red';
-        //   if (e.which === 13) {
-        //     couplets.item(i).childNodes[1].childNodes[0].focus();
-        //   }
-        // }
-
-
-        if (i < currentQuestion) {
+        if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
           couplets.item(i).style.opacity = 0;
         }
 
-        if (i === currentQuestion) {
+        if (i === currentQuestion) { // set outgoing question to lower opacity
           couplets.item(i).style.opacity = 0.125;
-          // if (couplets.item((i + 1))) {
-          //   couplets.item((i + 1)).style.opacity = 1;
-          // }
         }
 
-        if (i === currentQuestion + 1) {
+        if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
           couplets.item(i).style.opacity = 1;
-          if (e.which === 13) {
-            couplets.item(i).childNodes[1].childNodes[0].focus();
-          }
+          couplets.item(i).childNodes[1].childNodes[0].focus();
         }
 
-        if (i > (currentQuestion + 1)) {
+        if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
           couplets.item(i).style.opacity = 0.125;
+        }
+
+        if (i > (currentQuestion + 2)) {
+          couplets.item(i).style.opacity = 0;
         }
 
         couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) - theWindowHeight/4) + "px)";
@@ -175,82 +206,52 @@ class ClientInfo extends Component {
 
     }
 
-      // if (this.props.question.secondLastQuestion !== -1 && this.props.question.secondLastQuestion !== null) {
-      //   let secondLastQuestion = document.getElementById('qa-couplet-' + this.props.question.secondLastQuestion);
-      //   // secondLastQuestion.style.transform = "translateY(-2000%)";
-      //   secondLastQuestion.style.transform = "translateY(" + (secondLastQuestion.getBoundingClientRect().height*(-1)) + "px)";
-      //   // secondLastQuestion.style.transform = "translateY(-50%) scale(1.2)";
-      //   // secondLastQuestion.style.opacity = 0;
-      //   secondLastQuestion.style.opacity = 0;
-      // }
-      // if (this.props.question.lastQuestion !== -1) {
-      //   let lastQuestion = document.getElementById('qa-couplet-' + this.props.question.lastQuestion);
-      //   // lastQuestion.style.transform = "translateY(-2000%)";
-      //   lastQuestion.style.transform = "translateY(" + window.innerHeight/4 + "px)";
-      //   // lastQuestion.style.transform = "translateY(-50%) scale(1.2)";
-      //   // lastQuestion.style.opacity = 0;
-      //   lastQuestion.style.opacity = 0.125;
-      // }
-      // if (document.getElementById('qa-couplet-' + this.props.question.currentQuestion)) {
-      //   let question = document.getElementById('qa-couplet-' + this.props.question.currentQuestion);
-      //   // question.style.transform = "translateY(-50%)";
-      //   question.style.transform = "translateY(" + window.innerHeight/2 + "px)";
-      //   // question.style.transform = "translateY(-50%) scale(1)";
-      //   question.style.opacity = 1;
-      //   if (e.which === 13) {
-      //     question.childNodes[1].childNodes[0].focus();
-      //   }
-      //   this.props.setQuestion(this.props.question.currentQuestion + 1);
-      // }
-      //
-      // if (document.getElementById('qa-couplet-' + (this.props.question.currentQuestion + 1))) {
-      //   let nextQuestion = document.getElementById('qa-couplet-' + (this.props.question.currentQuestion + 1));
-      //   // nextQuestion.style.transform = "translateY(-25%)";
-      //   nextQuestion.style.transform = "translateY(" + ((window.innerHeight/4)*3) + "px)";
-      //   // nextQuestion.style.transform = "translateY(-50%) scale(0.8)";
-      //   nextQuestion.style.opacity = 0.125;
-      // }
-
-
-    }
-
-
+  }
   editAnswer(e) {
+
     let couplets = document.getElementsByClassName('qa-couplet');
     let currentQuestion = this.props.question.currentQuestion;
 
     let target = e.target;
-    while (target.id.indexOf("qa-couplet-") === -1) {
-      target = target.parentNode;
+
+    if (target.id === "stream") {
+
+    } else {
+      while (target.id.indexOf("-qa-couplet") === -1) {
+        target = target.parentNode;
+      }
     }
 
 
+
     if (currentQuestion < (couplets.length + 1)) {
-      let idNumber = Number(target.id.slice(-1));
+      let idNumber = Number(target.id.slice(0, target.id.indexOf("-")));
+      console.log('idNumber ', idNumber);
+      console.log('currentQuestion ', this.props.question.currentQuestion);
+      if (idNumber > currentQuestion) { // if
 
-      if (idNumber > currentQuestion) {
-
-        for (let i = 0; i < couplets.length; i++) {
+        for (let i = 0; i < couplets.length; i++) { // iterate over all question/answer couplets
 
 
-          if (i < currentQuestion) {
+          if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
             couplets.item(i).style.opacity = 0;
           }
 
-          if (i === currentQuestion) {
+          if (i === currentQuestion) { // set outgoing question to lower opacity
             couplets.item(i).style.opacity = 0.125;
-            // if (couplets.item((i + 1))) {
-            //   couplets.item((i + 1)).style.opacity = 1;
-            // }
           }
 
-          if (i === currentQuestion + 1) {
+          if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
             couplets.item(i).style.opacity = 1;
             couplets.item(i).childNodes[1].childNodes[0].focus();
           }
 
-          if (i > (currentQuestion + 1)) {
+          if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
             couplets.item(i).style.opacity = 0.125;
+          }
+
+          if (i > (currentQuestion + 2)) {
+            couplets.item(i).style.opacity = 0;
           }
 
           couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) - theWindowHeight/4) + "px)";
@@ -308,25 +309,6 @@ class ClientInfo extends Component {
           this.props.setQuestion(this.props.question.currentQuestion - 1);
         }
 
-        // let obj = {};
-        //
-        // switch (e.target.id) {
-        //   case "contact_name":
-        //     obj.contact_name = e.target.value;
-        //     break;
-        //   case "company_name":
-        //     obj.company_name = e.target.value;
-        //     break;
-        //   case "email":
-        //     obj.email = e.target.value;
-        //     break;
-        //   case "phone":
-        //     obj.phone = e.target.value;
-        //     break;
-        //   default:
-        //     return e.target.id;
-        // }
-        // this.props.setClientObj(obj);
       } else {
 
       }
@@ -341,36 +323,36 @@ class ClientInfo extends Component {
           {/*<span className="movement">Press Me</span>*/}
 
           {/*<p className="buttons" onClick={this.createProject.bind(this)}>create new project</p>*/}
-          <div id="stream" onKeyDown={this.nextQuestion.bind(this)}>
-            <div onClick={this.editAnswer.bind(this)} id="qa-couplet-0" className="qa-couplet">
-              <div className="question">
-                <label htmlFor="name">What is your name?</label>
-              </div>
-              <div className="answer">
-                <input type="text" name="name" id="contact_name" placeholder="Your Full Name"/>
-                {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
-              </div>
-            </div>
+          <div id="stream" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
+            {/*<div onClick={this.editAnswer.bind(this)} id="qa-couplet-0" className="qa-couplet">*/}
+              {/*<div className="question">*/}
+                {/*<label htmlFor="name">What is your name?</label>*/}
+              {/*</div>*/}
+              {/*<div className="answer">*/}
+                {/*<input type="text" name="name" id="contact_name" placeholder="Your Full Name"/>*/}
+                {/*/!*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*!/*/}
+              {/*</div>*/}
+            {/*</div>*/}
 
-            <div onClick={this.editAnswer.bind(this)} id="qa-couplet-1" className="qa-couplet">
-              <div className="question">
-                <label htmlFor="company-name">What is your company name?</label>
-              </div>
-              <div className="answer">
-                <input type="text" name="company-name" id="company_name" placeholder="Your Company Name"/>
-                {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
-              </div>
-            </div>
+            {/*<div onClick={this.editAnswer.bind(this)} id="qa-couplet-1" className="qa-couplet">*/}
+              {/*<div className="question">*/}
+                {/*<label htmlFor="company-name">What is your company name?</label>*/}
+              {/*</div>*/}
+              {/*<div className="answer">*/}
+                {/*<input type="text" name="company-name" id="company_name" placeholder="Your Company Name"/>*/}
+                {/*/!*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*!/*/}
+              {/*</div>*/}
+            {/*</div>*/}
 
-            <div onClick={this.editAnswer.bind(this)} id="qa-couplet-2" className="qa-couplet">
-              <div className="question">
-                <label htmlFor="email">What is your email?</label>
-              </div>
-              <div className="answer">
-                <input type="text" name="email" id="email" placeholder="Your Email"/>
-                {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
-              </div>
-            </div>
+            {/*<div onClick={this.editAnswer.bind(this)} id="qa-couplet-2" className="qa-couplet">*/}
+              {/*<div className="question">*/}
+                {/*<label htmlFor="email">What is your email?</label>*/}
+              {/*</div>*/}
+              {/*<div className="answer">*/}
+                {/*<input type="text" name="email" id="email" placeholder="Your Email"/>*/}
+                {/*/!*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*!/*/}
+              {/*</div>*/}
+            {/*</div>*/}
           </div>
 
         </div>
@@ -384,7 +366,8 @@ const mapStateToProps = (state) => {
   return {
     client: state.clientReducer,
     project: state.projectReducer,
-    question: state.questionReducer
+    question: state.questionReducer,
+    progress: state.progressReducer
   };
 };
 
@@ -406,6 +389,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CURRENT_QUESTION",
         payload: index
+      });
+    },
+    setData: (dataObj) => {
+      dispatch({
+        type: "SET_DATA",
+        payload: dataObj
       });
     }
   };
