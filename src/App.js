@@ -121,7 +121,7 @@ class App extends Component {
           </div>
           <img id="logo" src={logo} />
           <Route exact path="/" component={ClientInfo} />
-          <span className="center-point" />
+          {/*<span className="center-point" />*/}
           <div id="pb-hover-area">
             <ProgressBar steps={this.props.progress.steps} currentStep={this.props.progress.currentStep}/>
           </div>
