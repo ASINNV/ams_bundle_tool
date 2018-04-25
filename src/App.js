@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 
 import ClientInfo from "./Components/ClientInfo";
 
+import logo from './assets/AMS_Logo.png';
+
 class ProgressBar extends Component {
   componentDidMount() {
     let progressBar = document.getElementById('progress-bar');
@@ -19,7 +21,7 @@ class ProgressBar extends Component {
         phase.style.backgroundColor = step.bgColor;
         // phase.style.color = step.color;
       } else {
-        phase.style.color = 'rgba(0,0,0,0.25)';
+        phase.style.color = 'rgba(0, 0, 0, 0.25)';
       }
 
       let phaseHeader = document.createElement('h1');
@@ -86,16 +88,40 @@ class App extends Component {
     // let stream = document.getElementById('stream');
     // stream.style.transform = 'translateY(46.8%)';
   }
+  openMenu(e) {
+    console.log(e.target);
+    let targe = e.target;
+    while (targe.className !== 'x-container') {
+      targe = targe.parentNode;
+    }
+    let left = targe.childNodes[0].childNodes[0];
+    let right = targe.childNodes[0].childNodes[1];
+    if (left.className.indexOf(' left-x-arm') !== -1) {
+      left.className = left.className.slice(0, left.className.indexOf(' left-x-arm'));
+      right.className = right.className.slice(0, right.className.indexOf(' right-x-arm'));
+    } else {
+      left.className += ' left-x-arm';
+      right.className += ' right-x-arm';
+    }
+  }
   render() {
     return (
       <Router>
         <div id="foundation">
           <div id="foundation-header">
-            <p>LOGO</p>
-            <p className="text-buttons">CONTACT</p>
+            <div className="x-container" onClick={this.openMenu.bind(this)}>
+              <div className="x">
+                <p className="left-arm" />
+                <p className="right-arm" />
+              </div>
+            </div>
+            <div className="button-shadow">
+              <p className="text-buttons">SUPPORT</p>
+            </div>
           </div>
+          <img id="logo" src={logo} />
           <Route exact path="/" component={ClientInfo} />
-          {/*<span className="center-point" />*/}
+          <span className="center-point" />
           <div id="pb-hover-area">
             <ProgressBar steps={this.props.progress.steps} currentStep={this.props.progress.currentStep}/>
           </div>

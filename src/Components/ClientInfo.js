@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
 
+const lowOpacity = 0.125;
+const zeroOpacity = 0;
+const fullOpacity = 1;
 const theWindow=window,
   theDoc=document,
   theEle=theDoc.documentElement,
@@ -116,13 +119,13 @@ class ClientInfo extends Component {
 
       if (i === this.props.question.currentQuestion) {
 
-        couplets.item(i).style.opacity = 1;
+        couplets.item(i).style.opacity = fullOpacity;
         couplets.item(i).childNodes[1].childNodes[0].focus();
 
       } else if (i < this.props.question.currentQuestion - 1 || i > this.props.question.currentQuestion + 1) {
-        couplets.item(i).style.opacity = 0;
+        couplets.item(i).style.opacity = zeroOpacity;
       } else {
-        couplets.item(i).style.opacity = 0.125;
+        couplets.item(i).style.opacity = lowOpacity;
       }
 
     }
@@ -130,12 +133,12 @@ class ClientInfo extends Component {
     // setTimeout(function() {
     //   question.style.transform = "translateY(" + window.innerHeight/2 + "px)";
     //   // question.style.transform = "translateY(-50%) scale(1)";
-    //   question.style.opacity = 1;
+    //   question.style.opacity = fullOpacity;
     //   question.childNodes[1].childNodes[0].focus();
     //
     //   nextQuestion.style.transform = "translateY(" + ((window.innerHeight/4)*3) + "px)";
     //   // nextQuestion.style.transform = "translateY(-50%) scale(0.8)";
-    //   nextQuestion.style.opacity = 0.125;
+    //   nextQuestion.style.opacity = lowOpacity;
     // }, 200);
 
     console.log(this.props.client);
@@ -159,24 +162,24 @@ class ClientInfo extends Component {
       for (let i = 0; i < couplets.length; i++) {
 
         if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
-          couplets.item(i).style.opacity = 0;
+          couplets.item(i).style.opacity = zeroOpacity;
         }
 
         if (i === currentQuestion) { // set outgoing question to lower opacity
-          couplets.item(i).style.opacity = 0.125;
+          couplets.item(i).style.opacity = lowOpacity;
         }
 
         if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
-          couplets.item(i).style.opacity = 1;
+          couplets.item(i).style.opacity = fullOpacity;
           couplets.item(i).childNodes[1].childNodes[0].focus();
         }
 
         if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
-          couplets.item(i).style.opacity = 0.125;
+          couplets.item(i).style.opacity = lowOpacity;
         }
 
         if (i > (currentQuestion + 2)) {
-          couplets.item(i).style.opacity = 0;
+          couplets.item(i).style.opacity = zeroOpacity;
         }
 
         couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) - theWindowHeight/4) + "px)";
@@ -234,24 +237,24 @@ class ClientInfo extends Component {
 
 
           if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
-            couplets.item(i).style.opacity = 0;
+            couplets.item(i).style.opacity = zeroOpacity;
           }
 
           if (i === currentQuestion) { // set outgoing question to lower opacity
-            couplets.item(i).style.opacity = 0.125;
+            couplets.item(i).style.opacity = lowOpacity;
           }
 
           if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
-            couplets.item(i).style.opacity = 1;
+            couplets.item(i).style.opacity = fullOpacity;
             couplets.item(i).childNodes[1].childNodes[0].focus();
           }
 
           if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
-            couplets.item(i).style.opacity = 0.125;
+            couplets.item(i).style.opacity = lowOpacity;
           }
 
           if (i > (currentQuestion + 2)) {
-            couplets.item(i).style.opacity = 0;
+            couplets.item(i).style.opacity = zeroOpacity;
           }
 
           couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) - theWindowHeight/4) + "px)";
@@ -285,23 +288,23 @@ class ClientInfo extends Component {
         for (let i = 0; i < couplets.length; i++) {
 
           if (i > currentQuestion) {
-            couplets.item(i).style.opacity = 0;
+            couplets.item(i).style.opacity = zeroOpacity;
           }
 
           if (i === currentQuestion) {
-            couplets.item(i).style.opacity = 0.125;
+            couplets.item(i).style.opacity = lowOpacity;
             // if (couplets.item((i + 1))) {
-            //   couplets.item((i + 1)).style.opacity = 1;
+            //   couplets.item((i + 1)).style.opacity = fullOpacity;
             // }
           }
 
           if (i === currentQuestion - 1) {
-            couplets.item(i).style.opacity = 1;
+            couplets.item(i).style.opacity = fullOpacity;
             couplets.item(i).childNodes[1].childNodes[0].focus();
           }
 
           if (i < (currentQuestion - 1)) {
-            couplets.item(i).style.opacity = 0.125;
+            couplets.item(i).style.opacity = lowOpacity;
           }
 
           couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) + theWindowHeight/4) + "px)";
