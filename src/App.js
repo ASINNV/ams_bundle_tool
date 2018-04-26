@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-
+import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import ClientInfo from "./Components/ClientInfo";
+import Goals from "./Components/Goals";
 
-import logo from './assets/AMS_Logo.png';
+// import logo from './assets/ams_logo.png';
 
 class ProgressBar extends Component {
   componentDidMount() {
@@ -72,8 +73,6 @@ class ProgressBar extends Component {
       phase.appendChild(phaseHeader);
       phase.appendChild(triangle);
       progressBar.appendChild(phase);
-      // divs.push(phase);
-      // console.log(divs);
     });
   }
   render() {
@@ -84,12 +83,8 @@ class ProgressBar extends Component {
 }
 
 class App extends Component {
-  componentDidMount() {
-    // let stream = document.getElementById('stream');
-    // stream.style.transform = 'translateY(46.8%)';
-  }
+
   openMenu(e) {
-    console.log(e.target);
     let targe = e.target;
     while (targe.className !== 'x-container') {
       targe = targe.parentNode;
@@ -119,8 +114,18 @@ class App extends Component {
               <p className="text-buttons">SUPPORT</p>
             </div>
           </div>
-          <img id="logo" src={logo} />
-          <Route exact path="/" component={ClientInfo} />
+          {/*<img id="logo" src={logo} alt="And Moore Studios Logo" />*/}
+          <Route render={({location}) => (
+            <ReactCSSTransitionReplace transitionName="page" transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+              <div key={location.pathname}>
+                <Switch location={location}>
+                  <Route exact path="/" component={ClientInfo} />
+                  <Route exact path="/goals" component={Goals} />
+                </Switch>
+              </div>
+            </ReactCSSTransitionReplace>
+          )} />
+
           {/*<span className="center-point" />*/}
           <div id="pb-hover-area">
             <ProgressBar steps={this.props.progress.steps} currentStep={this.props.progress.currentStep}/>

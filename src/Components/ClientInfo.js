@@ -38,22 +38,6 @@ const theWindow=window,
 //   }
 // }
 
-// class Question extends Component {
-//   render() {
-//     return (
-//       <div onClick={this.editAnswer.bind(this)} id="qa-couplet-0" className="qa-couplet">
-//         <div className="question">
-//           <label htmlFor="name">What is your name?</label>
-//         </div>
-//         <div className="answer">
-//           <input type="text" name="name" id="contact_name" placeholder="Your Full Name"/>
-//           {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
 class ClientInfo extends Component {
 
   // createProject() {
@@ -73,12 +57,6 @@ class ClientInfo extends Component {
 
   componentDidMount(e) {
     // apiCaller('/api/clients');
-
-    // let question = document.getElementById('qa-couplet-0');
-    // let nextQuestion = document.getElementById('qa-couplet-1');
-
-    // question.style.transform = "translateY(-50%)";
-    // nextQuestion.style.transform = "translateY(-25%)";
 
     let stream = document.getElementById('stream');
 
@@ -113,9 +91,9 @@ class ClientInfo extends Component {
     for (let i = 0; i < couplets.length; i++) {
 
       couplets.item(i).style.transform = "translateY(" + (Number(theWindowHeight/2 + (i*(theWindowHeight/4))) - (couplets.item(i).getBoundingClientRect().height/2)) + "px)";
-      setTimeout(function() {
-        couplets.item(i).style.transition = "transform 1s ease-in-out, opacity 0.5s ease-in-out";
-      }, 1);
+      // setTimeout(function() {
+      //   couplets.item(i).style.transition = "transform 1s ease-in-out, opacity 0.5s ease-in-out";
+      // }, 1);
 
       if (i === this.props.question.currentQuestion) {
 
@@ -130,18 +108,7 @@ class ClientInfo extends Component {
 
     }
 
-    // setTimeout(function() {
-    //   question.style.transform = "translateY(" + window.innerHeight/2 + "px)";
-    //   // question.style.transform = "translateY(-50%) scale(1)";
-    //   question.style.opacity = fullOpacity;
-    //   question.childNodes[1].childNodes[0].focus();
-    //
-    //   nextQuestion.style.transform = "translateY(" + ((window.innerHeight/4)*3) + "px)";
-    //   // nextQuestion.style.transform = "translateY(-50%) scale(0.8)";
-    //   nextQuestion.style.opacity = lowOpacity;
-    // }, 200);
-
-    console.log(this.props.client);
+    // console.log(this.props.client);
   }
 
   saveName() {
@@ -151,13 +118,24 @@ class ClientInfo extends Component {
 
   nextQuestion(e) {
     e.stopPropagation();
-    console.log(e.which);
-    console.log('The current question is ' + this.props.question.currentQuestion);
+
     if (e.which === 13 || e.which === 9) {
       e.preventDefault();
 
       let couplets = document.getElementsByClassName('qa-couplet');
       let currentQuestion = this.props.question.currentQuestion;
+
+      if (currentQuestion === couplets.length - 1) {
+        // let clientInfo = document.getElementById('client-info-body');
+        // clientInfo.style.opacity = 0;
+        this.props.history.push('/goals');
+        this.props.setQuestion(0);
+        return false;
+        // let context = this;
+        // setTimeout(function() {
+        //   context.props.history.push('/goals');
+        // }, 200);
+      }
 
       for (let i = 0; i < couplets.length; i++) {
 
@@ -183,8 +161,6 @@ class ClientInfo extends Component {
         }
 
         couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) - theWindowHeight/4) + "px)";
-
-        this.props.setQuestion(this.props.question.currentQuestion + 1);
       }
 
       let obj = {};
@@ -205,6 +181,7 @@ class ClientInfo extends Component {
         default:
           return e.target.id;
       }
+      this.props.setQuestion(this.props.question.currentQuestion + 1);
       this.props.setClientObj(obj);
 
     }
@@ -213,7 +190,7 @@ class ClientInfo extends Component {
   editAnswer(e) {
 
     let couplets = document.getElementsByClassName('qa-couplet');
-    let currentQuestion = this.props.question.currentQuestion;
+    // let currentQuestion = this.props.question.currentQuestion;
 
     let target = e.target;
 
@@ -225,98 +202,30 @@ class ClientInfo extends Component {
       }
     }
 
+    let clickedNumId = Number(target.id.slice(0, target.id.indexOf('-qa-couplet')));
 
+    if (!isNaN(clickedNumId)) {
 
-    if (currentQuestion < (couplets.length + 1)) {
-      let idNumber = Number(target.id.slice(0, target.id.indexOf("-")));
-      console.log('idNumber ', idNumber);
-      console.log('currentQuestion ', this.props.question.currentQuestion);
-      if (idNumber > currentQuestion) { // if
+      this.props.setQuestion(clickedNumId);
 
-        for (let i = 0; i < couplets.length; i++) { // iterate over all question/answer couplets
+      for (let i = 0; i < couplets.length; i++) {
+        let halfElementHeight = couplets.item(i).getBoundingClientRect().height/2;
+        let inactiveElementPosition = Number(theWindowHeight/2 + ((i - clickedNumId)*(theWindowHeight/4))) - (halfElementHeight);
 
+        if (i === clickedNumId) {
+          couplets.item(i).style.opacity = fullOpacity;
+          couplets.item(i).childNodes[1].childNodes[0].focus();
+          couplets.item(i).style.transform = "translateY(" + (Number(theWindowHeight/2) - (halfElementHeight)) + "px)";
 
-          if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
-            couplets.item(i).style.opacity = zeroOpacity;
-          }
-
-          if (i === currentQuestion) { // set outgoing question to lower opacity
-            couplets.item(i).style.opacity = lowOpacity;
-          }
-
-          if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
-            couplets.item(i).style.opacity = fullOpacity;
-            couplets.item(i).childNodes[1].childNodes[0].focus();
-          }
-
-          if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
-            couplets.item(i).style.opacity = lowOpacity;
-          }
-
-          if (i > (currentQuestion + 2)) {
-            couplets.item(i).style.opacity = zeroOpacity;
-          }
-
-          couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) - theWindowHeight/4) + "px)";
-
-          this.props.setQuestion(this.props.question.currentQuestion + 1);
+        } else if (i < clickedNumId - 1 || i > clickedNumId + 1) {
+          couplets.item(i).style.opacity = zeroOpacity;
+          couplets.item(i).style.transform = "translateY(" + inactiveElementPosition + "px)";
+        } else {
+          couplets.item(i).style.opacity = lowOpacity;
+          couplets.item(i).style.transform = "translateY(" + inactiveElementPosition + "px)";
         }
-
-        // let obj = {};
-        //
-        // switch (e.target.id) {
-        //   case "contact_name":
-        //     obj.contact_name = e.target.value;
-        //     break;
-        //   case "company_name":
-        //     obj.company_name = e.target.value;
-        //     break;
-        //   case "email":
-        //     obj.email = e.target.value;
-        //     break;
-        //   case "phone":
-        //     obj.phone = e.target.value;
-        //     break;
-        //   default:
-        //     return e.target.id;
-        // }
-        // this.props.setClientObj(obj);
-
-
-
-      } else if (idNumber < currentQuestion) {
-        for (let i = 0; i < couplets.length; i++) {
-
-          if (i > currentQuestion) {
-            couplets.item(i).style.opacity = zeroOpacity;
-          }
-
-          if (i === currentQuestion) {
-            couplets.item(i).style.opacity = lowOpacity;
-            // if (couplets.item((i + 1))) {
-            //   couplets.item((i + 1)).style.opacity = fullOpacity;
-            // }
-          }
-
-          if (i === currentQuestion - 1) {
-            couplets.item(i).style.opacity = fullOpacity;
-            couplets.item(i).childNodes[1].childNodes[0].focus();
-          }
-
-          if (i < (currentQuestion - 1)) {
-            couplets.item(i).style.opacity = lowOpacity;
-          }
-
-          couplets.item(i).style.transform = "translateY(" + (Number(couplets.item(i).style.transform.slice(11, -3)) + theWindowHeight/4) + "px)";
-
-          this.props.setQuestion(this.props.question.currentQuestion - 1);
-        }
-
-      } else {
-
       }
     }
-
   }
 
   render() {
@@ -333,26 +242,6 @@ class ClientInfo extends Component {
               {/*</div>*/}
               {/*<div className="answer">*/}
                 {/*<input type="text" name="name" id="contact_name" placeholder="Your Full Name"/>*/}
-                {/*/!*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*!/*/}
-              {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div onClick={this.editAnswer.bind(this)} id="qa-couplet-1" className="qa-couplet">*/}
-              {/*<div className="question">*/}
-                {/*<label htmlFor="company-name">What is your company name?</label>*/}
-              {/*</div>*/}
-              {/*<div className="answer">*/}
-                {/*<input type="text" name="company-name" id="company_name" placeholder="Your Company Name"/>*/}
-                {/*/!*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*!/*/}
-              {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div onClick={this.editAnswer.bind(this)} id="qa-couplet-2" className="qa-couplet">*/}
-              {/*<div className="question">*/}
-                {/*<label htmlFor="email">What is your email?</label>*/}
-              {/*</div>*/}
-              {/*<div className="answer">*/}
-                {/*<input type="text" name="email" id="email" placeholder="Your Email"/>*/}
                 {/*/!*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*!/*/}
               {/*</div>*/}
             {/*</div>*/}
