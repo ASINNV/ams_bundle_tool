@@ -29,81 +29,86 @@ const projectState = {
 };
 const questionState = {
   currentQuestion: 0,
-  questions: [
-    {
-      question: "What is your name?",
-      coupletId: "0-qa-couplet",
-      htmlFor: "name",
-      inputId: "contact_name",
-      inputType: "text",
-      inputName: "name",
-      inputPlaceholder: "Your Full Name"
-    },
-    {
-      question: "What is your company's name?",
-      coupletId: "1-qa-couplet",
-      htmlFor: "company-name",
-      inputId: "company_name",
-      inputType: "text",
-      inputName: "company-name",
-      inputPlaceholder: "Your Company Name"
-    },
-    {
-      question: "What is your email?",
-      coupletId: "2-qa-couplet",
-      htmlFor: "email",
-      inputId: "email",
-      inputType: "text",
-      inputName: "email",
-      inputPlaceholder: "Your Email"
-    },
-    {
-      question: "What is your phone number?",
-      coupletId: "3-qa-couplet",
-      htmlFor: "name",
-      inputId: "contact_name",
-      inputType: "text",
-      inputName: "name",
-      inputPlaceholder: "Your Phone Number"
-    }
-  ]
+  // questions: [
+  //   {
+  //     question: "What is your name?",
+  //     coupletId: "0-qa-couplet",
+  //     htmlFor: "name",
+  //     inputId: "contact_name",
+  //     inputType: "text",
+  //     inputName: "name",
+  //     inputPlaceholder: "Your Full Name"
+  //   },
+  //   {
+  //     question: "What is your company's name?",
+  //     coupletId: "1-qa-couplet",
+  //     htmlFor: "company-name",
+  //     inputId: "company_name",
+  //     inputType: "text",
+  //     inputName: "company-name",
+  //     inputPlaceholder: "Your Company Name"
+  //   },
+  //   {
+  //     question: "What is your email?",
+  //     coupletId: "2-qa-couplet",
+  //     htmlFor: "email",
+  //     inputId: "email",
+  //     inputType: "text",
+  //     inputName: "email",
+  //     inputPlaceholder: "Your Email"
+  //   },
+  //   {
+  //     question: "What is your phone number?",
+  //     coupletId: "3-qa-couplet",
+  //     htmlFor: "name",
+  //     inputId: "contact_name",
+  //     inputType: "text",
+  //     inputName: "name",
+  //     inputPlaceholder: "Your Phone Number"
+  //   }
+  // ]
 };
 const progressState = {
-  currentStep: 0,
+  currentStep: -1,
   steps: [
     {
       name: 'Calibrate',
-      bgColor: '#F79256',
+      bgColor: '#405ca9',
       color: '#416BA2',
-      completed: true,
+      complete: false,
+      active: false,
       data: null
     },
     {
       name: 'Personalize',
       bgColor: '#FBD1A2',
       color: '#74B48E',
-      completed: false,
+      complete: false,
+      active: false,
       data: null
     },
     {
       name: 'Decide',
       bgColor: '#7DCFB6',
       color: '#FFD79A',
-      completed: false,
+      complete: false,
+      active: false,
       data: null
     },
     {
       name: 'Review',
       bgColor: '#00B2CA',
       color: '#FFAE00',
-      completed: false,
+      complete: false,
+      active: false,
       data: null
     },
     {
       name: 'Capitalize',
       bgColor: '#1D4E89',
       color: '#D15F1E',
-      completed: false,
+      complete: false,
+      active: false,
       data: null
     }]
 
@@ -153,13 +158,16 @@ const questionReducer = (state = questionState, action) => {
 
 const progressReducer = (state = progressState, action) => {
   switch (action.type) {
-    case "SET_DATA":
+    case "SET_STEP":
       state = {
         ...state,
-        steps: [
-          ...state.steps,
-          action.payload
-        ]
+        currentStep: action.payload
+      };
+      break;
+    case "SET_PROGRESS":
+      state = {
+        ...state,
+        steps: action.payload
       };
       break;
     default:

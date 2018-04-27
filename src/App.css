@@ -105,7 +105,7 @@ p {
   align-items: center;
   justify-content: space-between;
   font-weight: 500;
-  z-index: 1;
+  z-index: 100;
   color: #fff;
 }
 
@@ -183,6 +183,7 @@ p {
   left: 0;
   right: 0;
   height: 100px;
+  z-index: 100;
 }
 #progress-bar {
   position: fixed;
@@ -193,8 +194,8 @@ p {
   display: flex;
 
   height: 80px;
-  background: #405ba8;
-  opacity: .5;
+  background: #222;
+  /*opacity: .5;*/
   overflow: hidden;
   cursor: default;
 
@@ -213,40 +214,106 @@ p {
 .phase {
   position: relative;
   display: inline-block;
+  width: 20%;
   /* padding at 7px to center the element in the 14px of space allowed to it when the progress bar is hidden */
-  padding: 7px;
-  color: #333;
+  /*padding: 7px;*/
   font-weight: 600;
-  transition: background-color .5s ease-in-out;
+  /*transition: background-color .5s ease-in-out;*/
 }
-.triangle {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 0;
-  height: 0;
-  transition: border .5s ease-in-out;
-}
-
-.phase:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 2px;
-  height: 120px;
-  background-color: rgba(0,0,0,0.5);
-  transform: rotate(45deg) translate3d(-41px, 10px, 0);
-}
+/*.phase:after {*/
+  /*content: '';*/
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*right: 0;*/
+  /*width: 1px;*/
+  /*height: 130px;*/
+  /*background-color: rgba(0, 118, 209, 0.5);*/
+  /*transform: rotate(45deg) translate3d(-46px, 6px, 0);*/
+/*}*/
 .phase:last-child:after {
   background-color: transparent;
 }
-
-.phase-header {
-
+.triangle {
+  display: inline-block;
+  /*transition: border .5s ease-in-out;*/
 }
 
-#client-info-body, #goals-body {
+.phase-header {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 7px;
+  padding-left: 7px;
+}
+
+.active-phase {
+  background-color: #fff;
+  width: 32%;
+}
+.complete-phase {
+  background-color: #37a9ff;
+  width: 17%;
+}
+.incomplete-phase {
+  background-color: #222;
+  width: 17%;
+}
+
+.active-phase-step {
+  color: #37a9ff;
+}
+.active-phase-name {
+  color: #aaa;
+}
+.active-first-triangle {
+  border: 40px solid transparent;
+  border-top: 40px solid #37a9ff;
+  border-left: 40px solid #37a9ff;
+}
+.active-second-triangle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border: 40px solid transparent;
+  border-right: 40px solid #222;
+  border-bottom: 40px solid #222;
+}
+
+.complete-phase-step {
+  color: #0076d1;
+}
+.complete-phase-name {
+  color: #9ed5ff;
+}
+.complete-first-triangle {
+  border: 40px solid transparent;
+  border-top: 40px solid #37a9ff;
+  border-left: 40px solid #37a9ff;
+}
+.complete-second-triangle {
+  border: 40px solid transparent;
+  border-right: 40px solid #37a9ff;
+  border-bottom: 40px solid #37a9ff;
+}
+
+.incomplete-phase-step {
+  color: #555;
+}
+.incomplete-phase-name {
+  color: #777;
+}
+.incomplete-first-triangle {
+  border: 40px solid transparent;
+  border-top: 40px solid #222;
+  border-left: 40px solid #222;
+}
+.incomplete-second-triangle {
+  border: 40px solid transparent;
+  border-right: 40px solid #222;
+  border-bottom: 40px solid #222;
+}
+
+#landing, #client-info-body, #goals-body {
   /*position: absolute;*/
   /*top: 0;*/
   /*left: 0;*/
@@ -280,35 +347,89 @@ p {
 /*}*/
 
 
-.page-enter, .page-leave {
+.transition-enter, .transition-leave {
   position: absolute;
   -webkit-transition: transform 1s ease-in-out, opacity 1s ease-in-out;
   transition: transform 1s ease-in-out, opacity 1s ease-in-out;
 }
 
-.page-enter {
-  -webkit-transform: translate3d(0, 100vw, 0);
-  transform: translate3d(0, 100vw, 0);
+.transition-enter {
+  -webkit-transform: translate3d(100vw, 0, 0);
+  transform: translate3d(100vw, 0, 0);
+  z-index: 1;
 }
 
-.page-enter.page-enter-active {
+.transition-enter.transition-enter-active {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
-.page-leave {
+.transition-leave {
+  /*opacity: 1;*/
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
-.page-leave.page-leave-active {
-  -webkit-transform: translate3d(0, 100vw, 0);
-  transform: translate3d(0, 100vw, 0);
+.transition-leave.transition-leave-active {
+  /*opacity: 0;*/
+  -webkit-transform: translate3d(-100vw, 0, 0);
+  transform: translate3d(-100vw, 0, 0);
+}
+
+.transition-appear {
+  opacity: 0;
+}
+
+.transition-appear.transition-appear-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
 }
 
 
 /* UBIQUITOUS ELEMENTS - END */
 /* UBIQUITOUS ELEMENTS - END */
+
+/*------------------------------------------------------------------------*/
+
+/* LANDING ELEMENTS - START */
+/* LANDING ELEMENTS - START */
+
+#landing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  color: #fff;
+}
+
+.heading-1 {
+  font-size: 3em;
+  margin: 0 0 50px 0;
+}
+.heading-1 span {
+  color: #37a9ff;
+}
+
+.main-button {
+  background-color: #fff;
+  padding: 15px 45px;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px 0 rgba(0,0,0,0.3);
+}
+.main-button a {
+  text-decoration: none;
+  color: #37a9ff;
+}
+
+/* LANDING ELEMENTS - END */
+/* LANDING ELEMENTS - END */
 
 /*------------------------------------------------------------------------*/
 
@@ -326,46 +447,46 @@ p {
   /*z-index: 10;*/
 /*}*/
 
-#stream {
+/*#stream {*/
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*width: 100%;*/
+  /*height: 100%;*/
+  /*transition: transform 1s ease-in-out;*/
+  /*z-index: 0;*/
+/*}*/
+
+#scrolling-stream {
   position: absolute;
-  top: 0;
+  transform: translate3d(0, 45vh, 0);
   left: 0;
-  width: 100%;
-  height: 100%;
-  transition: transform 1s ease-in-out;
+  right: 0;
+  transition: transform 0.75s ease-in-out, opacity 0.75s ease-in-out;
 }
 
 .qa-couplet {
-  position: absolute;
+  display: block;
+  position: relative;
   width: 100%;
+  height: 25vh;
   font-size: 32px;
   /*margin: 300px 0;*/
-  opacity: 0;
+  /*opacity: 0;*/
   /*transform: translateY(45vh);*/
   /*will-change: opacity;*/
-  transition: transform 1s ease-in-out, opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .qa-couplet:first-child {
-  transform: translateY(50vh);
+  opacity: 1;
 }
 
 .qa-couplet:nth-child(2n) {
-  transform: translateY(75vh);
+  opacity: 0.125;
 }
 
 .qa-couplet:nth-child(1n + 3) {
-  transform: translateY(100vh);
-}
-
-.active-couplet {
-  opacity: 1 !important;
-  transform: translateY(50vh) !important;
-}
-.waiting-couplet {
-  opacity: 0.125;
-}
-.hidden-couplet {
   opacity: 0;
 }
 
@@ -428,7 +549,7 @@ p {
   display: inline-block;
   width: 75%;
   height: 100%;
-  background-color: tan;
+  background: radial-gradient(#2cd8ff, #5d6aff 140%);
 
 }
 #goals-shoulder {
@@ -436,7 +557,8 @@ p {
   display: inline-block;
   width: 25%;
   height: 100%;
-  background-color: mediumseagreen;
+  background-color: #222;
+  color: #fff;
 }
 
 .container {
@@ -451,34 +573,79 @@ p {
   will-change: transform;
 }
 
+#goals-sidebar {
+  position: relative;
+  display: inline-block;
+  height: 100vh;
+  width: 100%;
+  will-change: transform;
+}
+
+/* GOALS ELEMENTS - END */
+/* GOALS ELEMENTS - END */
+
+/*------------------------------------------------------------------------*/
+
+/* UNSORTED ELEMENTS - START */
+/* UNSORTED ELEMENTS - START */
 
 #card-1, #card-2, #card-3, #card-4 {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 30px;
+  position: relative;
   display: inline-block;
-  width: 100%;
+  height: 100vh;
+  width: 25%;
   will-change: transform;
 }
 
 #card-1 {
   /*background: url('/images/blue_orange.jpg') no-repeat center;*/
-  background-size: cover;
+  /*background-size: cover;*/
+  background-color: orange;
 }
 #card-2 {
   /*background: url('/images/green.png') no-repeat center;*/
-  background-size: cover;
+  /*background-size: cover;*/
+  background-color: violet;
 }
 #card-3 {
   /*background: url('/images/purple.jpg') no-repeat center;*/
-  background-size: cover;
+  /*background-size: cover;*/
+  background-color: mediumaquamarine;
 }
 #card-4 {
   /*background: url('/images/red.jpg') no-repeat center;*/
-  background-size: cover;
+  /*background-size: cover;*/
+  background-color: lightgoldenrodyellow;
 }
 
+.cards .goal-info {
+  /*background: rgba(50, 141, 253, 0.5) !important;*/
+  transition: background .1s ease;
+}
+.cards:hover .info {
+  /*background: rgba(255, 255, 255, 0.5) !important;*/
+}
+/*.cards:hover:after {*/
+/*opacity: 0;*/
+/*}*/
+.goal-info {
+  position: absolute;
+  height: 100%;
+  padding: 40vh 25px 0 25px;
+  font-family: "Proxima Nova";
+  /*color: #333;*/
+  transition: padding-top .25s ease-in-out;
+}
+.goal-info .name {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.goal-info .desc {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.4em;
+}
 .cards .info {
   background: rgba(50, 141, 253, 0.5) !important;
   transition: background .1s ease;
@@ -486,12 +653,9 @@ p {
 .cards:hover .info {
   background: rgba(255, 255, 255, 0.5) !important;
 }
-/*.cards:hover:after {*/
-/*opacity: 0;*/
-/*}*/
 .info {
   position: absolute;
-  height: 100%;
+  height: 100vh;
   padding: 40vh 25px 0 25px;
   font-family: "Proxima Nova";
   color: #333;
@@ -506,6 +670,12 @@ p {
   font-size: 24px;
   font-weight: 400;
   line-height: 1.4em;
+}
+.cards:hover .info {
+  animation-name: z-index-change;
+  animation-duration: .1s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 .button-container {
   position: relative;
@@ -529,7 +699,7 @@ p {
   width: 100%;
   height: 50px;
   border-radius: 40px;
-  border: 2px solid #333;
+  border: 2px solid #777;
   -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.6, 0.295, 0.15, 1.645);
   transition: -webkit-transform 0.4s cubic-bezier(0.6, 0.295, 0.15, 1.645);
   transition: transform 0.4s cubic-bezier(0.6, 0.295, 0.15, 1.645);
@@ -586,7 +756,7 @@ p {
   font-family: "Proxima Nova";
   font-size: 24px;
   font-weight: 400;
-  color: #333;
+  color: #777;
   line-height: 48px;
   position: absolute;
   top: 0;
@@ -602,7 +772,7 @@ p {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
-.cards:hover .info {
+.cards:hover .goal-info {
   animation-name: z-index-change;
   animation-duration: .1s;
   animation-iteration-count: 1;
@@ -653,7 +823,7 @@ p {
   }
 }
 
-/* GOALS ELEMENTS - END */
-/* GOALS ELEMENTS - END */
+/* UNSORTED ELEMENTS - START */
+/* UNSORTED ELEMENTS - START */
 
 /*------------------------------------------------------------------------*/

@@ -1,18 +1,34 @@
 import React, { Component } from 'react';
 import '../App.css';
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-const theWindow=window,
-  theDoc=document,
-  theEle=theDoc.documentElement,
-  theBody=theDoc.getElementsByTagName('body')[0],
-  // theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
-  theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
+// const theWindow=window,
+//   theDoc=document,
+//   theEle=theDoc.documentElement,
+//   theBody=theDoc.getElementsByTagName('body')[0],
+//   theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
+//   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
 
 
 class Goals extends Component {
 
   componentDidMount(e) {
+    let steps = this.props.progress.steps;
+    steps.forEach(function(step, i, steps) {
+      if (step === steps[0]) {
+        step.active = false;
+        step.complete = true;
+      } else if (step === steps[1]) {
+        step.active = true;
+        step.complete = false;
+      } else {
+        step.active = false;
+        step.complete = false;
+      }
+    });
+    this.props.setProgress(steps);
+
     let goals = document.getElementById('goals-body');
     goals.style.transition = "transform .5s ease-in-out";
     setTimeout(function() {
@@ -33,14 +49,14 @@ class Goals extends Component {
         </div>
         <div id="goals-shoulder">
           <div id="container-0" className="container">
-            <div id="card-1" className="cards">
-              <div id="info-1" className="info">
+            <div id="goals-sidebar" className="cards">
+              <div id="goal-info-1" className="goal-info">
                 <p className="name">STARTUP</p>
                 <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-                <div className="buttons">
+                <Link to="/decide" className="buttons">
                   <div id="button-1" className="button-bg"></div>
                   <span id="button-text-1" className="button-text">select</span>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -81,11 +97,11 @@ const mapDispatchToProps = (dispatch) => {
         payload: index
       });
     },
-    setData: (dataObj) => {
+    setProgress: (stepsObj) => {
       dispatch({
-        type: "SET_DATA",
-        payload: dataObj
-      });
+        type: "SET_PROGRESS",
+        payload: stepsObj
+      })
     }
   };
 };
