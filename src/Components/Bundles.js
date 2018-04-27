@@ -12,17 +12,10 @@ const theWindow=window,
 
 class Bundles extends Component {
 
-  componentDidMount(e) {
-    let goals = document.getElementById('goals-body');
-    goals.style.transition = "transform .5s ease-in-out";
-    setTimeout(function() {
-      goals.style.transform = "translateX(0)";
-    }, 10);
-    // let context = this;
-    // function nextPage() {
-    //   context.props.history.push('/goals');
-    // }
-    // setTimeout(nextPage, 500);
+  componentDidMount() {
+    let appData = this.props.appReducer;
+    appData.currentStep = 2;
+    this.props.setAppData(appData);
   }
 
   openBundle(e) {
@@ -150,7 +143,7 @@ class Bundles extends Component {
   render() {
 
     return (
-      <div id="goals-body">
+      <div id="bundles-body" className="page-body">
         <div id="container-0" className="container">
           <div id="card-1" className="cards" onClick={this.openBundle.bind(this)}>
             <div id="info-1" className="info">
@@ -205,31 +198,23 @@ class Bundles extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    client: state.clientReducer,
-    project: state.projectReducer,
-    question: state.questionReducer,
-    progress: state.progressReducer
+    appReducer: state.appReducer,
+    projectReducer: state.projectReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setClientObj: (clientObj) => {
+    setProjectData: (dataObj) => {
       dispatch({
-        type: "SET_CLIENT_OBJ",
-        payload: clientObj
+        type: "SET_PROJECT_DATA",
+        payload: dataObj
       });
     },
-    setBundle: (number) => {
+    setAppData: (dataObj) => {
       dispatch({
-        type: "SET_BUNDLE",
-        payload: number
-      });
-    },
-    setQuestion: (index) => {
-      dispatch({
-        type: "SET_CURRENT_QUESTION",
-        payload: index
+        type: "SET_APP_DATA",
+        payload: dataObj
       });
     }
   };

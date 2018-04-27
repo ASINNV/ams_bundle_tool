@@ -258,6 +258,10 @@ p {
   width: 17%;
 }
 
+.phase, .complete-phase, .incomplete-phase, .active-phase {
+  transition: width .5s ease;
+}
+
 .active-phase-step {
   color: #37a9ff;
 }
@@ -313,7 +317,7 @@ p {
   border-bottom: 40px solid #222;
 }
 
-#landing, #client-info-body, #goals-body {
+.page-body {
   /*position: absolute;*/
   /*top: 0;*/
   /*left: 0;*/

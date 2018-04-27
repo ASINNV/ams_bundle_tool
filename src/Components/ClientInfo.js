@@ -56,17 +56,26 @@ class ClientInfo extends Component {
   // }
 
   componentDidMount(e) {
-    let steps = this.props.progress.steps;
-    steps.forEach(function(step, i, steps) {
-      if (step === steps[0]) {
-        step.active = true;
-        step.complete = false;
-      } else {
-        step.active = false;
-        step.complete = false;
-      }
-    });
-    this.props.setProgress(steps);
+    // let appData = this.props.appReducer;
+    // appData.steps.forEach(function(step, i, steps) {
+    //   if (step === steps[0]) {
+    //     step.active = true;
+    //     step.complete = false;
+    //   } else {
+    //     step.active = false;
+    //     step.complete = false;
+    //   }
+    // });
+    // this.props.setAppData(appData);
+
+
+    let appData = this.props.appReducer;
+    appData.currentStep = 0;
+    this.props.setAppData(appData);
+
+
+    let firstInput = document.getElementById('contact_name');
+    firstInput.focus();
     // apiCaller('/api/clients');
 
     // let scrollingStream = document.getElementById('scrolling-stream');
@@ -122,10 +131,10 @@ class ClientInfo extends Component {
     // console.log(this.props.client);
   }
 
-  saveName() {
-    let name = document.getElementById('client_name').value; // get value from client_name input field
-    this.props.setClientName(name); // store client_name in state
-  }
+  // saveName() {
+  //   let name = document.getElementById('client_name').value; // get value from client_name input field
+  //   this.props.setClientName(name); // store client_name in state
+  // }
 
   nextQuestion(e) {
     e.stopPropagation();
@@ -135,16 +144,15 @@ class ClientInfo extends Component {
 
       let couplets = document.getElementsByClassName('qa-couplet');
       let scrollingStream = document.getElementById('scrolling-stream');
-      let currentQuestion = this.props.question.currentQuestion;
+      let appData = this.props.appReducer;
 
-      if (currentQuestion === couplets.length - 1) {
+      if (appData.currentQuestion === couplets.length - 1) {
         // let clientInfo = document.getElementById('client-info-body');
         // clientInfo.style.opacity = 0;
-        let steps = this.props.progress.steps;
-        steps[0].active = false;
-        steps[0].complete = true;
-        steps[1].active = true;
-        this.props.setProgress(steps);
+        appData.steps[0].active = false;
+        appData.steps[0].complete = true;
+        appData.steps[1].active = true;
+        this.props.setAppData(appData);
         this.props.history.push('/personalize');
         return false;
         // let context = this;
@@ -155,24 +163,24 @@ class ClientInfo extends Component {
 
       for (let i = 0; i < couplets.length; i++) {
 
-        if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
+        if (i < appData.currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
           couplets.item(i).style.opacity = zeroOpacity;
         }
 
-        if (i === currentQuestion) { // set outgoing question to lower opacity
+        if (i === appData.currentQuestion) { // set outgoing question to lower opacity
           couplets.item(i).style.opacity = lowOpacity;
         }
 
-        if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
+        if (i === appData.currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
           couplets.item(i).style.opacity = fullOpacity;
           couplets.item(i).childNodes[1].childNodes[0].focus();
         }
 
-        if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
+        if (i === (appData.currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
           couplets.item(i).style.opacity = lowOpacity;
         }
 
-        if (i > (currentQuestion + 2)) {
+        if (i > (appData.currentQuestion + 2)) {
           couplets.item(i).style.opacity = zeroOpacity;
         }
       }
@@ -182,32 +190,33 @@ class ClientInfo extends Component {
         scrollingStream.style.transform = "translate3d(0, " + (Number(scrollingStream.style.transform.slice(17, -8)) - 25) + "vh, 0)";
       }
 
-      let obj = {};
-
-      switch (e.target.id) {
-        case "contact_name":
-          obj.contact_name = e.target.value;
-          break;
-        case "company_name":
-          obj.company_name = e.target.value;
-          break;
-        case "email":
-          obj.email = e.target.value;
-          break;
-        case "phone":
-          obj.phone = e.target.value;
-          break;
-        default:
-          return e.target.id;
-      }
-      this.props.setQuestion(this.props.question.currentQuestion + 1);
-      this.props.setClientObj(obj);
+      // let obj = {};
+      //
+      // switch (e.target.id) {
+      //   case "contact_name":
+      //     obj.contact_name = e.target.value;
+      //     break;
+      //   case "company_name":
+      //     obj.company_name = e.target.value;
+      //     break;
+      //   case "email":
+      //     obj.email = e.target.value;
+      //     break;
+      //   case "phone":
+      //     obj.phone = e.target.value;
+      //     break;
+      //   default:
+      //     return e.target.id;
+      // }
+      appData.currentQuestion += 1;
+      this.props.setAppData(appData);
+      // this.props.setClientObj(obj);
 
     }
 
   }
   editAnswer(e) {
-
+    let appData = this.props.appReducer;
     let couplets = document.getElementsByClassName('qa-couplet');
     // let currentQuestion = this.props.question.currentQuestion;
 
@@ -226,7 +235,6 @@ class ClientInfo extends Component {
     if (!isNaN(clickedNumId)) {
 
       let scrollingStream = document.getElementById('scrolling-stream');
-      let currentQuestion = this.props.question.currentQuestion;
       // console.log(currentQuestion + ' = currentQuestion', clickedNumId + ' = clickedNumId');
 
       // if (clickedNumId < currentQuestion) {
@@ -265,12 +273,12 @@ class ClientInfo extends Component {
           couplets.item(i).style.opacity = lowOpacity;
         }
       }
-      if (clickedNumId !== currentQuestion) {
+      if (clickedNumId !== appData.currentQuestion) {
         scrollingStream.style.transform = "translate3d(0, " + (45 - (clickedNumId*25)) + "vh, 0)";
       }
 
-
-      this.props.setQuestion(clickedNumId);
+      appData.currentQuestion = clickedNumId;
+      this.props.setAppData(appData);
 
       // for (let i = 0; i < couplets.length; i++) {
       //   let halfElementHeight = couplets.item(i).getBoundingClientRect().height/2;
@@ -294,7 +302,7 @@ class ClientInfo extends Component {
 
   render() {
     return (
-        <div id="client-info-body">
+        <div id="client-info-body" className="page-body">
 
           {/*<span className="movement">Press Me</span>*/}
 
@@ -353,37 +361,23 @@ class ClientInfo extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    client: state.clientReducer,
-    project: state.projectReducer,
-    question: state.questionReducer,
-    progress: state.progressReducer
+    appReducer: state.appReducer,
+    projectReducer: state.projectReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setClientObj: (clientObj) => {
+    setProjectData: (dataObj) => {
       dispatch({
-        type: "SET_CLIENT_OBJ",
-        payload: clientObj
+        type: "SET_PROJECT_DATA",
+        payload: dataObj
       });
     },
-    setBundle: (number) => {
+    setAppData: (dataObj) => {
       dispatch({
-        type: "SET_BUNDLE",
-        payload: number
-      });
-    },
-    setQuestion: (index) => {
-      dispatch({
-        type: "SET_CURRENT_QUESTION",
-        payload: index
-      });
-    },
-    setProgress: (stepObj) => {
-      dispatch({
-        type: "SET_PROGRESS",
-        payload: stepObj
+        type: "SET_APP_DATA",
+        payload: dataObj
       });
     }
   };

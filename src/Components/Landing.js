@@ -38,21 +38,22 @@ import { connect } from "react-redux";
 
 class Landing extends Component {
   componentDidMount() {
-    let steps = this.props.progress.steps;
-    steps.forEach(function(step, i, steps) {
+    let appData = this.props.appReducer;
+    appData.steps.forEach(function(step) {
       step.active = false;
       step.complete = false;
     });
-    this.props.setProgress(steps);
+    appData.currentStep = -1;
+    this.props.setAppData(appData);
   }
   setStep() {
-    let steps = this.props.progress.steps;
-    steps[0].active = true;
-    this.props.setProgress(steps);
+    let appData = this.props.appReducer;
+    appData.steps[0].active = true;
+    this.props.setAppData(appData);
   }
   render() {
     return (
-      <div id="landing">
+      <div id="landing" className="page-body">
         <div className="heading-1">
           <h1>Welcome to the <span>AMS Bundle Tool</span>!</h1>
         </div>
@@ -68,37 +69,23 @@ class Landing extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    client: state.clientReducer,
-    project: state.projectReducer,
-    question: state.questionReducer,
-    progress: state.progressReducer
+    appReducer: state.appReducer,
+    projectReducer: state.projectReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setClientObj: (clientObj) => {
+    setProjectData: (dataObj) => {
       dispatch({
-        type: "SET_CLIENT_OBJ",
-        payload: clientObj
+        type: "SET_PROJECT_DATA",
+        payload: dataObj
       });
     },
-    setBundle: (number) => {
+    setAppData: (dataObj) => {
       dispatch({
-        type: "SET_BUNDLE",
-        payload: number
-      });
-    },
-    setQuestion: (index) => {
-      dispatch({
-        type: "SET_CURRENT_QUESTION",
-        payload: index
-      });
-    },
-    setProgress: (stepsObj) => {
-      dispatch({
-        type: "SET_PROGRESS",
-        payload: stepsObj
+        type: "SET_APP_DATA",
+        payload: dataObj
       });
     }
   };

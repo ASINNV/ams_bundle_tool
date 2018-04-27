@@ -94,51 +94,59 @@ class ProgressBar extends Component {
     //   phase.appendChild(triangle);
     //   sections.push(phase);
     // });
+    let currentStep = this.props.currentStep;
+    let newArray = this.props.steps.map(function(step, i) {
+      let firstTriangleClassName = null;
+      let secondTriangleClassName = null;
+      let phaseClassName = null;
+      let phaseStepClassName = null;
+      let phaseNameClassName = null;
+
+
+      if (currentStep === -1) {
+        firstTriangleClassName = 'incomplete-first-triangle';
+        secondTriangleClassName = 'incomplete-second-triangle';
+        // phaseClassName = 'incomplete-phase';
+        phaseStepClassName = 'incomplete-phase-step';
+        phaseNameClassName = 'incomplete-phase-name';
+      } else {
+        if (i < currentStep && !step.active) {
+          firstTriangleClassName = 'complete-first-triangle';
+          secondTriangleClassName = 'complete-second-triangle';
+          phaseClassName = 'complete-phase';
+          phaseStepClassName = 'complete-phase-step';
+          phaseNameClassName = 'complete-phase-name';
+        } else if (i === currentStep) {
+          firstTriangleClassName = 'active-first-triangle';
+          secondTriangleClassName = 'active-second-triangle';
+          phaseClassName = 'active-phase';
+          phaseStepClassName = 'active-phase-step';
+          phaseNameClassName = 'active-phase-name';
+        } else {
+          firstTriangleClassName = 'incomplete-first-triangle';
+          secondTriangleClassName = 'incomplete-second-triangle';
+          phaseClassName = 'incomplete-phase';
+          phaseStepClassName = 'incomplete-phase-step';
+          phaseNameClassName = 'incomplete-phase-name';
+        }
+      }
+
+      return (
+        <div id={step.name} className={"phase " + phaseClassName} key={i}>
+          {(i === currentStep && i !== 0) ? <div className={"triangle " + firstTriangleClassName}></div> : null}
+          <h1 className="phase-header">
+            <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{step.complete ? "COMPLETE" : step.name}</span>
+          </h1>
+          {i === currentStep ? <div className={"triangle " + secondTriangleClassName}></div> : null}
+        </div>
+      );
+
+    });
 
     return(
       <div id="progress-bar">
 
-        {this.props.steps.map(function(step, i, array) {
-          {/*let phaseBg = '';*/}
-          {/*let phaseColor = '';*/}
-          let firstTriangleClassName = null;
-          let secondTriangleClassName = null;
-          let phaseClassName = null;
-          let phaseStepClassName = null;
-          let phaseNameClassName = null;
-
-
-          if (step.complete && !step.active) {
-            firstTriangleClassName = 'complete-first-triangle';
-            secondTriangleClassName = 'complete-second-triangle';
-            phaseClassName = 'complete-phase';
-            phaseStepClassName = 'complete-phase-step';
-            phaseNameClassName = 'complete-phase-name';
-          } else if (!step.complete && step.active) {
-            firstTriangleClassName = 'active-first-triangle';
-            secondTriangleClassName = 'active-second-triangle';
-            phaseClassName = 'active-phase';
-            phaseStepClassName = 'active-phase-step';
-            phaseNameClassName = 'active-phase-name';
-          } else {
-            firstTriangleClassName = 'incomplete-first-triangle';
-            secondTriangleClassName = 'incomplete-second-triangle';
-            phaseClassName = 'incomplete-phase';
-            phaseStepClassName = 'incomplete-phase-step';
-            phaseNameClassName = 'incomplete-phase-name';
-          }
-
-          return (
-            <div id={step.name} className={"phase " + phaseClassName} key={i}>
-              {(step.active && i !== 0) ? <div className={"triangle " + firstTriangleClassName}></div> : null}
-              <h1 className="phase-header">
-                <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{step.complete ? "COMPLETE" : step.name}</span>
-              </h1>
-              {step.active ? <div className={"triangle " + secondTriangleClassName}></div> : null}
-            </div>
-          );
-
-        })}
+        {newArray}
 
         {/*<div id="calibrate" className="phase">*/}
           {/*<h1 className="phase-header">*/}
@@ -198,7 +206,7 @@ class App extends Component {
           )} />
           {/*<span className="center-point" />*/}
           <div id="pb-hover-area">
-            <ProgressBar steps={this.props.progress.steps} currentStep={this.props.progress.currentStep}/>
+            <ProgressBar steps={this.props.appReducer.steps} currentStep={this.props.appReducer.currentStep}/>
           </div>
         </div>
       </Router>
@@ -208,25 +216,23 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    client: state.clientReducer,
-    project: state.projectReducer,
-    question: state.questionReducer,
-    progress: state.progressReducer
+    appReducer: state.appReducer,
+    projectReducer: state.projectReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setClientName: (name) => {
+    setProjectData: (dataObj) => {
       dispatch({
-        type: "SET_CLIENT_NAME",
-        payload: name
+        type: "SET_PROJECT_DATA",
+        payload: dataObj
       });
     },
-    setBundle: (number) => {
+    setAppData: (dataObj) => {
       dispatch({
-        type: "SET_BUNDLE",
-        payload: number
+        type: "SET_APP_DATA",
+        payload: dataObj
       });
     }
   };

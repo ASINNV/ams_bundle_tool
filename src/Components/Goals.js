@@ -14,26 +14,30 @@ import { connect } from "react-redux";
 class Goals extends Component {
 
   componentDidMount(e) {
-    let steps = this.props.progress.steps;
-    steps.forEach(function(step, i, steps) {
-      if (step === steps[0]) {
-        step.active = false;
-        step.complete = true;
-      } else if (step === steps[1]) {
-        step.active = true;
-        step.complete = false;
-      } else {
-        step.active = false;
-        step.complete = false;
-      }
-    });
-    this.props.setProgress(steps);
+    // let appData = this.props.appReducer;
+    // appData.steps.forEach(function(step, i, steps) {
+    //   if (step === steps[0]) {
+    //     step.active = false;
+    //     step.complete = true;
+    //   } else if (step === steps[1]) {
+    //     step.active = true;
+    //     step.complete = false;
+    //   } else {
+    //     step.active = false;
+    //     step.complete = false;
+    //   }
+    // });
+    let appData = this.props.appReducer;
+    appData.currentStep = 1;
+    this.props.setAppData(appData);
+    this.props.setAppData(appData);
 
-    let goals = document.getElementById('goals-body');
-    goals.style.transition = "transform .5s ease-in-out";
-    setTimeout(function() {
-      goals.style.transform = "translateX(0)";
-    }, 10);
+    // let goals = document.getElementById('goals-body');
+    // goals.style.transition = "transform .5s ease-in-out";
+    // setTimeout(function() {
+    //   goals.style.transform = "translateX(0)";
+    // }, 10);
+
     // let context = this;
     // function nextPage() {
     //   context.props.history.push('/goals');
@@ -43,7 +47,7 @@ class Goals extends Component {
 
   render() {
     return (
-      <div id="goals-body">
+      <div id="goals-body" className="page-body">
         <div id="goals-torso">
 
         </div>
@@ -70,38 +74,24 @@ class Goals extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    client: state.clientReducer,
-    project: state.projectReducer,
-    question: state.questionReducer,
-    progress: state.progressReducer
+    appReducer: state.appReducer,
+    projectReducer: state.projectReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setClientObj: (clientObj) => {
+    setProjectData: (dataObj) => {
       dispatch({
-        type: "SET_CLIENT_OBJ",
-        payload: clientObj
+        type: "SET_PROJECT_DATA",
+        payload: dataObj
       });
     },
-    setBundle: (number) => {
+    setAppData: (dataObj) => {
       dispatch({
-        type: "SET_BUNDLE",
-        payload: number
+        type: "SET_APP_DATA",
+        payload: dataObj
       });
-    },
-    setQuestion: (index) => {
-      dispatch({
-        type: "SET_CURRENT_QUESTION",
-        payload: index
-      });
-    },
-    setProgress: (stepsObj) => {
-      dispatch({
-        type: "SET_PROGRESS",
-        payload: stepsObj
-      })
     }
   };
 };
