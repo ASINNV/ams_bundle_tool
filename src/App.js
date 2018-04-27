@@ -132,7 +132,7 @@ class ProgressBar extends Component {
             <div id={step.name} className={"phase " + phaseClassName} key={i}>
               {(step.active && i !== 0) ? <div className={"triangle " + firstTriangleClassName}></div> : null}
               <h1 className="phase-header">
-                <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{step.name}</span>
+                <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{step.complete ? "COMPLETE" : step.name}</span>
               </h1>
               {step.active ? <div className={"triangle " + secondTriangleClassName}></div> : null}
             </div>

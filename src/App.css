@@ -372,8 +372,8 @@ p {
 
 .transition-leave.transition-leave-active {
   /*opacity: 0;*/
-  -webkit-transform: translate3d(-100vw, 0, 0);
-  transform: translate3d(-100vw, 0, 0);
+  -webkit-transform: translate3d(0, -100vw, 0);
+  transform: translate3d(0, -100vw, 0);
 }
 
 .transition-appear {
