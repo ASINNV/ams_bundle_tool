@@ -189,13 +189,13 @@ p {
 }
 #progress-bar {
   position: fixed;
-  bottom: -50px;
+  bottom: -45px;
   left: 0;
   right: 0;
 
   display: flex;
 
-  height: 80px;
+  height: 75px;
   background: #222;
   /*opacity: .5;*/
   overflow: hidden;
@@ -209,7 +209,7 @@ p {
   transition: transform .5s ease-in-out, opacity .5s ease-in-out;
 }
 #pb-hover-area:hover #progress-bar {
-  transform: translateY(-50px);
+  transform: translateY(-45px);
   /*transform: translateY(-70px);*/
   opacity: 1;
 }
@@ -701,13 +701,12 @@ p {
   will-change: transform;
 }
 
-.goal-info-panel {
+.info-panel {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
   width: 100%;
-  height: 100%;
   margin-bottom: 40px;
 }
 
@@ -752,6 +751,48 @@ p {
 
 /* GOALS ELEMENTS - END */
 /* GOALS ELEMENTS - END */
+
+/*------------------------------------------------------------------------*/
+
+/* REVIEW ELEMENTS - START */
+/* REVIEW ELEMENTS - START */
+
+#review-info {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 75px 20px;
+  width: 100%;
+  /*height: 100%;*/
+  will-change: transform;
+}
+
+.review-info-item {
+  padding-bottom: 5px;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  font-weight: 100;
+  color: #fff;
+}
+.review-info-item:last-child {
+  padding-bottom: 0;
+}
+
+.minor-emphasis {
+  color: #e9b71f;
+}
+
+.emphasis {
+  font-size: 2em;
+  font-weight: 700;
+  /*line-height: 1.5em;*/
+  color: #1ee9bd;
+}
+
+/* REVIEW ELEMENTS - END */
+/* REVIEW ELEMENTS - END */
 
 /*------------------------------------------------------------------------*/
 

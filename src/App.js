@@ -8,6 +8,7 @@ import Landing from "./Components/Landing";
 import ClientInfo from "./Components/ClientInfo";
 import Goals from "./Components/Goals";
 import Bundles from "./Components/Bundles";
+import Review from "./Components/Review";
 import NoMatch from "./Components/NoMatch";
 
 // import logo from './assets/ams_logo.png';
@@ -210,6 +211,7 @@ class App extends Component {
             <Route exact path="/calibrate" component={ClientInfo} />
             <Route exact path="/personalize" component={Goals} />
             <Route exact path="/decide" component={Bundles} />
+            <Route exact path="/review" component={Review} />
             <Route component={NoMatch} />
           </Switch>
 

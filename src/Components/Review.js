@@ -11,37 +11,13 @@ import { connect } from "react-redux";
 //   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
 
 
-class Goals extends Component {
+class Review extends Component {
 
   componentDidMount(e) {
-    // let appData = this.props.appReducer;
-    // appData.steps.forEach(function(step, i, steps) {
-    //   if (step === steps[0]) {
-    //     step.active = false;
-    //     step.complete = true;
-    //   } else if (step === steps[1]) {
-    //     step.active = true;
-    //     step.complete = false;
-    //   } else {
-    //     step.active = false;
-    //     step.complete = false;
-    //   }
-    // });
 
     // SET CURRENT STEP TO 1
-    this.props.setCurrentStep(1); // sets current step to 1
+    this.props.setCurrentStep(3); // sets current step to 1
 
-    // let goals = document.getElementById('goals-body');
-    // goals.style.transition = "transform .5s ease-in-out";
-    // setTimeout(function() {
-    //   goals.style.transform = "translateX(0)";
-    // }, 10);
-
-    // let context = this;
-    // function nextPage() {
-    //   context.props.history.push('/goals');
-    // }
-    // setTimeout(nextPage, 500);
   }
 
   render() {
@@ -52,37 +28,37 @@ class Goals extends Component {
         </div>
         <div id="goals-shoulder">
           <div id="container-0" className="container">
-            <div id="stats" className="">
-              <div id="stat-panel">
-                <h3 className="goal-sidebar-heading">COMPANY STATS</h3>
-                <div id="graph">
-                  {this.props.sessionReducer.client.stats.map((stat, i) => {
-                    return (
-                      <div className="stat-info" key={i}>
-                        <h4 className="stat-name">{stat.name}</h4>
-                        <div className="stat" style={{width: stat.value + '%'}}></div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <div id="goal-info" className="">
+
+            <div id="review-info" className="">
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">GOAL NAME</h3>
-                <p className="goal-sidebar-name">Increase my reach</p>
+                <h3 className="goal-sidebar-heading">YOUR INFO</h3>
+                <p className="review-info-item">Rachel Smithers</p>
+                <p className="review-info-item">Smithers Co.</p>
+                <p className="review-info-item">rachel@smithers.co</p>
+                <p className="review-info-item">(707) 658-5948</p>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">GOAL DESC</h3>
-                <p className="goal-sidebar-desc overflowing">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in arcu ornare, fermentum urna in, aliquet orci. Donec posuere mi quis felis sollicitudin vulputate. Sed ullamcorper neque ac nulla iaculis, sit amet cursus nibh interdum.</p>
+                <h3 className="goal-sidebar-heading">YOUR GOALS</h3>
+                <p className="review-info-item minor-emphasis">Increase my reach</p>
+                <p className="review-info-item minor-emphasis">Increase my sales</p>
+                <p className="review-info-item minor-emphasis">Make a website</p>
+              </div>
+              <div id="" className="info-panel">
+                <h3 className="goal-sidebar-heading">BUNDLE</h3>
+                <p className="review-info-item minor-emphasis">TURBO</p>
+              </div>
+              <div id="" className="info-panel">
+                <h3 className="goal-sidebar-heading">TOTAL</h3>
+                <p className="review-info-item emphasis">$1000</p>
               </div>
             </div>
             <div className="goal-button-container">
               <Link to="/decide" className="buttons">
                 <div id="button-1" className="button-bg"></div>
-                <p id="button-text-1" className="button-text">next step &rarr;</p>
+                <p id="button-text-1" className="button-text"><span role="img" aria-label="lock">&#x1f512;</span> BUY NOW &rarr;</p>
               </Link>
             </div>
+
           </div>
         </div>
       </div>
@@ -164,4 +140,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Goals);
+export default connect(mapStateToProps, mapDispatchToProps)(Review);
