@@ -27,10 +27,9 @@ class Goals extends Component {
     //     step.complete = false;
     //   }
     // });
-    let appData = this.props.appReducer;
-    appData.currentStep = 1;
-    this.props.setAppData(appData);
-    this.props.setAppData(appData);
+
+    // SET CURRENT STEP TO 1
+    this.props.setCurrentStep(1); // sets current step to 1
 
     // let goals = document.getElementById('goals-body');
     // goals.style.transition = "transform .5s ease-in-out";
@@ -53,15 +52,37 @@ class Goals extends Component {
         </div>
         <div id="goals-shoulder">
           <div id="container-0" className="container">
-            <div id="goals-sidebar" className="cards">
-              <div id="goal-info-1" className="goal-info">
-                <p className="name">STARTUP</p>
-                <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-                <Link to="/decide" className="buttons">
-                  <div id="button-1" className="button-bg"></div>
-                  <span id="button-text-1" className="button-text">select</span>
-                </Link>
+
+            <div id="stats" className="">
+              <div id="stat-panel">
+                <h3 className="goal-sidebar-heading">COMPANY STATS</h3>
+                <div id="graph">
+                  {this.props.sessionReducer.client.stats.map((stat, i) => {
+                    return (
+                      <div className="stat-info" key={i}>
+                        <h4 className="stat-name">{stat.name}</h4>
+                        <div className="stat" style={{width: stat.value + '%'}}></div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
+            </div>
+            <div id="goal-info" className="">
+              <div id="" className="goal-info-panel">
+                <h3 className="goal-sidebar-heading">GOAL NAME</h3>
+                <p className="goal-sidebar-name">Increase my reach</p>
+              </div>
+              <div id="" className="goal-info-panel">
+                <h3 className="goal-sidebar-heading">GOAL DESC</h3>
+                <p className="goal-sidebar-desc overflowing">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in arcu ornare, fermentum urna in, aliquet orci. Donec posuere mi quis felis sollicitudin vulputate. Sed ullamcorper neque ac nulla iaculis, sit amet cursus nibh interdum.</p>
+              </div>
+            </div>
+            <div className="cards">
+              <Link to="/decide" className="buttons">
+                <div id="button-1" className="button-bg"></div>
+                <span id="button-text-1" className="button-text">next step &rarr;</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -75,22 +96,70 @@ class Goals extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    projectReducer: state.projectReducer
+    sessionReducer: state.sessionReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setProjectData: (dataObj) => {
+    setCustomerData: (dataObj) => {
       dispatch({
-        type: "SET_PROJECT_DATA",
+        type: "SET_CUSTOMER_DATA",
         payload: dataObj
+      });
+    },
+    setClientName: (name) => {
+      dispatch({
+        type: "SET_CLIENT_NAME",
+        payload: name
+      });
+    },
+    setClientCompany: (company) => {
+      dispatch({
+        type: "SET_CLIENT_COMPANY",
+        payload: company
+      });
+    },
+    setClientEmail: (email) => {
+      dispatch({
+        type: "SET_CLIENT_EMAIL",
+        payload: email
+      });
+    },
+    setClientPhone: (phone) => {
+      dispatch({
+        type: "SET_CLIENT_PHONE",
+        payload: phone
+      });
+    },
+    setClientDiscount: (discount) => {
+      dispatch({
+        type: "SET_CLIENT_DISCOUNT",
+        payload: discount
       });
     },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
+      });
+    },
+    setChosenBundle: (bundleNumber) => {
+      dispatch({
+        type: "SET_CHOSEN_BUNDLE",
+        payload: bundleNumber
+      });
+    },
+    setCurrentQuestion: (currentQuestion) => {
+      dispatch({
+        type: "SET_CURRENT_QUESTION",
+        payload: currentQuestion
+      });
+    },
+    setCurrentStep: (step) => {
+      dispatch({
+        type: "SET_CURRENT_STEP",
+        payload: step
       });
     }
   };

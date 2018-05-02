@@ -46,11 +46,11 @@ class Landing extends Component {
     return (
       <div id="landing" className="page-body">
         <div className="heading-1">
-          <h2>Welcome to the</h2>
-          <h1>AMS Bundle Tool</h1>
+          <h2>You seem to be lost…</h2>
+          <h1>Oopsie Daisy!</h1>
         </div>
         <div>
-          <Link to="/calibrate" className="main-button">OPEN APP</Link>
+          <Link to="/calibrate" className="main-button">RESTART APP</Link>
         </div>
 
       </div>

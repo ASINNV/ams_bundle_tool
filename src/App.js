@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { CSSTransitionGroup } from 'react-transition-group';
+// import { CSSTransitionGroup } from 'react-transition-group';
 import Landing from "./Components/Landing";
 import ClientInfo from "./Components/ClientInfo";
 import Goals from "./Components/Goals";
 import Bundles from "./Components/Bundles";
+import NoMatch from "./Components/NoMatch";
 
 // import logo from './assets/ams_logo.png';
 
@@ -110,7 +111,7 @@ class ProgressBar extends Component {
         phaseStepClassName = 'incomplete-phase-step';
         phaseNameClassName = 'incomplete-phase-name';
       } else {
-        if (i < currentStep && !step.active) {
+        if (i < currentStep) {
           firstTriangleClassName = 'complete-first-triangle';
           secondTriangleClassName = 'complete-second-triangle';
           phaseClassName = 'complete-phase';
@@ -132,13 +133,13 @@ class ProgressBar extends Component {
       }
 
       return (
-        <div id={step.name} className={"phase " + phaseClassName} key={i}>
+        <Link to={"/" + step.toLowerCase()} id={step} className={"phase " + phaseClassName} key={i}>
           {(i === currentStep && i !== 0) ? <div className={"triangle " + firstTriangleClassName}></div> : null}
           <h1 className="phase-header">
-            <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{step.complete ? "COMPLETE" : step.name}</span>
+            <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{i<currentStep ? "COMPLETE" : step}</span>
           </h1>
           {i === currentStep ? <div className={"triangle " + secondTriangleClassName}></div> : null}
-        </div>
+        </Link>
       );
 
     });
@@ -191,19 +192,27 @@ class App extends Component {
               <p className="text-buttons">SUPPORT</p>
             </div>
           </div>
-          {/*<img id="logo" src={logo} alt="And Moore Studios Logo" />*/}
-          <Route render={({location}) => (
-            <CSSTransitionGroup transitionName="transition" transitionEnterTimeout={1000} transitionLeaveTimeout={1000} transitionAppear={true} transitionAppearTimeout={500}>
-              <div key={location.pathname}>
-                <Switch location={location}>
-                  <Route exact path="/" component={Landing} />
-                  <Route exact path="/calibrate" component={ClientInfo} />
-                  <Route exact path="/personalize" component={Goals} />
-                  <Route exact path="/decide" component={Bundles} />
-                </Switch>
-              </div>
-            </CSSTransitionGroup>
-          )} />
+
+          {/*<Route render={({location}) => (*/}
+            {/*<CSSTransitionGroup transitionName="transition" transitionEnterTimeout={500} transitionLeaveTimeout={500} transitionAppear={true} transitionAppearTimeout={500}>*/}
+              {/*<div key={location.pathname}>*/}
+                {/*<Switch location={location}>*/}
+                  {/*<Route exact path="/" component={Landing} />*/}
+                  {/*<Route exact path="/calibrate" component={ClientInfo} />*/}
+                  {/*<Route exact path="/personalize" component={Goals} />*/}
+                  {/*<Route exact path="/decide" component={Bundles} />*/}
+                {/*</Switch>*/}
+              {/*</div>*/}
+            {/*</CSSTransitionGroup>*/}
+          {/*)} />*/}
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/calibrate" component={ClientInfo} />
+            <Route exact path="/personalize" component={Goals} />
+            <Route exact path="/decide" component={Bundles} />
+            <Route component={NoMatch} />
+          </Switch>
+
           {/*<span className="center-point" />*/}
           <div id="pb-hover-area">
             <ProgressBar steps={this.props.appReducer.steps} currentStep={this.props.appReducer.currentStep}/>
@@ -217,22 +226,70 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    projectReducer: state.projectReducer
+    sessionReducer: state.sessionReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setProjectData: (dataObj) => {
+    setCustomerData: (dataObj) => {
       dispatch({
-        type: "SET_PROJECT_DATA",
+        type: "SET_CUSTOMER_DATA",
         payload: dataObj
+      });
+    },
+    setClientName: (name) => {
+      dispatch({
+        type: "SET_CLIENT_NAME",
+        payload: name
+      });
+    },
+    setClientCompany: (company) => {
+      dispatch({
+        type: "SET_CLIENT_COMPANY",
+        payload: company
+      });
+    },
+    setClientEmail: (email) => {
+      dispatch({
+        type: "SET_CLIENT_EMAIL",
+        payload: email
+      });
+    },
+    setClientPhone: (phone) => {
+      dispatch({
+        type: "SET_CLIENT_PHONE",
+        payload: phone
+      });
+    },
+    setClientDiscount: (discount) => {
+      dispatch({
+        type: "SET_CLIENT_DISCOUNT",
+        payload: discount
       });
     },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
+      });
+    },
+    setChosenBundle: (bundleNumber) => {
+      dispatch({
+        type: "SET_CHOSEN_BUNDLE",
+        payload: bundleNumber
+      });
+    },
+    setCurrentQuestion: (currentQuestion) => {
+      dispatch({
+        type: "SET_CURRENT_QUESTION",
+        payload: currentQuestion
+      });
+    },
+    setCurrentStep: (step) => {
+      dispatch({
+        type: "SET_CURRENT_STEP",
+        payload: step
       });
     }
   };

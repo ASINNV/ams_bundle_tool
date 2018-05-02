@@ -15,7 +15,7 @@ import registerServiceWorker from './registerServiceWorker';
 //   phone: null,
 //   discount: null
 // };
-// const projectState = {
+// const sessionState = {
 //   client_id: null,
 //   name: null,
 //   status: null,
@@ -103,71 +103,206 @@ import registerServiceWorker from './registerServiceWorker';
 // };
 
 
-const projectState = {
+const sessionState = {
   client: {
-    contact_name: null,
-    company_name: null,
+    name: null,
+    company: null,
     email: null,
     phone: null,
-    discount: null
+    discount: null,
+    stats: [
+      {
+        name: 'Sales',
+        value: 90
+      },
+      {
+        name: 'Reach',
+        value: 50
+      },
+      {
+        name: 'Accessibility',
+        value: 75
+      },
+      {
+        name: 'Modernity',
+        value: 25
+      }
+      ]
   },
   project: {
-    client_id: null,
+    clientId: null,
     name: null,
+    goals: [],
     status: null,
-    payment_method: null,
+    paymentMethod: null,
     total: null,
-    bundle_name: null,
-    bundle_id: null,
+    bundleName: null,
+    bundleId: null,
     services: null,
-    start_date: null,
-    due_date: null
+    startDate: null,
+    dueDate: null
   },
 
 };
 
 const appState = {
+  chosenBundle: -1,
   currentQuestion: 0,
+  lastQuestion: 0,
   currentStep: -1,
-  steps: [
-    {
-      name: 'Calibrate',
-      complete: false,
-      active: false,
-      data: null
-    },
-    {
-      name: 'Personalize',
-      complete: false,
-      active: false,
-      data: null
-    },
-    {
-      name: 'Decide',
-      complete: false,
-      active: false,
-      data: null
-    },
-    {
-      name: 'Review',
-      complete: false,
-      active: false,
-      data: null
-    },
-    {
-      name: 'Capitalize',
-      complete: false,
-      active: false,
-      data: null
-    }]
+  steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize']
 };
 
-const projectReducer = (state = projectState, action) => {
+const sessionReducer = (state = sessionState, action) => {
   switch (action.type) {
-    case "SET_PROJECT_DATA":
+    case "SET_CUSTOMER_DATA":
       state = {
         ...state,
         ...action.payload
+      };
+      break;
+    case "SET_CLIENT_NAME":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          name: action.payload
+        }
+      };
+      break;
+    case "SET_CLIENT_COMPANY":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          company: action.payload
+        }
+      };
+      break;
+    case "SET_CLIENT_EMAIL":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          email: action.payload
+        }
+      };
+      break;
+    case "SET_CLIENT_PHONE":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          phone: action.payload
+        }
+      };
+      break;
+    case "SET_CLIENT_DISCOUNT":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          discount: action.payload
+        }
+      };
+      break;
+    case "SET_CLIENT_STATS":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          stats: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_NAME":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          name: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_GOALS":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          goals: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_STATUS":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          status: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_PAYMENT_METHOD":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          paymentMethod: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_TOTAL":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          total: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_BUNDLE_NAME":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          bundleName: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_BUNDLE_ID":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          bundleId: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_SERVICES":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          services: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_START_DATE":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          startDate: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_DUE_DATE":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          dueDate: action.payload
+        }
       };
       break;
     default:
@@ -184,13 +319,38 @@ const appReducer = (state = appState, action) => {
         ...action.payload
       };
       break;
+    case "SET_CHOSEN_BUNDLE":
+      state = {
+        ...state,
+        chosenBundle: action.payload
+      };
+      break;
+    case "SET_CURRENT_QUESTION":
+      state = {
+        ...state,
+        lastQuestion: state.currentQuestion,
+        currentQuestion: action.payload
+      };
+      break;
+    case "SET_CURRENT_STEP":
+      state = {
+        ...state,
+        currentStep: action.payload
+      };
+      break;
+    case "SET_STEPS":
+      state = {
+        ...state,
+        steps: action.payload
+      };
+      break;
     default:
       return state;
   }
   return state;
 };
 
-const store = createStore(combineReducers({appReducer, projectReducer}), applyMiddleware(logger));
+const store = createStore(combineReducers({appReducer, sessionReducer}), applyMiddleware(logger));
 
 store.subscribe(() => {
   console.log(store.getState());

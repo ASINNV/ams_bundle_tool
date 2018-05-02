@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 const lowOpacity = 0.125;
 const zeroOpacity = 0;
@@ -38,6 +39,22 @@ const fullOpacity = 1;
 //   }
 // }
 
+function phoneFormat(input) {
+  input = input.replace(/\D/g, '');
+  input = input.substring(0, 10);
+  var size = input.length;
+
+  if (size === 0) {
+  } else if (size < 4) {
+    input = '(' + input.substring(0, 3);
+  } else if (size < 7) {
+    input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6);
+  } else {
+    input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6) + '-' + input.substring(6, 10);
+  }
+  return input;
+}
+
 class ClientInfo extends Component {
 
   // createProject() {
@@ -56,6 +73,13 @@ class ClientInfo extends Component {
   // }
 
   componentDidMount(e) {
+
+    // SET CURRENT STEP TO 0
+    this.props.setCurrentStep(0); // sets current step to 0
+
+    // SET CURRENT QUESTION TO 0
+    this.props.setCurrentQuestion(0); // sets current question to 0
+
     // let appData = this.props.appReducer;
     // appData.steps.forEach(function(step, i, steps) {
     //   if (step === steps[0]) {
@@ -68,161 +92,132 @@ class ClientInfo extends Component {
     // });
     // this.props.setAppData(appData);
 
+    // let submitButton = document.getElementById('submit-button-1');
+    let clientData = this.props.sessionReducer.client;
 
-    let appData = this.props.appReducer;
-    appData.currentStep = 0;
-    this.props.setAppData(appData);
+    let inputs = document.getElementsByTagName('input');
+
+    for (let i = 0; i < inputs.length; i++) {
+      switch (inputs.item(i).name) {
+        case 'name':
+          inputs.item(i).value = clientData.name;
+          inputs.item(i).focus();
+          break;
+        case 'company':
+          inputs.item(i).value = clientData.company;
+          break;
+        case 'email':
+          inputs.item(i).value = clientData.email;
+          break;
+        case 'phone':
+          inputs.item(i).value = clientData.phone;
+          break;
+        default:
+          console.log('again, fell the the default case');
+      }
+    }
 
 
-    let firstInput = document.getElementById('contact_name');
-    firstInput.focus();
     // apiCaller('/api/clients');
-
-    // let scrollingStream = document.getElementById('scrolling-stream');
-    //
-    // let questionArray = this.props.question.questions;
-    // let currentQuestion = this.props.question.currentQuestion;
-    //
-    // questionArray.forEach(function(questionObj, i) {
-    //   let couplet = document.createElement('div');
-    //   let coupletQ = document.createElement('div');
-    //   let coupletQLabel = document.createElement('label');
-    //   let coupletA = document.createElement('div');
-    //   let coupletAInput = document.createElement('input');
-    //   couplet.id = questionObj.coupletId;
-    //   couplet.className = 'qa-couplet';
-    //   coupletQ.className = 'question';
-    //   coupletQLabel.htmlFor = questionObj.htmlFor;
-    //   coupletQLabel.innerText = questionObj.question;
-    //   coupletA.className = 'answer';
-    //   coupletAInput.type = questionObj.inputType;
-    //   coupletAInput.name = questionObj.inputName;
-    //   coupletAInput.id = questionObj.inputId;
-    //   coupletAInput.placeholder = questionObj.inputPlaceholder;
-    //   coupletQ.appendChild(coupletQLabel);
-    //   coupletA.appendChild(coupletAInput);
-    //   couplet.appendChild(coupletQ);
-    //   couplet.appendChild(coupletA);
-    //   scrollingStream.appendChild(couplet);
-    //
-    //   if (i === currentQuestion) {
-    //     couplet.childNodes[1].childNodes[0].focus();
-    //   }
-    // });
-
-
-    // let couplets = document.getElementsByClassName('qa-couplet');
-    //
-    // for (let i = 0; i < couplets.length; i++) {
-    //
-    //   if (i === this.props.question.currentQuestion) {
-    //
-    //     couplets.item(i).style.opacity = fullOpacity;
-    //     couplets.item(i).childNodes[1].childNodes[0].focus();
-    //
-    //   } else if (i < this.props.question.currentQuestion - 1 || i > this.props.question.currentQuestion + 1) {
-    //     couplets.item(i).style.opacity = zeroOpacity;
-    //   } else {
-    //     couplets.item(i).style.opacity = lowOpacity;
-    //   }
-    //
-    // }
-
-    // console.log(this.props.client);
   }
 
-  // saveName() {
-  //   let name = document.getElementById('client_name').value; // get value from client_name input field
-  //   this.props.setClientName(name); // store client_name in state
-  // }
 
   nextQuestion(e) {
     e.stopPropagation();
 
-    if (e.which === 13 || e.which === 9) {
+    let currentQuestion = this.props.appReducer.currentQuestion;
+
+    let charCode = e.which ? e.which : e.keyCode;
+    if (charCode === 13 || charCode === 9) {
       e.preventDefault();
+
+      switch (e.target.name) {
+        case 'name':
+          this.props.setClientName(e.target.value);
+          break;
+        case 'company':
+          this.props.setClientCompany(e.target.value);
+          break;
+        case 'email':
+          this.props.setClientEmail(e.target.value);
+          break;
+        case 'phone':
+          this.props.setClientPhone(e.target.value);
+          break;
+        default:
+          console.log('fell to the default case');
+      }
+
+      // RESIZES HEADING AFTER FIRST ANSWER
+      if (document.getElementById('floating-instruction') && document.getElementById('floating-instruction').style.transform === '') {
+        // let stream = document.getElementById('stream');
+        let floatingInstruction = document.getElementById('floating-instruction');
+        floatingInstruction.childNodes[0].style.transform = "translateY(-20vh) scale(0.5)";
+      }
 
       let couplets = document.getElementsByClassName('qa-couplet');
       let scrollingStream = document.getElementById('scrolling-stream');
-      let appData = this.props.appReducer;
+      let submitButton = document.getElementById('submit-button-1');
 
-      if (appData.currentQuestion === couplets.length - 1) {
-        // let clientInfo = document.getElementById('client-info-body');
-        // clientInfo.style.opacity = 0;
-        appData.steps[0].active = false;
-        appData.steps[0].complete = true;
-        appData.steps[1].active = true;
-        this.props.setAppData(appData);
-        this.props.history.push('/personalize');
-        return false;
-        // let context = this;
-        // setTimeout(function() {
-        //   context.props.history.push('/goals');
-        // }, 200);
+      if (currentQuestion < couplets.length) {
+
+        if (currentQuestion === (couplets.length - 1)) {
+
+          this.props.setCurrentStep(1);
+          this.props.history.push('/personalize');
+          return false;
+
+        }
+
+        if (currentQuestion === (couplets.length - 2)) {
+          submitButton.style.opacity = fullOpacity;
+        }
+
+        for (let i = 0; i < couplets.length; i++) {
+
+          if (i < currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
+            couplets.item(i).style.opacity = zeroOpacity;
+          }
+
+          if (i === currentQuestion) { // set outgoing question to lower opacity
+            couplets.item(i).style.opacity = lowOpacity;
+          }
+
+          if (i === currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
+            couplets.item(i).style.opacity = fullOpacity;
+            couplets.item(i).childNodes[1].childNodes[0].focus();
+          }
+
+          if (i === (currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
+            couplets.item(i).style.opacity = lowOpacity;
+          }
+
+          if (i > (currentQuestion + 2)) {
+            couplets.item(i).style.opacity = zeroOpacity;
+          }
+        }
+        if (scrollingStream.style.transform === '') {
+          scrollingStream.style.transform = "translate3d(0, 20vh, 0)";
+        } else {
+          scrollingStream.style.transform = "translate3d(0, " + (Number(scrollingStream.style.transform.slice(17, -8)) - 25) + "vh, 0)";
+        }
+
+        // INCREMENT AND SET CURRENT QUESTION
+        currentQuestion += 1; // increments current question
+        this.props.setCurrentQuestion(currentQuestion); // sets current question
       }
-
-      for (let i = 0; i < couplets.length; i++) {
-
-        if (i < appData.currentQuestion) { // set outgoing question to zero opacity (transparent) as it goes off-screen
-          couplets.item(i).style.opacity = zeroOpacity;
-        }
-
-        if (i === appData.currentQuestion) { // set outgoing question to lower opacity
-          couplets.item(i).style.opacity = lowOpacity;
-        }
-
-        if (i === appData.currentQuestion + 1) { // set incoming question to full opacity and place cursor inside of its input field
-          couplets.item(i).style.opacity = fullOpacity;
-          couplets.item(i).childNodes[1].childNodes[0].focus();
-        }
-
-        if (i === (appData.currentQuestion + 2)) { // set soon-to-be-incoming question to low opacity
-          couplets.item(i).style.opacity = lowOpacity;
-        }
-
-        if (i > (appData.currentQuestion + 2)) {
-          couplets.item(i).style.opacity = zeroOpacity;
-        }
-      }
-      if (scrollingStream.style.transform === '') {
-        scrollingStream.style.transform = "translate3d(0, 20vh, 0)";
-      } else {
-        scrollingStream.style.transform = "translate3d(0, " + (Number(scrollingStream.style.transform.slice(17, -8)) - 25) + "vh, 0)";
-      }
-
-      // let obj = {};
-      //
-      // switch (e.target.id) {
-      //   case "contact_name":
-      //     obj.contact_name = e.target.value;
-      //     break;
-      //   case "company_name":
-      //     obj.company_name = e.target.value;
-      //     break;
-      //   case "email":
-      //     obj.email = e.target.value;
-      //     break;
-      //   case "phone":
-      //     obj.phone = e.target.value;
-      //     break;
-      //   default:
-      //     return e.target.id;
-      // }
-      appData.currentQuestion += 1;
-      this.props.setAppData(appData);
-      // this.props.setClientObj(obj);
-
     }
-
   }
   editAnswer(e) {
-    let appData = this.props.appReducer;
+
+    let currentQuestion = this.props.appReducer.currentQuestion;
+    let lastQuestion = this.props.appReducer.lastQuestion;
     let couplets = document.getElementsByClassName('qa-couplet');
-    // let currentQuestion = this.props.question.currentQuestion;
+    let submitButton = document.getElementById('submit-button-1');
 
     let target = e.target;
 
-    if (target.id === "stream" || target.id === "scrolling-stream") {
+    if (target.id === "stream" || target.id === "scrolling-stream" || target.id === "floating-instruction" || target.id === "submit-container-1" || target.id === "submit-button-1" || target.id === "submit-button-span") {
 
     } else {
       while (target.id.indexOf("-qa-couplet") === -1) {
@@ -230,38 +225,18 @@ class ClientInfo extends Component {
       }
     }
 
+    if (target.id === '3-qa-couplet') {
+      submitButton.style.opacity = fullOpacity;
+    } else {
+      submitButton.style.opacity = zeroOpacity;
+    }
+
     let clickedNumId = Number(target.id.slice(0, target.id.indexOf('-qa-couplet')));
 
     if (!isNaN(clickedNumId)) {
 
       let scrollingStream = document.getElementById('scrolling-stream');
-      // console.log(currentQuestion + ' = currentQuestion', clickedNumId + ' = clickedNumId');
 
-      // if (clickedNumId < currentQuestion) {
-      //
-      //   for (let i = 0; i < couplets.length; i++) {
-      //     if (i === currentQuestion) {
-      //       couplets.item(i).style.opacity = fullOpacity;
-      //     } else if (i === currentQuestion + 1 || i === currentQuestion - 1) {
-      //       couplets.item(i).style.opacity = lowOpacity;
-      //     } else {
-      //       couplets.item(i).style.opacity = zeroOpacity;
-      //     }
-      //   }
-      // } else if (clickedNumId > currentQuestion) {
-      //
-      //   for (let i = 0; i < couplets.length; i++) {
-      //     if (i === currentQuestion + 1) {
-      //       couplets.item(i).style.opacity = fullOpacity;
-      //     } else if (i === currentQuestion + 2 || i === currentQuestion) {
-      //       couplets.item(i).style.opacity = lowOpacity;
-      //     } else {
-      //       couplets.item(i).style.opacity = zeroOpacity;
-      //     }
-      //   }
-      // } else {
-      //   console.log('Fell to the else block.........................');
-      // }
       for (let i = 0; i < couplets.length; i++) {
         if (i === clickedNumId) {
           couplets.item(i).style.opacity = fullOpacity;
@@ -273,31 +248,65 @@ class ClientInfo extends Component {
           couplets.item(i).style.opacity = lowOpacity;
         }
       }
-      if (clickedNumId !== appData.currentQuestion) {
+      if (clickedNumId !== currentQuestion) {
         scrollingStream.style.transform = "translate3d(0, " + (45 - (clickedNumId*25)) + "vh, 0)";
+        currentQuestion = clickedNumId;
+        this.props.setCurrentQuestion(currentQuestion);
+
+        // RESIZES HEADING AFTER FIRST ANSWER
+        if (document.getElementById('floating-instruction') && document.getElementById('floating-instruction').style.transform === '') {
+
+          let floatingInstruction = document.getElementById('floating-instruction');
+          floatingInstruction.childNodes[0].style.transform = "translateY(-20vh) scale(0.5)";
+
+        }
+
+        // SETS CLIENT INFORMATION
+        let inputs = document.getElementsByTagName('input'); // grab all inputs on page
+        switch (lastQuestion) { // if lastQuestion is one of the following cases, set appropriate client field with input field value
+          case 0:
+            this.props.setClientName(inputs[0].value); // set client name to value of first input field
+            break;
+          case 1:
+            this.props.setClientCompany(inputs[1].value); // set client name to value of second input field
+            break;
+          case 2:
+            this.props.setClientEmail(inputs[2].value); // set client name to value of third input field
+            break;
+          case 3:
+            this.props.setClientPhone(inputs[3].value); // set client name to value of fourth input field
+            break;
+          default:
+            console.log('fell to the default case');
+        }
+      }
+    }
+  }
+
+  formatNumber() {
+    let currentQuestion = this.props.appReducer.currentQuestion;
+
+    if (currentQuestion === 3) {
+      let phoneInput = document.getElementById('phone');
+
+      if (phoneInput.value.length < 15) {
+        phoneInput.value = phoneFormat(phoneInput.value);
+      } else {
+        phoneInput.value = phoneInput.value.substring(0, 14);
       }
 
-      appData.currentQuestion = clickedNumId;
-      this.props.setAppData(appData);
-
-      // for (let i = 0; i < couplets.length; i++) {
-      //   let halfElementHeight = couplets.item(i).getBoundingClientRect().height/2;
-      //   let inactiveElementPosition = Number(theWindowHeight/2 + ((i - clickedNumId)*(theWindowHeight/4))) - (halfElementHeight);
-      //
-      //   if (i === clickedNumId) {
-      //     couplets.item(i).style.opacity = fullOpacity;
-      //     couplets.item(i).childNodes[1].childNodes[0].focus();
-      //     couplets.item(i).style.transform = "translateY(" + (Number(theWindowHeight/2) - (halfElementHeight)) + "px)";
-      //
-      //   } else if (i < clickedNumId - 1 || i > clickedNumId + 1) {
-      //     couplets.item(i).style.opacity = zeroOpacity;
-      //     couplets.item(i).style.transform = "translateY(" + inactiveElementPosition + "px)";
-      //   } else {
-      //     couplets.item(i).style.opacity = lowOpacity;
-      //     couplets.item(i).style.transform = "translateY(" + inactiveElementPosition + "px)";
-      //   }
-      // }
+      // let client_phone = phoneInput.value.replace(/\D/g, '')
     }
+  }
+
+  nextPhase() {
+
+    let phoneInput = document.getElementById('phone');
+
+
+    this.props.setClientPhone(phoneInput.value.replace(/\D/g, ''));
+    this.props.setCurrentStep(1);
+
   }
 
   render() {
@@ -307,7 +316,10 @@ class ClientInfo extends Component {
           {/*<span className="movement">Press Me</span>*/}
 
           {/*<p className="buttons" onClick={this.createProject.bind(this)}>create new project</p>*/}
-          <div id="stream" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
+          <div id="stream" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatNumber.bind(this)}>
+            <div id="floating-instruction">
+              <p>Tell us about your business…</p>
+            </div>
             <div id="scrolling-stream">
 
               <div id="0-qa-couplet" className="qa-couplet">
@@ -325,31 +337,33 @@ class ClientInfo extends Component {
                   <label htmlFor="company">What is your company's name?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="company" id="company_name" placeholder="Your Company Name"/>
+                  <input type="text" name="company" id="company_name" placeholder="Example, Inc."/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
 
               <div id="2-qa-couplet" className="qa-couplet">
                 <div className="question">
-                  <label htmlFor="email">What is your email?</label>
+                  <label htmlFor="email">What is your email address?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="email" id="email" placeholder="Your Email"/>
+                  <input type="text" name="email" id="email" placeholder="info@example.com"/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
 
               <div id="3-qa-couplet" className="qa-couplet">
                 <div className="question">
-                  <label htmlFor="phone">What is your phone?</label>
+                  <label htmlFor="phone">What is your phone number?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="phone" id="phone" placeholder="(XXX) XXX-XXXX"/>
+                  <input type="text" name="phone" id="phone" placeholder="(555) 555-5555"/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
-
+              <div id="submit-container-1" className="submit-container">
+                <Link to="/personalize" id="submit-button-1" className="main-button" onClick={this.nextPhase.bind(this)}>NEXT STEP <span id="submit-button-span">&rarr;</span></Link>
+              </div>
             </div>
           </div>
         </div>
@@ -362,16 +376,46 @@ class ClientInfo extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    projectReducer: state.projectReducer
+    sessionReducer: state.sessionReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setProjectData: (dataObj) => {
+    setCustomerData: (dataObj) => {
       dispatch({
-        type: "SET_PROJECT_DATA",
+        type: "SET_CUSTOMER_DATA",
         payload: dataObj
+      });
+    },
+    setClientName: (name) => {
+      dispatch({
+        type: "SET_CLIENT_NAME",
+        payload: name
+      });
+    },
+    setClientCompany: (company) => {
+      dispatch({
+        type: "SET_CLIENT_COMPANY",
+        payload: company
+      });
+    },
+    setClientEmail: (email) => {
+      dispatch({
+        type: "SET_CLIENT_EMAIL",
+        payload: email
+      });
+    },
+    setClientPhone: (phone) => {
+      dispatch({
+        type: "SET_CLIENT_PHONE",
+        payload: phone
+      });
+    },
+    setClientDiscount: (discount) => {
+      dispatch({
+        type: "SET_CLIENT_DISCOUNT",
+        payload: discount
       });
     },
     setAppData: (dataObj) => {
@@ -379,8 +423,224 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_APP_DATA",
         payload: dataObj
       });
+    },
+    setChosenBundle: (bundleNumber) => {
+      dispatch({
+        type: "SET_CHOSEN_BUNDLE",
+        payload: bundleNumber
+      });
+    },
+    setCurrentQuestion: (currentQuestion) => {
+      dispatch({
+        type: "SET_CURRENT_QUESTION",
+        payload: currentQuestion
+      });
+    },
+    setCurrentStep: (step) => {
+      dispatch({
+        type: "SET_CURRENT_STEP",
+        payload: step
+      });
     }
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientInfo);
+
+// const appReducer = (state = appState, action) => {
+//   switch (action.type) {
+//     case "SET_APP_DATA":
+//       state = {
+//         ...state,
+//         ...action.payload
+//       };
+//       break;
+//     case "SET_CHOSEN_BUNDLE":
+//       state = {
+//         ...state,
+//         chosenBundle: action.payload
+//       };
+//       break;
+//     case "SET_CURRENT_QUESTION":
+//       state = {
+//         ...state,
+//         currentQuestion: action.payload
+//       };
+//       break;
+//     case "SET_CURRENT_STEP":
+//       state = {
+//         ...state,
+//         currentStep: action.payload
+//       };
+//       break;
+//     case "SET_STEPS":
+//       state = {
+//         ...state,
+//         steps: action.payload
+//       };
+//       break;
+//     default:
+//       return state;
+//   }
+//   return state;
+
+
+// const sessionReducer = (state = sessionState, action) => {
+//   switch (action.type) {
+//     case "SET_CUSTOMER_DATA":
+//       state = {
+//         ...state,
+//         ...action.payload
+//       };
+//       break;
+//     case "SET_CLIENT_NAME":
+//       state = {
+//         ...state,
+//         client: {
+//           ...state.client,
+//           name: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_CLIENT_COMPANY":
+//       state = {
+//         ...state,
+//         client: {
+//           ...state.client,
+//           company: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_CLIENT_EMAIL":
+//       state = {
+//         ...state,
+//         client: {
+//           ...state.client,
+//           email: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_CLIENT_PHONE":
+//       state = {
+//         ...state,
+//         client: {
+//           ...state.client,
+//           phone: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_CLIENT_DISCOUNT":
+//       state = {
+//         ...state,
+//         client: {
+//           ...state.client,
+//           discount: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_CLIENT_STATS":
+//       state = {
+//         ...state,
+//         client: {
+//           ...state.client,
+//           stats: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_NAME":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           name: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_GOALS":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           goals: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_STATUS":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           status: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_PAYMENT_METHOD":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           paymentMethod: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_TOTAL":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           total: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_BUNDLE_NAME":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           bundleName: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_BUNDLE_ID":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           bundleId: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_SERVICES":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           services: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_START_DATE":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           startDate: action.payload
+//         }
+//       };
+//       break;
+//     case "SET_PROJECT_DUE_DATE":
+//       state = {
+//         ...state,
+//         project: {
+//           ...state.project,
+//           dueDate: action.payload
+//         }
+//       };
+//       break;
+//     default:
+//       return state;
+//   }
+//   return state;
+// };
+//
+// };
