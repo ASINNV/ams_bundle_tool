@@ -560,8 +560,8 @@ p {
 }
 .qa-couplet > .answer > input:focus {
   outline: none;
-  border-bottom: 2px solid #9fe9ff;
-  color: #9fe9ff;
+  border-bottom: 2px solid #9ed5ff;
+  color: #9ed5ff;
 }
 .qa-couplet > .answer > button {
   display: inline-block;
@@ -583,6 +583,10 @@ p {
   transition: opacity .5s ease-in-out;
 }
 
+.arrows {
+  font-weight: 600;
+}
+
 
 /* CLIENT INFO ELEMENTS - END */
 /* CLIENT INFO ELEMENTS - END */
@@ -597,7 +601,7 @@ p {
   display: inline-block;
   width: 75%;
   height: 100%;
-  background: radial-gradient(#2cd8ff, #5d6aff 140%);
+  background: radial-gradient(#1ee9bd, #5d6aff 140%);
 
 }
 #goals-shoulder {
@@ -680,8 +684,8 @@ p {
   height: 10px;
   width: 50%;
   /*background-color: #37a9ff;*/
-  background: -webkit-linear-gradient(to right, #37a9ff, #56f19b);
-  background: linear-gradient(to right, #37a9ff, #56f19b);
+  background: -webkit-linear-gradient(to right, #37a9ff, #1ee9bd);
+  background: linear-gradient(to right, #37a9ff, #1ee9bd);
   border-radius: 50px;
   transition: width .5s ease-in-out;
 }
@@ -716,7 +720,7 @@ p {
 .goal-sidebar-name {
   font-size: 1.75em;
   /*line-height: 1.5em;*/
-  color: #56f19b;
+  color: #1ee9bd;
 }
 
 .goal-sidebar-desc {
@@ -780,7 +784,7 @@ p {
 #card-4 {
   /*background: url('/images/red.jpg') no-repeat center;*/
   /*background-size: cover;*/
-  background-color: #3F51B5;
+  background-color: #E91E63;
 }
 
 .cards .goal-info {
@@ -797,7 +801,6 @@ p {
   position: absolute;
   height: 100%;
   padding: 40vh 25px 0 25px;
-  font-family: "Proxima Nova";
   /*color: #333;*/
   transition: padding-top .25s ease-in-out;
 }
@@ -822,18 +825,17 @@ p {
   position: absolute;
   height: 100vh;
   padding: 40vh 25px 0 25px;
-  font-family: "Proxima Nova";
   color: #333;
   transition: padding-top .25s ease-in-out;
 }
 .info .name {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 20px;
 }
 .info .desc {
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 100;
   line-height: 1.4em;
 }
 .cards:hover .info {
@@ -902,23 +904,22 @@ p {
   content: "";
   will-change: transform;
 }
-.cards:hover .buttons {
+.cards:hover .buttons, .goal-button-container:hover .buttons {
   z-index: 1;
 }
-.cards:hover .button-bg::after {
+.cards:hover .button-bg::after, .goal-button-container:hover .button-bg::after {
   animation-name: button-fill;
   animation-duration: .5s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
-.cards:hover .button-bg {
+.cards:hover .button-bg, .goal-button-container:hover .button-bg {
   animation-name: button-expand;
   animation-duration: .5s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 .button-text {
-  font-family: "Proxima Nova";
   font-size: 24px;
   font-weight: 400;
   color: #777;
@@ -943,6 +944,7 @@ p {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
+
 @keyframes button-fill {
   0% {
     background-color: transparent;
@@ -976,7 +978,7 @@ p {
     color: #fff;
   }
   100% {
-    color: #333;
+    color: #777;
   }
 }
 @keyframes z-index-change {

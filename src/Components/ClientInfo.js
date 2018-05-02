@@ -123,7 +123,6 @@ class ClientInfo extends Component {
 
 
   nextQuestion(e) {
-    e.stopPropagation();
 
     let currentQuestion = this.props.appReducer.currentQuestion;
 
@@ -217,12 +216,8 @@ class ClientInfo extends Component {
 
     let target = e.target;
 
-    if (target.id === "stream" || target.id === "scrolling-stream" || target.id === "floating-instruction" || target.id === "submit-container-1" || target.id === "submit-button-1" || target.id === "submit-button-span") {
-
-    } else {
-      while (target.id.indexOf("-qa-couplet") === -1) {
-        target = target.parentNode;
-      }
+    while (target.id.indexOf("-qa-couplet") === -1) {
+      target = target.parentNode;
     }
 
     if (target.id === '3-qa-couplet') {
@@ -316,13 +311,13 @@ class ClientInfo extends Component {
           {/*<span className="movement">Press Me</span>*/}
 
           {/*<p className="buttons" onClick={this.createProject.bind(this)}>create new project</p>*/}
-          <div id="stream" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatNumber.bind(this)}>
+          <div id="stream">
             <div id="floating-instruction">
               <p>Tell us about your business…</p>
             </div>
             <div id="scrolling-stream">
 
-              <div id="0-qa-couplet" className="qa-couplet">
+              <div id="0-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
                 <div className="question">
                   <label htmlFor="name">What is your name?</label>
                 </div>
@@ -332,7 +327,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="1-qa-couplet" className="qa-couplet">
+              <div id="1-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
                 <div className="question">
                   <label htmlFor="company">What is your company's name?</label>
                 </div>
@@ -342,7 +337,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="2-qa-couplet" className="qa-couplet">
+              <div id="2-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
                 <div className="question">
                   <label htmlFor="email">What is your email address?</label>
                 </div>
@@ -352,7 +347,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="3-qa-couplet" className="qa-couplet">
+              <div id="3-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatNumber.bind(this)}>
                 <div className="question">
                   <label htmlFor="phone">What is your phone number?</label>
                 </div>
@@ -362,7 +357,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
               <div id="submit-container-1" className="submit-container">
-                <Link to="/personalize" id="submit-button-1" className="main-button" onClick={this.nextPhase.bind(this)}>NEXT STEP <span id="submit-button-span">&rarr;</span></Link>
+                <Link to="/personalize" id="submit-button-1" className="main-button" onClick={this.nextPhase.bind(this)}>NEXT STEP &rarr;</Link>
               </div>
             </div>
           </div>

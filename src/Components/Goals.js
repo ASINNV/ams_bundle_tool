@@ -78,10 +78,10 @@ class Goals extends Component {
                 <p className="goal-sidebar-desc overflowing">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in arcu ornare, fermentum urna in, aliquet orci. Donec posuere mi quis felis sollicitudin vulputate. Sed ullamcorper neque ac nulla iaculis, sit amet cursus nibh interdum.</p>
               </div>
             </div>
-            <div className="cards">
+            <div className="goal-button-container">
               <Link to="/decide" className="buttons">
                 <div id="button-1" className="button-bg"></div>
-                <span id="button-text-1" className="button-text">next step &rarr;</span>
+                <p id="button-text-1" className="button-text">next step &rarr;</p>
               </Link>
             </div>
           </div>
