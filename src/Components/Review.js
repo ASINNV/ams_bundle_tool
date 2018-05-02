@@ -30,6 +30,9 @@ class Review extends Component {
           <div id="container-0" className="container">
 
             <div id="review-info" className="">
+              <div className="info-panel">
+                <h1 className="review-heading">Review Your Order</h1>
+              </div>
               <div id="" className="info-panel">
                 <h3 className="goal-sidebar-heading">YOUR INFO</h3>
                 <p className="review-info-item">Rachel Smithers</p>
