@@ -15,7 +15,7 @@ import registerServiceWorker from './registerServiceWorker';
 //   phone: null,
 //   discount: null
 // };
-// const sessionState = {
+// const clientState = {
 //   client_id: null,
 //   name: null,
 //   status: null,
@@ -103,36 +103,36 @@ import registerServiceWorker from './registerServiceWorker';
 // };
 
 
-const sessionState = {
+const clientState = {
   client: {
     name: null,
     company: null,
     email: null,
     phone: null,
     discount: null,
+    goals: [],
     stats: [
       {
         name: 'Sales',
-        value: 90
+        value: null
       },
       {
         name: 'Reach',
-        value: 50
+        value: null
       },
       {
         name: 'Accessibility',
-        value: 75
+        value: null
       },
       {
         name: 'Modernity',
-        value: 25
+        value: null
       }
       ]
   },
   project: {
     clientId: null,
     name: null,
-    goals: [],
     status: null,
     paymentMethod: null,
     total: null,
@@ -150,10 +150,53 @@ const appState = {
   currentQuestion: 0,
   lastQuestion: 0,
   currentStep: -1,
-  steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize']
+  currentGoal: null,
+  steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize'],
+  goals: []
 };
 
-const sessionReducer = (state = sessionState, action) => {
+// {
+//   id: 0,
+//     name: 'Update Website',
+//   description: 'This is a description - 0'
+// },
+// {
+//   id: 1,
+//     name: 'Create New Website',
+//   description: 'This is a description - 1'
+// },
+// {
+//   id: 2,
+//     name: 'Update Logo',
+//   description: 'This is a description - 2'
+// },
+// {
+//   id: 3,
+//     name: 'Create New Logo',
+//   description: 'This is a description - 3'
+// },
+// {
+//   id: 4,
+//     name: 'Vectorize Logo',
+//   description: 'This is a description - 4'
+// },
+// {
+//   id: 5,
+//     name: 'Configure Network',
+//   description: 'This is a description - 5'
+// },
+// {
+//   id: 6,
+//     name: 'Smart Home Setup',
+//   description: 'This is a description - 6'
+// },
+// {
+//   id: 7,
+//     name: 'No Goals',
+//   description: 'This is a description - 7'
+// }
+
+const clientReducer = (state = clientState, action) => {
   switch (action.type) {
     case "SET_CUSTOMER_DATA":
       state = {
@@ -215,21 +258,21 @@ const sessionReducer = (state = sessionState, action) => {
         }
       };
       break;
+    case "SET_CLIENT_GOALS":
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          goals: action.payload
+        }
+      };
+      break;
     case "SET_PROJECT_NAME":
       state = {
         ...state,
         project: {
           ...state.project,
           name: action.payload
-        }
-      };
-      break;
-    case "SET_PROJECT_GOALS":
-      state = {
-        ...state,
-        project: {
-          ...state.project,
-          goals: action.payload
         }
       };
       break;
@@ -344,13 +387,25 @@ const appReducer = (state = appState, action) => {
         steps: action.payload
       };
       break;
+    case "SET_GOALS":
+      state = {
+        ...state,
+        goals: action.payload
+      };
+      break;
+    case "SET_CURRENT_GOAL":
+      state = {
+        ...state,
+        currentGoal: action.payload
+      };
+      break;
     default:
       return state;
   }
   return state;
 };
 
-const store = createStore(combineReducers({appReducer, sessionReducer}), applyMiddleware(logger));
+const store = createStore(combineReducers({appReducer, clientReducer}), applyMiddleware(logger));
 
 store.subscribe(() => {
   console.log(store.getState());

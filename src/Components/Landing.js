@@ -63,7 +63,7 @@ class Landing extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    sessionReducer: state.sessionReducer
+    clientReducer: state.clientReducer
   };
 };
 

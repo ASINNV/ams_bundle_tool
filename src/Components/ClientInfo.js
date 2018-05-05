@@ -93,7 +93,7 @@ class ClientInfo extends Component {
     // this.props.setAppData(appData);
 
     // let submitButton = document.getElementById('submit-button-1');
-    let clientData = this.props.sessionReducer.client;
+    let clientData = this.props.clientReducer.client;
 
     let inputs = document.getElementsByTagName('input');
 
@@ -112,6 +112,18 @@ class ClientInfo extends Component {
         case 'phone':
           inputs.item(i).value = clientData.phone;
           break;
+        case 'sales':
+          inputs.item(i).value = clientData.stats[0].value;
+          break;
+        case 'reach':
+          inputs.item(i).value = clientData.stats[1].value;
+          break;
+        case 'accessibility':
+          inputs.item(i).value = clientData.stats[2].value;
+          break;
+        case 'modernity':
+          inputs.item(i).value = clientData.stats[3].value;
+          break;
         default:
           console.log('again, fell the the default case');
       }
@@ -129,7 +141,7 @@ class ClientInfo extends Component {
     let charCode = e.which ? e.which : e.keyCode;
     if (charCode === 13 || charCode === 9) {
       e.preventDefault();
-
+      let stats = this.props.clientReducer.client.stats;
       switch (e.target.name) {
         case 'name':
           this.props.setClientName(e.target.value);
@@ -142,6 +154,22 @@ class ClientInfo extends Component {
           break;
         case 'phone':
           this.props.setClientPhone(e.target.value);
+          break;
+        case 'sales':
+          stats[0].value = Number(e.target.value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client name to value of fourth input field
+          break;
+        case 'reach':
+          stats[1].value = Number(e.target.value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client name to value of fourth input field
+          break;
+        case 'accessibility':
+          stats[2].value = Number(e.target.value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client name to value of fourth input field
+          break;
+        case 'modernity':
+          stats[3].value = Number(e.target.value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client name to value of fourth input field
           break;
         default:
           console.log('fell to the default case');
@@ -196,9 +224,9 @@ class ClientInfo extends Component {
           }
         }
         if (scrollingStream.style.transform === '') {
-          scrollingStream.style.transform = "translate3d(0, 20vh, 0)";
+          scrollingStream.style.transform = "translateY(20vh)";
         } else {
-          scrollingStream.style.transform = "translate3d(0, " + (Number(scrollingStream.style.transform.slice(17, -8)) - 25) + "vh, 0)";
+          scrollingStream.style.transform = "translateY(" + (Number(scrollingStream.style.transform.slice(11, -3)) - 25) + "vh)";
         }
 
         // INCREMENT AND SET CURRENT QUESTION
@@ -220,7 +248,7 @@ class ClientInfo extends Component {
       target = target.parentNode;
     }
 
-    if (target.id === '3-qa-couplet') {
+    if (target === couplets.item(couplets.length - 1)) {
       submitButton.style.opacity = fullOpacity;
     } else {
       submitButton.style.opacity = zeroOpacity;
@@ -244,7 +272,7 @@ class ClientInfo extends Component {
         }
       }
       if (clickedNumId !== currentQuestion) {
-        scrollingStream.style.transform = "translate3d(0, " + (45 - (clickedNumId*25)) + "vh, 0)";
+        scrollingStream.style.transform = "translateY(" + (45 - (clickedNumId*25)) + "vh)";
         currentQuestion = clickedNumId;
         this.props.setCurrentQuestion(currentQuestion);
 
@@ -258,6 +286,7 @@ class ClientInfo extends Component {
 
         // SETS CLIENT INFORMATION
         let inputs = document.getElementsByTagName('input'); // grab all inputs on page
+        let stats = this.props.clientReducer.client.stats;
         switch (lastQuestion) { // if lastQuestion is one of the following cases, set appropriate client field with input field value
           case 0:
             this.props.setClientName(inputs[0].value); // set client name to value of first input field
@@ -271,6 +300,22 @@ class ClientInfo extends Component {
           case 3:
             this.props.setClientPhone(inputs[3].value); // set client name to value of fourth input field
             break;
+          case 4:
+            stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+            this.props.setClientStats(stats); // set client name to value of fourth input field
+            break;
+          case 5:
+            stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+            this.props.setClientStats(stats); // set client name to value of fourth input field
+            break;
+          case 6:
+            stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+            this.props.setClientStats(stats); // set client name to value of fourth input field
+            break;
+          case 7:
+            stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+            this.props.setClientStats(stats); // set client name to value of fourth input field
+            break;
           default:
             console.log('fell to the default case');
         }
@@ -278,11 +323,11 @@ class ClientInfo extends Component {
     }
   }
 
-  formatNumber() {
+  formatPhone() {
     let currentQuestion = this.props.appReducer.currentQuestion;
 
     if (currentQuestion === 3) {
-      let phoneInput = document.getElementById('phone');
+      let phoneInput = document.getElementById('phone-input');
 
       if (phoneInput.value.length < 15) {
         phoneInput.value = phoneFormat(phoneInput.value);
@@ -294,12 +339,38 @@ class ClientInfo extends Component {
     }
   }
 
+  formatPercentage(e) {
+    // let target = e.target;
+
+    // while (target.id.indexOf("-qa-couplet") === -1) {
+    //   target = target.parentNode;
+    // }
+
+    if (e.target.value) {
+      e.target.value = e.target.value.replace(/\D/g, '');
+      if (e.target.value.length > 2 && e.target.value !== '100') {
+        if (e.target.value.slice(0, 3) === '100') {
+          e.target.value = e.target.value.slice(0, 3);
+        } else {
+          e.target.value = e.target.value.slice(0, 2);
+        }
+      }
+    }
+
+  }
+
   nextPhase() {
+    let scrollingStream = document.getElementById('scrolling-stream');
+    let lastCouplet = scrollingStream.childNodes[(scrollingStream.childNodes.length - 2)];
+    let lastInput = lastCouplet.childNodes[1].childNodes[0];
 
-    let phoneInput = document.getElementById('phone');
+    let stats = this.props.clientReducer.client.stats;
+    let lastStat = stats.length - 1;
 
+    stats[lastStat].value = Number(lastInput.value.replace(/\D/g, '')); // problem line
 
-    this.props.setClientPhone(phoneInput.value.replace(/\D/g, ''));
+    this.props.setClientStats(stats); // set client name to value of fourth input field
+
     this.props.setCurrentStep(1);
 
   }
@@ -313,7 +384,7 @@ class ClientInfo extends Component {
           {/*<p className="buttons" onClick={this.createProject.bind(this)}>create new project</p>*/}
           <div id="stream">
             <div id="floating-instruction">
-              <p>Tell us about your business…</p>
+              <p>Tell us about your business</p>
             </div>
             <div id="scrolling-stream">
 
@@ -322,7 +393,7 @@ class ClientInfo extends Component {
                   <label htmlFor="name">What is your name?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="name" id="contact_name" placeholder="Your Full Name"/>
+                  <input type="text" name="name" id="contact-input" placeholder="Your Full Name"/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
@@ -332,7 +403,7 @@ class ClientInfo extends Component {
                   <label htmlFor="company">What is your company's name?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="company" id="company_name" placeholder="Example, Inc."/>
+                  <input type="text" name="company" id="company-input" placeholder="Example, Inc."/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
@@ -342,23 +413,69 @@ class ClientInfo extends Component {
                   <label htmlFor="email">What is your email address?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="email" id="email" placeholder="info@example.com"/>
+                  <input type="text" name="email" id="email-input" placeholder="info@example.com"/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
 
-              <div id="3-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatNumber.bind(this)}>
+              <div id="3-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPhone.bind(this)}>
                 <div className="question">
                   <label htmlFor="phone">What is your phone number?</label>
                 </div>
                 <div className="answer">
-                  <input type="text" name="phone" id="phone" placeholder="(555) 555-5555"/>
+                  <input type="text" name="phone" id="phone-input" placeholder="(555) 555-5555"/>
                   {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
                 </div>
               </div>
+
+              <div id="4-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+                <div className="question">
+                  <label htmlFor="sales">What percentage of your target sales are you currently making?</label>
+                </div>
+                <div className="answer">
+                  <input type="text" name="sales" id="sales-input" placeholder="50"/>
+                  <span className="format-symbol">%</span>
+                  {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
+                </div>
+              </div>
+
+              <div id="5-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+                <div className="question">
+                  <label htmlFor="reach">What percentage of your target audience are you reaching?</label>
+                </div>
+                <div className="answer">
+                  <input type="text" name="reach" id="reach-input" placeholder="50"/>
+                  <span className="format-symbol">%</span>
+                  {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
+                </div>
+              </div>
+
+              <div id="6-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+                <div className="question">
+                  <label htmlFor="accessibility">How accessible are your brand and services?</label>
+                </div>
+                <div className="answer">
+                  <input type="text" name="accessibility" id="accessibility-input" placeholder="50"/>
+                  <span className="format-symbol">%</span>
+                  {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
+                </div>
+              </div>
+
+              <div id="7-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+                <div className="question">
+                  <label htmlFor="modernity">How up-to-date is your business?</label>
+                </div>
+                <div className="answer">
+                  <input type="text" name="modernity" id="modernity-input" placeholder="50"/>
+                  <span className="format-symbol">%</span>
+                  {/*<button className="buttons" onClick={this.saveName.bind(this)}>enter</button>*/}
+                </div>
+              </div>
+
               <div id="submit-container-1" className="submit-container">
                 <Link to="/personalize" id="submit-button-1" className="main-button" onClick={this.nextPhase.bind(this)}>NEXT STEP &rarr;</Link>
               </div>
+
             </div>
           </div>
         </div>
@@ -371,7 +488,7 @@ class ClientInfo extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    sessionReducer: state.sessionReducer
+    clientReducer: state.clientReducer
   };
 };
 
@@ -436,6 +553,12 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_CURRENT_STEP",
         payload: step
       });
+    },
+    setClientStats: (stats) => {
+      dispatch({
+        type: "SET_CLIENT_STATS",
+        payload: stats
+      });
     }
   };
 };
@@ -480,7 +603,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ClientInfo);
 //   return state;
 
 
-// const sessionReducer = (state = sessionState, action) => {
+// const clientReducer = (state = clientState, action) => {
 //   switch (action.type) {
 //     case "SET_CUSTOMER_DATA":
 //       state = {

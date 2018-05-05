@@ -28,6 +28,34 @@ function insertProject(dataObj) {
 function getClients() {
   return db.many('SELECT * FROM clients;');
 }
+function getGoals() {
+  return db.many('SELECT * FROM goals;');
+}
+function getGoalRelations() {
+  return db.many('SELECT * FROM goalRelations;');
+}
+
+app.get('/api/goals', function(req, res, next) {
+  getGoals()
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from GET goals block in server code.');
+      res.status(500).send('error in GET goals block of server code.');
+    });
+});
+
+app.get('/api/goal-relations', function(req, res, next) {
+  getGoalRelations()
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from GET goal relations block in server code.');
+      res.status(500).send('error in GET goal relations block of server code.');
+    });
+});
 
 app.get('/api/clients', function(req, res, next) {
   getClients()

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 // const theWindow=window,
 //   theDoc=document,
@@ -27,10 +28,10 @@ class Bundles extends Component {
             <div id="info-1" className="info">
               <p className="name">STARTER</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <div className="buttons">
+              <Link to="/review" className="buttons">
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
-              </div>
+              </Link>
             </div>
           </div>
 
@@ -38,10 +39,10 @@ class Bundles extends Component {
             <div id="info-2" className="info">
               <p className="name">ACCELERATOR</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <div className="buttons">
+              <Link to="/review" className="buttons">
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
-              </div>
+              </Link>
             </div>
           </div>
 
@@ -49,10 +50,10 @@ class Bundles extends Component {
             <div id="info-3" className="info">
               <p className="name">TURBO</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <div className="buttons">
+              <Link to="/review" className="buttons">
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
-              </div>
+              </Link>
             </div>
           </div>
 
@@ -60,10 +61,10 @@ class Bundles extends Component {
             <div id="info-4" className="info">
               <p className="name">CUSTOM</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <div className="buttons">
+              <Link to="/review" className="buttons">
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -77,7 +78,7 @@ class Bundles extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    sessionReducer: state.sessionReducer
+    clientReducer: state.clientReducer
   };
 };
 

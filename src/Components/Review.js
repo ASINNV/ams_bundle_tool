@@ -29,38 +29,37 @@ class Review extends Component {
         <div id="goals-shoulder">
           <div id="container-0" className="container">
 
-            <div id="review-info" className="">
+            <div id="" className="info-section">
               <div className="info-panel">
-                <h1 className="review-heading">Review Your Order</h1>
+                <h1 className="heading noselect">Review Your Order</h1>
               </div>
               <div id="" className="info-panel">
                 <h3 className="goal-sidebar-heading">YOUR INFO</h3>
-                <p className="review-info-item">Rachel Smithers</p>
-                <p className="review-info-item">Smithers Co.</p>
-                <p className="review-info-item">rachel@smithers.co</p>
-                <p className="review-info-item">(707) 658-5948</p>
+                <p className="review-info-item">{this.props.clientReducer.client.company || "No Company"}</p>
+                <p className="review-info-item">{this.props.clientReducer.client.name || "No Name"}</p>
+                <p className="review-info-item">{this.props.clientReducer.client.email || "No Email"}</p>
+                <p className="review-info-item">{this.props.clientReducer.client.phone || "No Phone"}</p>
               </div>
               <div id="" className="info-panel">
                 <h3 className="goal-sidebar-heading">YOUR GOALS</h3>
-                <p className="review-info-item minor-emphasis">Increase my reach</p>
-                <p className="review-info-item minor-emphasis">Increase my sales</p>
-                <p className="review-info-item minor-emphasis">Make a website</p>
+                {this.props.clientReducer.client.goals.length > 0 ? this.props.clientReducer.client.goals.map((goal, i) => {
+                  return <p key={i} className="review-info-item minor-emphasis">{goal.name}</p>;
+                }) : <p className="review-info-item minor-emphasis">None</p>}
               </div>
               <div id="" className="info-panel">
                 <h3 className="goal-sidebar-heading">BUNDLE</h3>
-                <p className="review-info-item minor-emphasis">TURBO</p>
+                <p className="review-info-item minor-emphasis">{this.props.clientReducer.project.bundleName || "None"}</p>
               </div>
               <div id="" className="info-panel">
                 <h3 className="goal-sidebar-heading">TOTAL</h3>
-                <p className="review-info-item emphasis">$1000</p>
+                <p className="review-info-item emphasis">{this.props.clientReducer.project.total || "$0"}</p>
               </div>
-            </div>
-            <div className="goal-button-container">
-              <Link to="/decide" className="buttons">
+              <Link to="/capitalize" className="buttons continue-button">
                 <div id="button-1" className="button-bg"></div>
                 <p id="button-text-1" className="button-text"><span role="img" aria-label="lock">&#x1f512;</span> BUY NOW &rarr;</p>
               </Link>
             </div>
+
 
           </div>
         </div>
@@ -74,7 +73,7 @@ class Review extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    sessionReducer: state.sessionReducer
+    clientReducer: state.clientReducer
   };
 };
 

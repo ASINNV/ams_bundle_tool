@@ -13,10 +13,34 @@ import NoMatch from "./Components/NoMatch";
 
 // import logo from './assets/ams_logo.png';
 
+// function apiCaller(path, initObj) {
+//   if (initObj !== undefined) {
+//     fetch(path, initObj)
+//       .then(function(res) {
+//         return res.json();
+//       })
+//       .then(function(data) {
+//         console.log(data);
+//       })
+//       .catch(function(err) {
+//         console.log(err, ' in the app.js apiCaller if block');
+//       })
+//   } else {
+//     fetch(path)
+//       .then(function(res) {
+//         return res.json();
+//       })
+//       .then(function(data) {
+//         console.log(data);
+//       })
+//       .catch(function(err) {
+//         console.log(err, ' in the app.js apiCaller else block');
+//       })
+//   }
+// }
 
 class ProgressBar extends Component {
   componentDidMount() {
-
   }
   render() {
     // let sections = [];
@@ -161,7 +185,44 @@ class ProgressBar extends Component {
   }
 }
 
+
+// function getGoals(myFunc) {
+//   fetch('/api/goals')
+//     .then(function(res) {
+//       return res.json();
+//     })
+//     .then(function(data) {
+//       console.log(data);
+//       return data;
+//     })
+//     .catch(function(err) {
+//       console.log(err, ' in the app.js apiCaller else block');
+//     })
+// }
+
+
 class App extends Component {
+  // BEFORE COMPONENT MOUNTS, DO THE FOLLOWING:
+  componentWillMount() {
+    let setGoals = this.props.setGoals;
+    fetch('/api/goals')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(data) {
+        console.log(data);
+        setGoals(data);
+        return data;
+      })
+      .catch(function(err) {
+        console.log(err, ' in the app.js apiCaller else block');
+      });
+
+    // console.log(goals);
+    // if (goals !== undefined) {
+    //   this.props.setGoals(goals);
+    // }
+  }
 
   openMenu(e) {
     let targe = e.target;
@@ -228,7 +289,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     appReducer: state.appReducer,
-    sessionReducer: state.sessionReducer
+    clientReducer: state.clientReducer
   };
 };
 
@@ -274,6 +335,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
+      });
+    },
+    setGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_GOALS",
+        payload: goalsArray
       });
     },
     setChosenBundle: (bundleNumber) => {
