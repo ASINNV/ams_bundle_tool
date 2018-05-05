@@ -637,7 +637,7 @@ p {
   color: #fff;
   /*background: radial-gradient(#405ca9, #06062b);*/
   border: 4px solid #405ca9;
-  margin: 0 20px;
+  margin: 0 20px 40px 20px;
   padding: 10px;
   border-radius: 16px;
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.3);
@@ -655,7 +655,8 @@ p {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: red;
+  background: #e91e1e;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.3);
 }
 
 #goals-shoulder {
@@ -820,7 +821,7 @@ p {
 }
 
 .info-section {
-  position: relative;
+  /*position: relative;*/
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -829,6 +830,37 @@ p {
   width: 100%;
   height: 100%;
   will-change: transform;
+}
+
+#review-goals-container, #review-client-container {
+  height: 36px;
+  overflow: hidden;
+}
+#review-client-container {
+  z-index: 100;
+}
+#review-goals-container {
+  z-index: 99;
+}
+.review-info-item-container {
+  position: relative;
+  width: 100%;
+  background: #191919;
+  border-radius: 8px;
+  padding: 0 5px;
+}
+
+.dropper {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: #444 !important;
+  font-size: 1.75em;
+  transition: color .1s ease-in-out;
+}
+
+.review-info-item-container:hover .dropper {
+  color: #1ee9bd !important;
 }
 
 .review-info-item {
