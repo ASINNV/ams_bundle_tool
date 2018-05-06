@@ -29,6 +29,7 @@ class Review extends Component {
     let clientContainer = document.getElementById('review-client-container');
     let panels = document.getElementsByClassName('info-panel');
     let clickedContainer = null;
+    let otherContainer = null;
 
     // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
     let target = e.target;
@@ -47,8 +48,9 @@ class Review extends Component {
 
     if (target.id === clientContainer.id && clientContainer.childNodes.length > 1) { // if target's ID is equal to the clientContainer element's ID and if clientContainer contains items
 
-      // SET CLICKED CONTAINER VARIABLE FOR DROP-DOWN ARROW FLIP AT END OF FUNCTION
+      // SET CLICKED CONTAINER VARIABLE AND OTHER CONTAINER VARIABLE FOR DROP-DOWN ARROW FLIP AT END OF FUNCTION
       clickedContainer = clientContainer;
+      otherContainer = goalsContainer;
 
       if (clientContainer.style.height === "37px" || clientContainer.style.height === "") {
 
@@ -66,8 +68,9 @@ class Review extends Component {
       }
     } else if (target.id === goalsContainer.id && goalsContainer.childNodes.length > 1) { // if target's ID is equal to the goalsContainer element's ID and if goalsContainer contains items
 
-      // SET CLICKED CONTAINER VARIABLE FOR DROP-DOWN ARROW FLIP AT END OF FUNCTION
+      // SET CLICKED CONTAINER VARIABLE AND OTHER CONTAINER VARIABLE FOR DROP-DOWN ARROW FLIP AT END OF FUNCTION
       clickedContainer = goalsContainer;
+      otherContainer = clientContainer;
 
       if (goalsContainer.style.height === "37px" || goalsContainer.style.height === "") {
 
@@ -90,6 +93,9 @@ class Review extends Component {
         clickedContainer.lastElementChild.style.transform = "rotate(-180deg)"; // rotate dropdown arrow 180 degrees
       } else { // however, if transform is set
         clickedContainer.lastElementChild.style.transform = ""; // reset transform property to an empty string
+      }
+      if (otherContainer.lastElementChild.style.transform === 'rotate(-180deg)') {
+        otherContainer.lastElementChild.style.transform = ""; // reset transform property to an empty string
       }
     }
   }
