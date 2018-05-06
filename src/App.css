@@ -765,10 +765,25 @@ p {
 .info-panel:last-child {
   margin-bottom: 0;
 }
-.goal-sidebar-heading {
-  color: #777;
+.goal-sidebar-heading-container {
+  display: flex;
   margin-bottom: 20px;
+  align-items: center;
+}
+.goal-sidebar-heading {
+  position: relative;
+  color: #777;
   font-weight: 400;
+}
+.fontawesome-pencil {
+  padding: 4px;
+  font-size: 1.25em;
+  border-radius: 4px;
+  margin-left: 10px;
+  color: #444;
+}
+.fontawesome-pencil:hover {
+  background-color: #111;
 }
 
 .goal-sidebar-name {
@@ -833,7 +848,7 @@ p {
 }
 
 #review-goals-container, #review-client-container {
-  height: 36px;
+  height: 37px;
   overflow: hidden;
 }
 #review-client-container {
@@ -854,13 +869,13 @@ p {
   position: absolute;
   top: 5px;
   right: 10px;
-  color: #444 !important;
+  color: #444;
   font-size: 1.75em;
   transition: color .1s ease-in-out;
 }
 
 .review-info-item-container:hover .dropper {
-  color: #1ee9bd !important;
+  color: #1ee9bd;
 }
 
 .review-info-item {

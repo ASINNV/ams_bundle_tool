@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-// import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown'
+// import fontawesome from '@fortawesome/fontawesome';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown';
+import faPencilAlt from '@fortawesome/fontawesome-free-solid/faPencilAlt';
 
 
 // const theWindow=window,
@@ -27,14 +28,16 @@ class Review extends Component {
     let goalsContainer = document.getElementById('review-goals-container');
     let clientContainer = document.getElementById('review-client-container');
     let panels = document.getElementsByClassName('info-panel');
+
+    // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
     let target = e.target;
     while (!target.id || target.id.indexOf("-container") === -1) { // while id doesn't match
       target = target.parentNode; // set target equal to its parent
     }
 
+    // SET ALL PANELS TO BE ABSOLUTELY POSITIONED
     for (let i = (panels.length - 1); i >= 0; i--) {
       let panelRect = panels.item(i).getBoundingClientRect();
-      console.log('panelRect-' + i, panelRect);
 
       panels.item(i).style.position = 'absolute';
       panels.item(i).style.width = panelRect.width + 'px';
@@ -42,39 +45,25 @@ class Review extends Component {
     }
 
     if (target.id === clientContainer.id) {
-      if (clientContainer.style.height === "36px" || clientContainer.style.height === "") {
-
-        // let clientContainerRect = clientContainer.getBoundingClientRect();
-
-        // GET AND SET CLIENT CONTAINER'S POSITION
-        // clientContainer.style.width = clientContainerRect.width + 'px';
-        // clientContainer.style.position = 'absolute';
-        // clientContainer.style.top = Math.round(clientContainerRect.top) + 'px';
+      if (clientContainer.style.height === "37px" || clientContainer.style.height === "") {
 
         // COLLAPSE GOALS WINDOW
         if (goalsContainer.style.height === "auto") {
-          goalsContainer.style.height = "36px";
+          goalsContainer.style.height = "37px";
           // goalsContainer.style.position = 'relative';
           // goalsContainer.style.top = '';
           // goalsContainer.style.width = '';
         }
 
         // SET HEIGHT OF CLIENT CONTAINER
-        setTimeout(function() { // set height after position
-          clientContainer.style.height = "auto";
-        }, 50);
+        clientContainer.style.height = "auto";
       } else {
 
         // RESET CLIENT CONTAINER
-        clientContainer.style.height = "36px";
-        // clientContainer.style.position = 'relative';
-        // clientContainer.style.top = '';
-        // clientContainer.style.width = '';
-
-        // goalsContainer.style.left = '';
+        clientContainer.style.height = "37px";
       }
     } else if (target.id === goalsContainer.id) {
-      if (goalsContainer.style.height === "36px" || goalsContainer.style.height === "") {
+      if (goalsContainer.style.height === "37px" || goalsContainer.style.height === "") {
 
         // let goalsContainerRect = goalsContainer.getBoundingClientRect();
 
@@ -86,19 +75,17 @@ class Review extends Component {
 
         // COLLAPSE CLIENT WINDOW
         if (clientContainer.style.height === "auto") {
-          clientContainer.style.height = "36px";
+          clientContainer.style.height = "37px";
           // clientContainer.style.position = 'relative';
           // clientContainer.style.top = '';
           // clientContainer.style.width = '';
         }
 
         // SET HEIGHT OF GOALS CONTAINER
-        setTimeout(function() {
-          goalsContainer.style.height = "auto";
-        }, 50);
+        goalsContainer.style.height = "auto";
       } else {
         // RESET GOALS CONTAINER
-        goalsContainer.style.height = "36px";
+        goalsContainer.style.height = "37px";
         // goalsContainer.style.position = 'relative';
         // goalsContainer.style.top = '';
         // goalsContainer.style.width = '';
@@ -106,6 +93,11 @@ class Review extends Component {
         // goalsContainer.style.left = '';
       }
     }
+  }
+
+  editClientInfo(e) {
+    e.stopPropagation();
+    console.log('Edit button hit!');
   }
 
   render() {
@@ -122,7 +114,10 @@ class Review extends Component {
                 <h1 className="heading noselect">Review Your Order</h1>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">YOUR INFO</h3>
+                <div className="goal-sidebar-heading-container">
+                  <h3 className="goal-sidebar-heading">YOUR INFO</h3>
+                  <FontAwesomeIcon icon={faPencilAlt} id="0-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
+                </div>
                 <div id="review-client-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
                   <p className="review-info-item">{this.props.clientReducer.client.company || "No Company"}</p>
                   <p className="review-info-item">{this.props.clientReducer.client.name || "No Name"}</p>
@@ -132,21 +127,29 @@ class Review extends Component {
                 </div>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">YOUR GOALS</h3>
+                <div className="goal-sidebar-heading-container">
+                  <h3 className="goal-sidebar-heading">YOUR GOALS</h3>
+                  <FontAwesomeIcon icon={faPencilAlt} id="1-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
+                </div>
                 <div id="review-goals-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
                   {this.props.clientReducer.client.goals.length > 0 ? this.props.clientReducer.client.goals.map((goal, i) => {
-                    return <p key={i} className="review-info-item minor-emphasis">{goal.name}</p>;
-                  }) : <p className="review-info-item minor-emphasis">None</p>}
+                    return <p key={i} className="review-info-item">{goal.name}</p>;
+                  }) : <p className="review-info-item">None</p>}
                   {/* FONT AWESOME ICON HERE */}
                   <FontAwesomeIcon icon={faAngleDown} id="goal-dropdown" className="dropper"/>
                 </div>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">BUNDLE</h3>
+                <div className="goal-sidebar-heading-container">
+                  <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
+                  <FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
+                </div>
                 <p className="review-info-item minor-emphasis">{this.props.clientReducer.project.bundleName || "None"}</p>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">TOTAL</h3>
+                <div className="goal-sidebar-heading-container">
+                  <h3 className="goal-sidebar-heading">TOTAL</h3>
+                </div>
                 <p className="review-info-item emphasis">{this.props.clientReducer.project.total || "$0"}</p>
               </div>
               <Link to="/capitalize" className="buttons continue-button">

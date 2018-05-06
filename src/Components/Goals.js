@@ -154,7 +154,9 @@ class Goals extends Component {
               <div className="info-panel">
                 <div id="stats" className="">
                   <div id="stat-panel">
-                    <h3 className="goal-sidebar-heading">COMPANY STATS</h3>
+                    <div className="goal-sidebar-heading-container">
+                      <h3 className="goal-sidebar-heading">COMPANY STATS</h3>
+                    </div>
                     <div id="graph">
                       {this.props.clientReducer.client.stats.map((stat, i) => {
                         return (
@@ -169,11 +171,15 @@ class Goals extends Component {
                 </div>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">GOAL NAME</h3>
+                <div className="goal-sidebar-heading-container">
+                  <h3 className="goal-sidebar-heading">GOAL NAME</h3>
+                </div>
                 <p className="goal-sidebar-name">{this.props.appReducer.currentGoal !== null ? this.props.appReducer.goals[this.props.appReducer.currentGoal].name : "N/A"}</p>
               </div>
               <div id="" className="info-panel">
-                <h3 className="goal-sidebar-heading">GOAL DESC</h3>
+                <div className="goal-sidebar-heading-container">
+                  <h3 className="goal-sidebar-heading">GOAL DESC</h3>
+                </div>
                 <p className="goal-sidebar-desc overflowing">{this.props.appReducer.currentGoal !== null ? this.props.appReducer.goals[this.props.appReducer.currentGoal].description : "Mouse over a goal to see its description here."}</p>
               </div>
               <Link to="/decide" className="buttons continue-button">
