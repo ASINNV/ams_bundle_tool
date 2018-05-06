@@ -57,14 +57,19 @@ class Review extends Component {
         // COLLAPSE GOALS WINDOW
         if (goalsContainer.style.height === "auto") {
           goalsContainer.style.height = "37px";
+          goalsContainer.style.boxShadow = "";
         }
 
         // SET HEIGHT OF CLIENT CONTAINER
         clientContainer.style.height = "auto";
+        clientContainer.style.boxShadow = "0px 4px 8px 0 rgba(0,0,0,0.4)";
+
       } else {
 
         // RESET CLIENT CONTAINER
         clientContainer.style.height = "37px";
+        clientContainer.style.boxShadow = "";
+
       }
     } else if (target.id === goalsContainer.id && goalsContainer.childNodes.length > 1) { // if target's ID is equal to the goalsContainer element's ID and if goalsContainer contains items
 
@@ -77,13 +82,19 @@ class Review extends Component {
         // COLLAPSE CLIENT WINDOW
         if (clientContainer.style.height === "auto") {
           clientContainer.style.height = "37px";
+          clientContainer.style.boxShadow = "";
         }
 
         // SET HEIGHT OF GOALS CONTAINER
         goalsContainer.style.height = "auto";
+        goalsContainer.style.boxShadow = "0px 4px 8px 0 rgba(0,0,0,0.4)";
+
       } else {
+
         // RESET GOALS CONTAINER
         goalsContainer.style.height = "37px";
+        goalsContainer.style.boxShadow = "";
+
       }
     }
     // IF CLICKED CONTAINER IS NOT NULL AND THERE ARE REVIEW-INFO-ITEMS IN THE CLICKED CONTAINER
@@ -106,6 +117,13 @@ class Review extends Component {
   }
 
   render() {
+    let company = this.props.clientReducer.client.company || null;
+    let name = this.props.clientReducer.client.name || null;
+    let email = this.props.clientReducer.client.email || null;
+    let phone = this.props.clientReducer.client.phone || null;
+
+    let myArray = [company, name, email, phone];
+
     return (
       <div id="goals-body" className="page-body">
         <div id="goals-torso">
@@ -124,10 +142,16 @@ class Review extends Component {
                   <FontAwesomeIcon icon={faPencilAlt} id="0-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
                 <div id="review-client-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
-                  {this.props.clientReducer.client.company !== null ? <p className="review-info-item">{this.props.clientReducer.client.company}</p> : null}
-                  {this.props.clientReducer.client.name !== null ? <p className="review-info-item">{this.props.clientReducer.client.name}</p> : null}
-                  {this.props.clientReducer.client.email !== null ? <p className="review-info-item">{this.props.clientReducer.client.email}</p> : null}
-                  {this.props.clientReducer.client.phone !== null ? <p className="review-info-item last-review-info-item">{this.props.clientReducer.client.phone}</p> : null}
+                  {myArray.map(function(property, i, myArray) {
+                    if (property !== null) {
+                      if (i === myArray.length - 1) {
+                        return <p key={i} className="review-info-item last-review-info-item">{property}</p>;
+                      } else {
+                        return <p key={i} className="review-info-item">{property}</p>;
+                      }
+                    }
+                    return false;
+                  })}
                   <FontAwesomeIcon icon={faAngleDown} id="client-dropdown" className="dropper"/>
                 </div>
               </div>
@@ -153,7 +177,7 @@ class Review extends Component {
                   <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
                   <FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
-                <p className="review-info-item minor-emphasis">{this.props.clientReducer.project.bundleName || "None"}</p>
+                <p className="review-info-item">{this.props.clientReducer.project.bundleName || "None"}</p>
               </div>
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">

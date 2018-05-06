@@ -866,7 +866,6 @@ p {
   width: 100%;
   background: #191919;
   border-radius: 8px;
-  padding: 0 5px;
 }
 
 .dropper {
@@ -883,7 +882,7 @@ p {
 }
 
 .review-info-item {
-  padding-bottom: 5px;
+  padding: 0 5px 5px 5px;
   font-size: 1.5em;
   line-height: 1.5em;
   font-weight: 100;
