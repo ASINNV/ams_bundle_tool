@@ -194,7 +194,7 @@ p {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100px;
+  height: 75px;
   z-index: 100;
 }
 #progress-bar {
@@ -775,12 +775,16 @@ p {
   color: #777;
   font-weight: 400;
 }
+.fontawesome-pencil, .dropper {
+  cursor: pointer;
+}
 .fontawesome-pencil {
   padding: 4px;
   font-size: 1.25em;
   border-radius: 4px;
   margin-left: 10px;
   color: #444;
+  transition: background-color .1s ease-in-out
 }
 .fontawesome-pencil:hover {
   background-color: #111;
@@ -871,7 +875,7 @@ p {
   right: 10px;
   color: #444;
   font-size: 1.75em;
-  transition: color .1s ease-in-out;
+  transition: color .1s ease-in-out, transform .2s ease-in-out;
 }
 
 .review-info-item-container:hover .dropper {
@@ -884,9 +888,10 @@ p {
   line-height: 1.5em;
   font-weight: 100;
   color: #fff;
+  border-bottom: 1px solid #222;
 }
-.review-info-item:last-child {
-  padding-bottom: 0;
+.last-review-info-item {
+  border-bottom: 0;
 }
 
 .minor-emphasis {

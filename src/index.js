@@ -148,7 +148,7 @@ const clientState = {
 const appState = {
   chosenBundle: -1,
   currentQuestion: 0,
-  lastQuestion: 0,
+  lastQuestion: -1,
   currentStep: -1,
   currentGoal: null,
   steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize'],

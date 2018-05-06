@@ -28,6 +28,7 @@ class Review extends Component {
     let goalsContainer = document.getElementById('review-goals-container');
     let clientContainer = document.getElementById('review-client-container');
     let panels = document.getElementsByClassName('info-panel');
+    let clickedContainer = null;
 
     // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
     let target = e.target;
@@ -35,7 +36,7 @@ class Review extends Component {
       target = target.parentNode; // set target equal to its parent
     }
 
-    // SET ALL PANELS TO BE ABSOLUTELY POSITIONED
+    // SET ALL PANELS TO POSITION ABSOLUTE
     for (let i = (panels.length - 1); i >= 0; i--) {
       let panelRect = panels.item(i).getBoundingClientRect();
 
@@ -44,15 +45,16 @@ class Review extends Component {
       panels.item(i).style.top = Math.round(panelRect.top) + 'px';
     }
 
-    if (target.id === clientContainer.id) {
+    if (target.id === clientContainer.id && clientContainer.childNodes.length > 1) { // if target's ID is equal to the clientContainer element's ID and if clientContainer contains items
+
+      // SET CLICKED CONTAINER VARIABLE FOR DROP-DOWN ARROW FLIP AT END OF FUNCTION
+      clickedContainer = clientContainer;
+
       if (clientContainer.style.height === "37px" || clientContainer.style.height === "") {
 
         // COLLAPSE GOALS WINDOW
         if (goalsContainer.style.height === "auto") {
           goalsContainer.style.height = "37px";
-          // goalsContainer.style.position = 'relative';
-          // goalsContainer.style.top = '';
-          // goalsContainer.style.width = '';
         }
 
         // SET HEIGHT OF CLIENT CONTAINER
@@ -62,23 +64,16 @@ class Review extends Component {
         // RESET CLIENT CONTAINER
         clientContainer.style.height = "37px";
       }
-    } else if (target.id === goalsContainer.id) {
+    } else if (target.id === goalsContainer.id && goalsContainer.childNodes.length > 1) { // if target's ID is equal to the goalsContainer element's ID and if goalsContainer contains items
+
+      // SET CLICKED CONTAINER VARIABLE FOR DROP-DOWN ARROW FLIP AT END OF FUNCTION
+      clickedContainer = goalsContainer;
+
       if (goalsContainer.style.height === "37px" || goalsContainer.style.height === "") {
-
-        // let goalsContainerRect = goalsContainer.getBoundingClientRect();
-
-        // GET AND SET GOALS CONTAINER'S POSITION
-        // goalsContainer.style.width = goalsContainerRect.width + 'px';
-        // goalsContainer.style.position = 'absolute';
-        // goalsContainer.style.top = Math.round(goalsContainerRect.top) + 'px';
-        // goalsContainer.style.left = Math.round(goalsContainerRect.left) + 'px';
 
         // COLLAPSE CLIENT WINDOW
         if (clientContainer.style.height === "auto") {
           clientContainer.style.height = "37px";
-          // clientContainer.style.position = 'relative';
-          // clientContainer.style.top = '';
-          // clientContainer.style.width = '';
         }
 
         // SET HEIGHT OF GOALS CONTAINER
@@ -86,11 +81,15 @@ class Review extends Component {
       } else {
         // RESET GOALS CONTAINER
         goalsContainer.style.height = "37px";
-        // goalsContainer.style.position = 'relative';
-        // goalsContainer.style.top = '';
-        // goalsContainer.style.width = '';
-
-        // goalsContainer.style.left = '';
+      }
+    }
+    // IF CLICKED CONTAINER IS NOT NULL AND THERE ARE REVIEW-INFO-ITEMS IN THE CLICKED CONTAINER
+    if (clickedContainer !== null && clickedContainer.childNodes.length > 1) {
+      // FLIPS THE DROP-DOWN ARROW
+      if (clickedContainer.lastElementChild.style.transform === "") { // if no transform is set
+        clickedContainer.lastElementChild.style.transform = "rotate(-180deg)"; // rotate dropdown arrow 180 degrees
+      } else { // however, if transform is set
+        clickedContainer.lastElementChild.style.transform = ""; // reset transform property to an empty string
       }
     }
   }
@@ -119,10 +118,10 @@ class Review extends Component {
                   <FontAwesomeIcon icon={faPencilAlt} id="0-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
                 <div id="review-client-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
-                  <p className="review-info-item">{this.props.clientReducer.client.company || "No Company"}</p>
-                  <p className="review-info-item">{this.props.clientReducer.client.name || "No Name"}</p>
-                  <p className="review-info-item">{this.props.clientReducer.client.email || "No Email"}</p>
-                  <p className="review-info-item">{this.props.clientReducer.client.phone || "No Phone"}</p>
+                  {this.props.clientReducer.client.company !== null ? <p className="review-info-item">{this.props.clientReducer.client.company}</p> : null}
+                  {this.props.clientReducer.client.name !== null ? <p className="review-info-item">{this.props.clientReducer.client.name}</p> : null}
+                  {this.props.clientReducer.client.email !== null ? <p className="review-info-item">{this.props.clientReducer.client.email}</p> : null}
+                  {this.props.clientReducer.client.phone !== null ? <p className="review-info-item last-review-info-item">{this.props.clientReducer.client.phone}</p> : null}
                   <FontAwesomeIcon icon={faAngleDown} id="client-dropdown" className="dropper"/>
                 </div>
               </div>
@@ -132,9 +131,13 @@ class Review extends Component {
                   <FontAwesomeIcon icon={faPencilAlt} id="1-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
                 <div id="review-goals-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
-                  {this.props.clientReducer.client.goals.length > 0 ? this.props.clientReducer.client.goals.map((goal, i) => {
-                    return <p key={i} className="review-info-item">{goal.name}</p>;
-                  }) : <p className="review-info-item">None</p>}
+                  {this.props.clientReducer.client.goals.length > 0 ? this.props.clientReducer.client.goals.map(function(goal, i, goals) {
+                    if (i === goals.length - 1) {
+                      return <p key={i} className="review-info-item last-review-info-item">{goal.name}</p>;
+                    } else {
+                      return <p key={i} className="review-info-item">{goal.name}</p>;
+                    }
+                  }) : null}
                   {/* FONT AWESOME ICON HERE */}
                   <FontAwesomeIcon icon={faAngleDown} id="goal-dropdown" className="dropper"/>
                 </div>

@@ -238,7 +238,7 @@ class ClientInfo extends Component {
   editAnswer(e) {
 
     let currentQuestion = this.props.appReducer.currentQuestion;
-    let lastQuestion = this.props.appReducer.lastQuestion;
+    // let lastQuestion = this.props.appReducer.lastQuestion;
     let couplets = document.getElementsByClassName('qa-couplet');
     let submitButton = document.getElementById('submit-button-1');
 
@@ -273,6 +273,7 @@ class ClientInfo extends Component {
       }
       if (clickedNumId !== currentQuestion) {
         scrollingStream.style.transform = "translateY(" + (45 - (clickedNumId*25)) + "vh)";
+        console.log('currentQuestion = ' + currentQuestion, 'clickedNumId = ' + clickedNumId);
         currentQuestion = clickedNumId;
         this.props.setCurrentQuestion(currentQuestion);
 
@@ -285,40 +286,39 @@ class ClientInfo extends Component {
         }
 
         // SETS CLIENT INFORMATION
+        let client = this.props.clientReducer.client;
         let inputs = document.getElementsByTagName('input'); // grab all inputs on page
         let stats = this.props.clientReducer.client.stats;
-        switch (lastQuestion) { // if lastQuestion is one of the following cases, set appropriate client field with input field value
-          case 0:
-            this.props.setClientName(inputs[0].value); // set client name to value of first input field
-            break;
-          case 1:
-            this.props.setClientCompany(inputs[1].value); // set client name to value of second input field
-            break;
-          case 2:
-            this.props.setClientEmail(inputs[2].value); // set client name to value of third input field
-            break;
-          case 3:
-            this.props.setClientPhone(inputs[3].value); // set client name to value of fourth input field
-            break;
-          case 4:
-            stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
-            this.props.setClientStats(stats); // set client name to value of fourth input field
-            break;
-          case 5:
-            stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
-            this.props.setClientStats(stats); // set client name to value of fourth input field
-            break;
-          case 6:
-            stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
-            this.props.setClientStats(stats); // set client name to value of fourth input field
-            break;
-          case 7:
-            stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
-            this.props.setClientStats(stats); // set client name to value of fourth input field
-            break;
-          default:
-            console.log('fell to the default case');
+
+        if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
+          this.props.setClientName(inputs[0].value); // set client name to value of first input field
         }
+        if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
+          this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
+        }
+        if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
+          this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
+        }
+        if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
+          this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+        }
+        if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
+          stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client stats to value of fourth input field
+        }
+        if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
+          stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client stats to value of fourth input field
+        }
+        if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
+          stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client stats to value of fourth input field
+        }
+        if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
+          stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+          this.props.setClientStats(stats); // set client stats to value of fourth input field
+        }
+
       }
     }
   }
