@@ -133,6 +133,42 @@ class ClientInfo extends Component {
     // apiCaller('/api/clients');
   }
 
+  componentWillUnmount() {
+    // SETS CLIENT INFORMATION
+    let client = this.props.clientReducer.client;
+    let inputs = document.getElementsByTagName('input'); // grab all inputs on page
+    let stats = this.props.clientReducer.client.stats;
+
+    if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
+      this.props.setClientName(inputs[0].value); // set client name to value of first input field
+    }
+    if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
+      this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
+    }
+    if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
+      this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
+    }
+    if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
+      this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+    }
+    if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
+      stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+      this.props.setClientStats(stats); // set client stats to value of fourth input field
+    }
+    if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
+      stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+      this.props.setClientStats(stats); // set client stats to value of fourth input field
+    }
+    if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
+      stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+      this.props.setClientStats(stats); // set client stats to value of fourth input field
+    }
+    if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
+      stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+      this.props.setClientStats(stats); // set client stats to value of fourth input field
+    }
+  }
+
 
   nextQuestion(e) {
 
@@ -141,39 +177,6 @@ class ClientInfo extends Component {
     let charCode = e.which ? e.which : e.keyCode;
     if (charCode === 13 || charCode === 9) {
       e.preventDefault();
-      let stats = this.props.clientReducer.client.stats;
-      switch (e.target.name) {
-        case 'name':
-          this.props.setClientName(e.target.value);
-          break;
-        case 'company':
-          this.props.setClientCompany(e.target.value);
-          break;
-        case 'email':
-          this.props.setClientEmail(e.target.value);
-          break;
-        case 'phone':
-          this.props.setClientPhone(e.target.value);
-          break;
-        case 'sales':
-          stats[0].value = Number(e.target.value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client name to value of fourth input field
-          break;
-        case 'reach':
-          stats[1].value = Number(e.target.value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client name to value of fourth input field
-          break;
-        case 'accessibility':
-          stats[2].value = Number(e.target.value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client name to value of fourth input field
-          break;
-        case 'modernity':
-          stats[3].value = Number(e.target.value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client name to value of fourth input field
-          break;
-        default:
-          console.log('fell to the default case');
-      }
 
       // RESIZES HEADING AFTER FIRST ANSWER
       if (document.getElementById('floating-instruction') && document.getElementById('floating-instruction').style.transform === '') {
@@ -244,7 +247,7 @@ class ClientInfo extends Component {
 
     let target = e.target;
 
-    while (target.id.indexOf("-qa-couplet") === -1) {
+    while (target.id.indexOf("qa-couplet-") === -1) {
       target = target.parentNode;
     }
 
@@ -254,7 +257,7 @@ class ClientInfo extends Component {
       submitButton.style.opacity = zeroOpacity;
     }
 
-    let clickedNumId = Number(target.id.slice(0, target.id.indexOf('-qa-couplet')));
+    let clickedNumId = Number(target.id.slice(target.id.search(/\d/g)));
 
     if (!isNaN(clickedNumId)) {
 
@@ -285,39 +288,39 @@ class ClientInfo extends Component {
 
         }
 
-        // SETS CLIENT INFORMATION
-        let client = this.props.clientReducer.client;
-        let inputs = document.getElementsByTagName('input'); // grab all inputs on page
-        let stats = this.props.clientReducer.client.stats;
-
-        if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
-          this.props.setClientName(inputs[0].value); // set client name to value of first input field
-        }
-        if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
-          this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
-        }
-        if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
-          this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
-        }
-        if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
-          this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
-        }
-        if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
-          stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client stats to value of fourth input field
-        }
-        if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
-          stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client stats to value of fourth input field
-        }
-        if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
-          stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client stats to value of fourth input field
-        }
-        if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
-          stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
-          this.props.setClientStats(stats); // set client stats to value of fourth input field
-        }
+        // // SETS CLIENT INFORMATION
+        // let client = this.props.clientReducer.client;
+        // let inputs = document.getElementsByTagName('input'); // grab all inputs on page
+        // let stats = this.props.clientReducer.client.stats;
+        //
+        // if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
+        //   this.props.setClientName(inputs[0].value); // set client name to value of first input field
+        // }
+        // if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
+        //   this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
+        // }
+        // if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
+        //   this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
+        // }
+        // if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
+        //   this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+        // }
+        // if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
+        //   stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+        // }
+        // if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
+        //   stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+        // }
+        // if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
+        //   stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+        // }
+        // if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
+        //   stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+        // }
 
       }
     }
@@ -360,17 +363,6 @@ class ClientInfo extends Component {
   }
 
   nextPhase() {
-    let scrollingStream = document.getElementById('scrolling-stream');
-    let lastCouplet = scrollingStream.childNodes[(scrollingStream.childNodes.length - 2)];
-    let lastInput = lastCouplet.childNodes[1].childNodes[0];
-
-    let stats = this.props.clientReducer.client.stats;
-    let lastStat = stats.length - 1;
-
-    stats[lastStat].value = Number(lastInput.value.replace(/\D/g, '')); // problem line
-
-    this.props.setClientStats(stats); // set client name to value of fourth input field
-
     this.props.setCurrentStep(1);
 
   }
@@ -388,7 +380,7 @@ class ClientInfo extends Component {
             </div>
             <div id="scrolling-stream">
 
-              <div id="0-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
+              <div id="qa-couplet-0" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
                 <div className="question">
                   <label htmlFor="name">What is your name?</label>
                 </div>
@@ -398,7 +390,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="1-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
+              <div id="qa-couplet-1" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
                 <div className="question">
                   <label htmlFor="company">What is your company's name?</label>
                 </div>
@@ -408,7 +400,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="2-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
+              <div id="qa-couplet-2" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)}>
                 <div className="question">
                   <label htmlFor="email">What is your email address?</label>
                 </div>
@@ -418,7 +410,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="3-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPhone.bind(this)}>
+              <div id="qa-couplet-3" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPhone.bind(this)}>
                 <div className="question">
                   <label htmlFor="phone">What is your phone number?</label>
                 </div>
@@ -428,7 +420,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="4-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+              <div id="qa-couplet-4" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
                 <div className="question">
                   <label htmlFor="sales">What percentage of your target sales are you currently making?</label>
                 </div>
@@ -439,7 +431,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="5-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+              <div id="qa-couplet-5" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
                 <div className="question">
                   <label htmlFor="reach">What percentage of your target audience are you reaching?</label>
                 </div>
@@ -450,7 +442,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="6-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+              <div id="qa-couplet-6" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
                 <div className="question">
                   <label htmlFor="accessibility">How accessible are your brand and services?</label>
                 </div>
@@ -461,7 +453,7 @@ class ClientInfo extends Component {
                 </div>
               </div>
 
-              <div id="7-qa-couplet" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
+              <div id="qa-couplet-7" className="qa-couplet" onKeyDown={this.nextQuestion.bind(this)} onClick={this.editAnswer.bind(this)} onKeyUp={this.formatPercentage.bind(this)}>
                 <div className="question">
                   <label htmlFor="modernity">How up-to-date is your business?</label>
                 </div>
@@ -530,16 +522,28 @@ const mapDispatchToProps = (dispatch) => {
         payload: discount
       });
     },
+    setClientBundle: (bundle) => {
+      dispatch({
+        type: "SET_CLIENT_BUNDLE",
+        payload: bundle
+      });
+    },
+    setClientGoals: (goals) => {
+      dispatch({
+        type: "SET_CLIENT_GOALS",
+        payload: goals
+      });
+    },
+    setClientStats: (stats) => {
+      dispatch({
+        type: "SET_CLIENT_STATS",
+        payload: stats
+      });
+    },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
-      });
-    },
-    setChosenBundle: (bundleNumber) => {
-      dispatch({
-        type: "SET_CHOSEN_BUNDLE",
-        payload: bundleNumber
       });
     },
     setCurrentQuestion: (currentQuestion) => {
@@ -554,211 +558,14 @@ const mapDispatchToProps = (dispatch) => {
         payload: step
       });
     },
-    setClientStats: (stats) => {
+    setCurrentGoal: (goal) => {
       dispatch({
-        type: "SET_CLIENT_STATS",
-        payload: stats
+        type: "SET_CURRENT_GOAL",
+        payload: goal
       });
     }
+
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientInfo);
-
-// const appReducer = (state = appState, action) => {
-//   switch (action.type) {
-//     case "SET_APP_DATA":
-//       state = {
-//         ...state,
-//         ...action.payload
-//       };
-//       break;
-//     case "SET_CHOSEN_BUNDLE":
-//       state = {
-//         ...state,
-//         chosenBundle: action.payload
-//       };
-//       break;
-//     case "SET_CURRENT_QUESTION":
-//       state = {
-//         ...state,
-//         currentQuestion: action.payload
-//       };
-//       break;
-//     case "SET_CURRENT_STEP":
-//       state = {
-//         ...state,
-//         currentStep: action.payload
-//       };
-//       break;
-//     case "SET_STEPS":
-//       state = {
-//         ...state,
-//         steps: action.payload
-//       };
-//       break;
-//     default:
-//       return state;
-//   }
-//   return state;
-
-
-// const clientReducer = (state = clientState, action) => {
-//   switch (action.type) {
-//     case "SET_CUSTOMER_DATA":
-//       state = {
-//         ...state,
-//         ...action.payload
-//       };
-//       break;
-//     case "SET_CLIENT_NAME":
-//       state = {
-//         ...state,
-//         client: {
-//           ...state.client,
-//           name: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_CLIENT_COMPANY":
-//       state = {
-//         ...state,
-//         client: {
-//           ...state.client,
-//           company: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_CLIENT_EMAIL":
-//       state = {
-//         ...state,
-//         client: {
-//           ...state.client,
-//           email: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_CLIENT_PHONE":
-//       state = {
-//         ...state,
-//         client: {
-//           ...state.client,
-//           phone: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_CLIENT_DISCOUNT":
-//       state = {
-//         ...state,
-//         client: {
-//           ...state.client,
-//           discount: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_CLIENT_STATS":
-//       state = {
-//         ...state,
-//         client: {
-//           ...state.client,
-//           stats: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_NAME":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           name: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_GOALS":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           goals: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_STATUS":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           status: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_PAYMENT_METHOD":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           paymentMethod: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_TOTAL":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           total: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_BUNDLE_NAME":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           bundleName: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_BUNDLE_ID":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           bundleId: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_SERVICES":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           services: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_START_DATE":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           startDate: action.payload
-//         }
-//       };
-//       break;
-//     case "SET_PROJECT_DUE_DATE":
-//       state = {
-//         ...state,
-//         project: {
-//           ...state.project,
-//           dueDate: action.payload
-//         }
-//       };
-//       break;
-//     default:
-//       return state;
-//   }
-//   return state;
-// };
-//
-// };

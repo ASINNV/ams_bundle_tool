@@ -117,12 +117,12 @@ class Review extends Component {
   }
 
   render() {
-    let company = this.props.clientReducer.client.company || null;
     let name = this.props.clientReducer.client.name || null;
+    let company = this.props.clientReducer.client.company || null;
     let email = this.props.clientReducer.client.email || null;
     let phone = this.props.clientReducer.client.phone || null;
 
-    let myArray = [company, name, email, phone];
+    let myArray = [name, company, email, phone];
 
     return (
       <div id="goals-body" className="page-body">
@@ -142,12 +142,13 @@ class Review extends Component {
                   <FontAwesomeIcon icon={faPencilAlt} id="0-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
                 <div id="review-client-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
+                  <p className="review-info-item subdued">Click to view…</p>
                   {myArray.map(function(property, i, myArray) {
                     if (property !== null) {
                       if (i === myArray.length - 1) {
-                        return <p key={i} className="review-info-item last-review-info-item">{property}</p>;
+                        return <p key={i} className="review-info-item flair last-review-info-item">{property}</p>;
                       } else {
-                        return <p key={i} className="review-info-item">{property}</p>;
+                        return <p key={i} className="review-info-item flair">{property}</p>;
                       }
                     }
                     return false;
@@ -161,11 +162,12 @@ class Review extends Component {
                   <FontAwesomeIcon icon={faPencilAlt} id="1-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
                 <div id="review-goals-container" className="review-info-item-container" onClick={this.showAllGoals.bind(this)}>
+                  <p className="review-info-item subdued">Click to view…</p>
                   {this.props.clientReducer.client.goals.length > 0 ? this.props.clientReducer.client.goals.map(function(goal, i, goals) {
                     if (i === goals.length - 1) {
-                      return <p key={i} className="review-info-item last-review-info-item">{goal.name}</p>;
+                      return <p key={i} className="review-info-item flair last-review-info-item">{goal.name}</p>;
                     } else {
-                      return <p key={i} className="review-info-item">{goal.name}</p>;
+                      return <p key={i} className="review-info-item flair">{goal.name}</p>;
                     }
                   }) : null}
                   {/* FONT AWESOME ICON HERE */}
@@ -177,7 +179,7 @@ class Review extends Component {
                   <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
                   <FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil" onClick={this.editClientInfo.bind(this)}/>
                 </div>
-                <p className="review-info-item">{this.props.clientReducer.project.bundleName || "None"}</p>
+                <p className="review-info-item">{this.props.clientReducer.client.bundleName || "None"}</p>
               </div>
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">
@@ -246,16 +248,28 @@ const mapDispatchToProps = (dispatch) => {
         payload: discount
       });
     },
+    setClientBundle: (bundle) => {
+      dispatch({
+        type: "SET_CLIENT_BUNDLE",
+        payload: bundle
+      });
+    },
+    setClientGoals: (goals) => {
+      dispatch({
+        type: "SET_CLIENT_GOALS",
+        payload: goals
+      });
+    },
+    setClientStats: (stats) => {
+      dispatch({
+        type: "SET_CLIENT_STATS",
+        payload: stats
+      });
+    },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
-      });
-    },
-    setChosenBundle: (bundleNumber) => {
-      dispatch({
-        type: "SET_CHOSEN_BUNDLE",
-        payload: bundleNumber
       });
     },
     setCurrentQuestion: (currentQuestion) => {
@@ -269,7 +283,14 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_CURRENT_STEP",
         payload: step
       });
+    },
+    setCurrentGoal: (goal) => {
+      dispatch({
+        type: "SET_CURRENT_GOAL",
+        payload: goal
+      });
     }
+
   };
 };
 

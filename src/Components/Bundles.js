@@ -18,6 +18,15 @@ class Bundles extends Component {
     // SET CURRENT STEP TO 2
     this.props.setCurrentStep(2); // sets current step to 2
   }
+  setBundle(e) {
+    // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
+    let target = e.target;
+    while (!target.id || target.id.indexOf("card-") === -1) { // while id doesn't match
+      target = target.parentNode; // set target equal to its parent
+    }
+    this.props.setClientBundle(Number(target.id.slice(Number(target.id.search(/\d/g)))) - 1);
+    console.log(this.props.clientReducer.client.bundle);
+  }
 
   render() {
 
@@ -28,7 +37,7 @@ class Bundles extends Component {
             <div id="info-1" className="info">
               <p className="name">STARTER</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons">
+              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
               </Link>
@@ -39,7 +48,7 @@ class Bundles extends Component {
             <div id="info-2" className="info">
               <p className="name">ACCELERATOR</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons">
+              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
               </Link>
@@ -50,7 +59,7 @@ class Bundles extends Component {
             <div id="info-3" className="info">
               <p className="name">TURBO</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons">
+              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
               </Link>
@@ -61,7 +70,7 @@ class Bundles extends Component {
             <div id="info-4" className="info">
               <p className="name">CUSTOM</p>
               <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons">
+              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
                 <div id="button-1" className="button-bg"></div>
                 <span id="button-text-1" className="button-text">select</span>
               </Link>
@@ -120,16 +129,28 @@ const mapDispatchToProps = (dispatch) => {
         payload: discount
       });
     },
+    setClientBundle: (bundle) => {
+      dispatch({
+        type: "SET_CLIENT_BUNDLE",
+        payload: bundle
+      });
+    },
+    setClientGoals: (goals) => {
+      dispatch({
+        type: "SET_CLIENT_GOALS",
+        payload: goals
+      });
+    },
+    setClientStats: (stats) => {
+      dispatch({
+        type: "SET_CLIENT_STATS",
+        payload: stats
+      });
+    },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
-      });
-    },
-    setChosenBundle: (bundleNumber) => {
-      dispatch({
-        type: "SET_CHOSEN_BUNDLE",
-        payload: bundleNumber
       });
     },
     setCurrentQuestion: (currentQuestion) => {
@@ -143,7 +164,14 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_CURRENT_STEP",
         payload: step
       });
+    },
+    setCurrentGoal: (goal) => {
+      dispatch({
+        type: "SET_CURRENT_GOAL",
+        payload: goal
+      });
     }
+
   };
 };
 

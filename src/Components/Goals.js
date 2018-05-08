@@ -19,7 +19,7 @@ class Goals extends Component {
 
     for (let i = 0; i < cards.length; i++) {
       for (let j = 0; j < clientGoals.length; j++) {
-        let cardId = Number(cards.item(i).id.slice(0, cards.item(i).id.indexOf('-')));
+        let cardId = Number(cards.item(i).id.slice(Number(cards.item(i).id.search(/\d/g))));
         let goalId = Number(clientGoals[j].id) - 1;
 
         if (cardId === goalId) {
@@ -71,7 +71,7 @@ class Goals extends Component {
 
     // SET TARGET EQUAL TO UPPERMOST PARENT
     let target = e.target;
-    while (target.id.indexOf("-goal") === -1) { // while id doesn't match
+    while (target.id.indexOf("goal-") === -1) { // while id doesn't match
       target = target.parentNode; // set target equal to its parent
     }
 
@@ -117,11 +117,11 @@ class Goals extends Component {
   }
   highlightGoal(e) {
     let target = e.target;
-    while (target.id.indexOf("-goal") === -1) {
+    while (target.id.indexOf("goal-") === -1) {
       target = target.parentNode;
     }
-    if (this.props.appReducer.currentGoal !== Number(target.id.slice(0, target.id.indexOf('-')))) {
-      this.props.setCurrentGoal(Number(target.id.slice(0, target.id.indexOf('-'))));
+    if (this.props.appReducer.currentGoal !== Number(target.id.slice(target.id.search(/\d/g)))) {
+      this.props.setCurrentGoal(Number(target.id.slice(target.id.search(/\d/g))));
     }
 
   }
@@ -135,7 +135,7 @@ class Goals extends Component {
 
           {this.props.appReducer.goals.map((goal, i) => {
             return (
-              <div id={(goal.id - 1) + "-goal"} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
+              <div id={"goal-" + (goal.id - 1)} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
                 <p className="goal-heading">{goal.name}</p>
               </div>
             );
@@ -241,22 +241,28 @@ const mapDispatchToProps = (dispatch) => {
         payload: discount
       });
     },
+    setClientBundle: (bundle) => {
+      dispatch({
+        type: "SET_CLIENT_BUNDLE",
+        payload: bundle
+      });
+    },
     setClientGoals: (goals) => {
       dispatch({
         type: "SET_CLIENT_GOALS",
         payload: goals
       });
     },
+    setClientStats: (stats) => {
+      dispatch({
+        type: "SET_CLIENT_STATS",
+        payload: stats
+      });
+    },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
-      });
-    },
-    setChosenBundle: (bundleNumber) => {
-      dispatch({
-        type: "SET_CHOSEN_BUNDLE",
-        payload: bundleNumber
       });
     },
     setCurrentQuestion: (currentQuestion) => {

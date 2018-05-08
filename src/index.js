@@ -8,101 +8,6 @@ import logger from "redux-logger";
 
 import registerServiceWorker from './registerServiceWorker';
 
-// const clientState= {
-//   contact_name: null,
-//   company_name: null,
-//   email: null,
-//   phone: null,
-//   discount: null
-// };
-// const clientState = {
-//   client_id: null,
-//   name: null,
-//   status: null,
-//   payment_method: null,
-//   total: null,
-//   bundle_name: null,
-//   bundle_id: null,
-//   services: null,
-//   start_date: null,
-//   due_date: null
-// };
-// const questionState = {
-//   currentQuestion: 0,
-// };
-// const progressState = {
-//   currentStep: -1,
-//   steps: [
-//     {
-//       name: 'Calibrate',
-//       complete: false,
-//       active: false,
-//       data: null
-//     },
-//     {
-//       name: 'Personalize',
-//       bgColor: '#FBD1A2',
-//       color: '#74B48E',
-//       complete: false,
-//       active: false,
-//       data: null
-//     },
-//     {
-//       name: 'Decide',
-//       bgColor: '#7DCFB6',
-//       color: '#FFD79A',
-//       complete: false,
-//       active: false,
-//       data: null
-//     },
-//     {
-//       name: 'Review',
-//       bgColor: '#00B2CA',
-//       color: '#FFAE00',
-//       complete: false,
-//       active: false,
-//       data: null
-//     },
-//     {
-//       name: 'Capitalize',
-//       bgColor: '#1D4E89',
-//       color: '#D15F1E',
-//       complete: false,
-//       active: false,
-//       data: null
-//     }]
-//
-// };
-
-// const questionReducer = (state = questionState, action) => {
-//   switch (action.type) {
-//     case "SET_CURRENT_QUESTION":
-//       state = {
-//         ...state,
-//         currentQuestion: action.payload
-//       };
-//       break;
-//     default:
-//       return state;
-//   }
-//   return state;
-// };
-
-// const clientReducer = (state = clientState, action) => {
-//   switch (action.type) {
-//     case "SET_CLIENT_OBJ":
-//       state = {
-//         ...state,
-//         ...action.payload
-//       };
-//       break;
-//     default:
-//       return state;
-//   }
-//   return state;
-// };
-
-
 const clientState = {
   client: {
     name: null,
@@ -110,6 +15,8 @@ const clientState = {
     email: null,
     phone: null,
     discount: null,
+    bundleName: null,
+    bundleId: null,
     goals: [],
     stats: [
       {
@@ -136,8 +43,6 @@ const clientState = {
     status: null,
     paymentMethod: null,
     total: null,
-    bundleName: null,
-    bundleId: null,
     services: null,
     startDate: null,
     dueDate: null
@@ -154,47 +59,6 @@ const appState = {
   steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize'],
   goals: []
 };
-
-// {
-//   id: 0,
-//     name: 'Update Website',
-//   description: 'This is a description - 0'
-// },
-// {
-//   id: 1,
-//     name: 'Create New Website',
-//   description: 'This is a description - 1'
-// },
-// {
-//   id: 2,
-//     name: 'Update Logo',
-//   description: 'This is a description - 2'
-// },
-// {
-//   id: 3,
-//     name: 'Create New Logo',
-//   description: 'This is a description - 3'
-// },
-// {
-//   id: 4,
-//     name: 'Vectorize Logo',
-//   description: 'This is a description - 4'
-// },
-// {
-//   id: 5,
-//     name: 'Configure Network',
-//   description: 'This is a description - 5'
-// },
-// {
-//   id: 6,
-//     name: 'Smart Home Setup',
-//   description: 'This is a description - 6'
-// },
-// {
-//   id: 7,
-//     name: 'No Goals',
-//   description: 'This is a description - 7'
-// }
 
 const clientReducer = (state = clientState, action) => {
   switch (action.type) {
@@ -246,6 +110,33 @@ const clientReducer = (state = clientState, action) => {
         client: {
           ...state.client,
           discount: action.payload
+        }
+      };
+      break;
+    case "SET_CLIENT_BUNDLE":
+      let name = null;
+      switch(action.payload) {
+        case 0:
+          name = 'Starter';
+          break;
+        case 1:
+          name = 'Accelerator';
+          break;
+        case 2:
+          name = 'Turbo';
+          break;
+        case 3:
+          name = 'Custom';
+          break;
+        default:
+          console.log('fell to the default');
+      }
+      state = {
+        ...state,
+        client: {
+          ...state.client,
+          bundleName: name,
+          bundleId: action.payload
         }
       };
       break;
@@ -303,24 +194,6 @@ const clientReducer = (state = clientState, action) => {
         }
       };
       break;
-    case "SET_PROJECT_BUNDLE_NAME":
-      state = {
-        ...state,
-        project: {
-          ...state.project,
-          bundleName: action.payload
-        }
-      };
-      break;
-    case "SET_PROJECT_BUNDLE_ID":
-      state = {
-        ...state,
-        project: {
-          ...state.project,
-          bundleId: action.payload
-        }
-      };
-      break;
     case "SET_PROJECT_SERVICES":
       state = {
         ...state,
@@ -360,12 +233,6 @@ const appReducer = (state = appState, action) => {
       state = {
         ...state,
         ...action.payload
-      };
-      break;
-    case "SET_CHOSEN_BUNDLE":
-      state = {
-        ...state,
-        chosenBundle: action.payload
       };
       break;
     case "SET_CURRENT_QUESTION":
