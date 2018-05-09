@@ -117,11 +117,15 @@ class Goals extends Component {
   }
   highlightGoal(e) {
     let target = e.target;
+
     while (target.id.indexOf("goal-") === -1) {
       target = target.parentNode;
     }
-    if (this.props.appReducer.currentGoal !== Number(target.id.slice(target.id.search(/\d/g)))) {
-      this.props.setCurrentGoal(Number(target.id.slice(target.id.search(/\d/g))));
+
+    let currentGoal = Number(target.id.slice(target.id.search(/\d/g)));
+
+    if (this.props.appReducer.currentGoal !== currentGoal) {
+      this.props.setCurrentGoal(currentGoal);
     }
 
   }
@@ -162,7 +166,10 @@ class Goals extends Component {
                         return (
                           <div className="stat-info" key={i}>
                             <h4 className="stat-name">{stat.name}</h4>
-                            <div className="stat" style={{width: (stat.value ? stat.value + '%' : '0')}}></div>
+                            <div className="stat-case">
+                              <div className="stat" style={{width: (stat.value ? stat.value + '%' : '0')}}></div>
+                              <div id={"additional-stat-" + i} className="additional-stat"></div>
+                            </div>
                           </div>
                         );
                       })}

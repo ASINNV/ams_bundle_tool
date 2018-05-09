@@ -175,7 +175,8 @@ class ClientInfo extends Component {
     let currentQuestion = this.props.appReducer.currentQuestion;
 
     let charCode = e.which ? e.which : e.keyCode;
-    if (charCode === 13 || charCode === 9) {
+    console.log(charCode);
+    if (charCode === 13 || charCode === 9 || charCode === 40) {
       e.preventDefault();
 
       // RESIZES HEADING AFTER FIRST ANSWER
@@ -236,6 +237,57 @@ class ClientInfo extends Component {
         currentQuestion += 1; // increments current question
         this.props.setCurrentQuestion(currentQuestion); // sets current question
       }
+    } else if (charCode === 38) {
+
+      let currentQuestion = this.props.appReducer.currentQuestion;
+      let couplets = document.getElementsByClassName('qa-couplet');
+      let submitButton = document.getElementById('submit-button-1');
+
+      // SET TARGET TO OUTERMOST PARENT OF ITSELF
+      let target = e.target; // set target variable to event target
+      while (target.id.indexOf("qa-couplet-") === -1) { // until the current element's ID matches the outermost parent's ID
+        target = target.parentNode; // set target equal to its own parent
+      }
+
+      let currentCoupletId = Number(target.id.slice(target.id.search(/\d/g))); // sets currentCoupletId variable to the number in the current couplet's id field
+
+      // SET OPACITY OF SUBMIT BUTTON TO FULL IF ONE STEP AWAY FROM CURRENT QUESTION
+      if (currentCoupletId > couplets.item(couplets.length - 1).id.slice(target.id.search(/\d/g))) { // checks if button is one step away
+        submitButton.style.opacity = fullOpacity; // if so, set button to full opacity
+      } else { // otherwise
+        submitButton.style.opacity = zeroOpacity; // set button to zero opacity
+      }
+
+      if (!isNaN(currentCoupletId)) { // checks if currentCoupletId is a number
+
+        if (currentCoupletId > 0) { // checks if the current question is not the first question
+          let scrollingStream = document.getElementById('scrolling-stream');
+          // ITERATE OVER COUPLETS
+          for (let i = 0; i < couplets.length; i++) {
+
+            // SET OPACITY OF COUPLETS BASED ON THEIR PROXIMITY TO THE CURRENT COUPLET
+            if (i === currentCoupletId - 1) { // if upcoming couplet
+              couplets.item(i).style.opacity = fullOpacity; // set opacity to full
+              couplets.item(i).childNodes[1].childNodes[0].focus(); // focus on its input field
+            } else if (i < currentCoupletId - 2 || i > currentCoupletId) { // if couplet is three before the current couplet or two after
+              couplets.item(i).style.opacity = zeroOpacity; // set opacity to zero
+            } else { // else if one couplet away from current on either side
+              couplets.item(i).style.opacity = lowOpacity; // set opacity to low
+            }
+          }
+          scrollingStream.style.transform = "translateY(" + (45 - ((currentCoupletId - 1)*25)) + "vh)"; // moves questions down one based on number of questions above the current one
+        }
+        // SET CURRENT QUESTION
+        if ((currentQuestion - 1) >= 0) { // checks if there was a question before this one
+          this.props.setCurrentQuestion(currentQuestion - 1); // sets current question in state
+        }
+
+      }
+      // RESETS HEADING TO STARTING POSITION
+      if (document.getElementById('floating-instruction') && currentCoupletId === 1) {
+        let floatingInstruction = document.getElementById('floating-instruction');
+        floatingInstruction.childNodes[0].style.transform = "";
+      }
     }
   }
   editAnswer(e) {
@@ -287,41 +339,6 @@ class ClientInfo extends Component {
           floatingInstruction.childNodes[0].style.transform = "translateY(-20vh) scale(0.5)";
 
         }
-
-        // // SETS CLIENT INFORMATION
-        // let client = this.props.clientReducer.client;
-        // let inputs = document.getElementsByTagName('input'); // grab all inputs on page
-        // let stats = this.props.clientReducer.client.stats;
-        //
-        // if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
-        //   this.props.setClientName(inputs[0].value); // set client name to value of first input field
-        // }
-        // if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
-        //   this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
-        // }
-        // if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
-        //   this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
-        // }
-        // if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
-        //   this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
-        // }
-        // if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
-        //   stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
-        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
-        // }
-        // if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
-        //   stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
-        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
-        // }
-        // if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
-        //   stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
-        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
-        // }
-        // if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
-        //   stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
-        //   this.props.setClientStats(stats); // set client stats to value of fourth input field
-        // }
-
       }
     }
   }
