@@ -14,6 +14,9 @@ import { connect } from "react-redux";
 class Goals extends Component {
 
   componentDidMount(e) {
+    // SET CURRENT STEP TO GOALS (1)
+    this.props.setCurrentStep(1); // sets current step to 1
+
     let clientGoals = this.props.clientReducer.client.goals;
     let cards = document.getElementsByClassName('goal-card');
 
@@ -48,9 +51,6 @@ class Goals extends Component {
     //     step.complete = false;
     //   }
     // });
-
-    // SET CURRENT STEP TO 1
-    this.props.setCurrentStep(1); // sets current step to 1
 
     // let goals = document.getElementById('goals-body');
     // goals.style.transition = "transform .5s ease-in-out";

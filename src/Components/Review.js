@@ -36,8 +36,8 @@ class Review extends Component {
 
   componentDidMount(e) {
 
-    // SET CURRENT STEP TO 1
-    this.props.setCurrentStep(3); // sets current step to 1
+    // SET CURRENT STEP TO REVIEW (3)
+    this.props.setCurrentStep(3); // sets current step to 3
 
   }
 
@@ -256,7 +256,7 @@ class Review extends Component {
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">YOUR GOALS</h3>
-                  <FontAwesomeIcon icon={faPencilAlt} id="1-edit" className="fontawesome-pencil" onClick={this.toggleEditWindow.bind(this)}/>
+                  <Link to="/personalize"><FontAwesomeIcon icon={faPencilAlt} id="1-edit" className="fontawesome-pencil"/></Link>
                 </div>
                 <div id="review-goals-container" className="review-info-item-container" onClick={this.showAllItems.bind(this)}>
                   {/*<p className="review-info-item subdued">Click to view…</p>*/}
@@ -272,15 +272,16 @@ class Review extends Component {
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
-                  <FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil" onClick={this.toggleEditWindow.bind(this)}/>
+                  <Link to="/decide"><FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil"/></Link>
                 </div>
-                <p className="review-info-item flair">{this.props.clientReducer.client.bundle.name || "None"}</p>
+                <p className="review-info-item emphasis">{this.props.clientReducer.client.bundle.name || "None"}</p>
               </div>
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
                 <p className="review-info-item emphasis">${this.props.clientReducer.client.bundle.price || "0"}</p>
+                {/*{this.props.clientReducer.client.bundle.price ? <p className="review-info-item emphasis">${this.props.clientReducer.client.bundle.price}</p> : <p className="review-info-item emphasis">Quote</p>}*/}
               </div>
               <Link to="/capitalize" className="buttons continue-button">
                 <div id="button-1" className="button-bg"></div>

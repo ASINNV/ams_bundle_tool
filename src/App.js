@@ -9,6 +9,7 @@ import ClientInfo from "./Components/ClientInfo";
 import Goals from "./Components/Goals";
 import Bundles from "./Components/Bundles";
 import Review from "./Components/Review";
+import Confirmation from "./Components/Confirmation";
 import NoMatch from "./Components/NoMatch";
 
 // import logo from './assets/ams_logo.png';
@@ -43,83 +44,6 @@ class ProgressBar extends Component {
   componentDidMount() {
   }
   render() {
-    // let sections = [];
-    // console.log(this.props.currentStep);
-    //
-    // let progressBar = document.getElementById('progress-bar');
-    // let currentStep = this.props.currentStep;
-    // this.props.steps.forEach(function(step, i, array) {
-    //   let phase = document.createElement('div');
-    //   phase.id = step.name.split(' ').join('').toLowerCase();
-    //   phase.className = 'phase';
-    //
-    //   if (step.complete) {
-    //     phase.style.backgroundColor = '#37a9ff';
-    //     // phase.style.color = step.color;
-    //   } else {
-    //     phase.style.color = 'rgba(0, 0, 0, 0.25)';
-    //   }
-    //
-    //   let phaseHeader = document.createElement('h1');
-    //   phaseHeader.className = 'phase-header';
-    //   // phaseHeader.innerText = "STEP " + (i + 1) + ": " + step.name;
-    //
-    //   let phaseStep = document.createElement('span');
-    //   phaseStep.className = 'phase-step';
-    //   phaseStep.innerText = "STEP " + (i + 1) + ": ";
-    //
-    //   let phaseName = document.createElement('span');
-    //   phaseName.className = 'phase-name';
-    //   phaseName.innerText = step.name;
-    //
-    //   phaseHeader.appendChild(phaseStep);
-    //   phaseHeader.appendChild(phaseName);
-    //
-    //   let triangle = document.createElement('div');
-    //   triangle.id = 'triangle-' + i;
-    //   triangle.className = 'triangle';
-    //
-    //   if (step.complete && array[i + 1] && array[i + 1].complete === false) {
-    //     triangle.style.borderTop = "40px solid transparent";
-    //     triangle.style.borderLeft = "40px solid transparent";
-    //     triangle.style.borderRight = "40px solid #fff";
-    //     triangle.style.borderBottom = "40px solid #fff";
-    //   } else if (step.complete && array[i + 1]) {
-    //     triangle.style.borderTop = "40px solid transparent";
-    //     triangle.style.borderLeft = "40px solid transparent";
-    //     triangle.style.borderRight = "40px solid #37a9ff";
-    //     triangle.style.borderBottom = "40px solid #37a9ff";
-    //   }
-    //
-    //   if (currentStep === -1) {
-    //     phase.style.width = '20%';
-    //     phaseStep.style.color = "#555";
-    //     phaseName.style.color = "#777";
-    //   } else {
-    //     if (i === currentStep) {
-    //       phase.style.width = '32%';
-    //       phaseStep.style.color = "#37a9ff";
-    //       phaseName.style.color = '#aaa';
-    //       phase.style.background = "#fff";
-    //       triangle.style.borderTop = "40px solid transparent";
-    //       triangle.style.borderLeft = "40px solid transparent";
-    //       triangle.style.borderRight = "40px solid #222";
-    //       triangle.style.borderBottom = "40px solid #222";
-    //     } else if (i < currentStep) {
-    //       phase.style.width = '17%';
-    //       phaseStep.style.color = '#0076d1';
-    //       phaseName.style.color = '#9ed5ff';
-    //     } else {
-    //       phase.style.width = '17%';
-    //       phaseStep.style.color = "#555";
-    //       phaseName.style.color = "#777";
-    //     }
-    //   }
-    //
-    //   phase.appendChild(phaseHeader);
-    //   phase.appendChild(triangle);
-    //   sections.push(phase);
-    // });
     let currentStep = this.props.currentStep;
     let newArray = this.props.steps.map(function(step, i) {
       let firstTriangleClassName = null;
@@ -163,7 +87,7 @@ class ProgressBar extends Component {
           <h1 className="phase-header">
             <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{i<currentStep ? "COMPLETE" : step}</span>
           </h1>
-          {i === currentStep ? <div className={"triangle " + secondTriangleClassName}></div> : null}
+          {i === currentStep && currentStep !== 4 ? <div className={"triangle " + secondTriangleClassName}></div> : null}
         </Link>
       );
 
@@ -285,6 +209,7 @@ class App extends Component {
             <Route exact path="/personalize" component={Goals} />
             <Route exact path="/decide" component={Bundles} />
             <Route exact path="/review" component={Review} />
+            <Route exact path="/capitalize" component={Confirmation} />
             <Route component={NoMatch} />
           </Switch>
 

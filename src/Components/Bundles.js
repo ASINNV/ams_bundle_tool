@@ -15,7 +15,7 @@ class Bundles extends Component {
 
   componentDidMount() {
 
-    // SET CURRENT STEP TO 2
+    // SET CURRENT STEP TO BUNDLES (2)
     this.props.setCurrentStep(2); // sets current step to 2
   }
   setBundle(e) {

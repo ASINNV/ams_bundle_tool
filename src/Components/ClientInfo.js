@@ -74,7 +74,7 @@ class ClientInfo extends Component {
 
   componentDidMount(e) {
 
-    // SET CURRENT STEP TO 0
+    // SET CURRENT STEP TO CLIENT INFO (0)
     this.props.setCurrentStep(0); // sets current step to 0
 
     // SET CURRENT QUESTION TO 0
