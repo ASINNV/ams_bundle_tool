@@ -34,6 +34,9 @@ function getGoals() {
 function getGoalRelations() {
   return db.many('SELECT * FROM goalRelations;');
 }
+function getBundles() {
+  return db.many('SELECT id, name, description, price, discount FROM bundles;');
+}
 
 app.get('/api/goals', function(req, res, next) {
   getGoals()
@@ -54,6 +57,17 @@ app.get('/api/goal-relations', function(req, res, next) {
     .catch(function(err) {
       console.log(err, 'err from GET goal relations block in server code.');
       res.status(500).send('error in GET goal relations block of server code.');
+    });
+});
+
+app.get('/api/bundles', function(req, res, next) {
+  getBundles()
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from GET bundles block in server code.');
+      res.status(500).send('error in GET bundles block of server code.');
     });
 });
 

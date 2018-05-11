@@ -15,8 +15,7 @@ const clientState = {
     email: null,
     phone: null,
     discount: null,
-    bundleName: null,
-    bundleId: null,
+    bundle: {},
     goals: [],
     stats: [
       {
@@ -57,7 +56,8 @@ const appState = {
   currentStep: -1,
   currentGoal: null,
   steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize'],
-  goals: []
+  goals: [],
+  bundles: []
 };
 
 const clientReducer = (state = clientState, action) => {
@@ -114,29 +114,11 @@ const clientReducer = (state = clientState, action) => {
       };
       break;
     case "SET_CLIENT_BUNDLE":
-      let name = null;
-      switch(action.payload) {
-        case 0:
-          name = 'Starter';
-          break;
-        case 1:
-          name = 'Accelerator';
-          break;
-        case 2:
-          name = 'Turbo';
-          break;
-        case 3:
-          name = 'Custom';
-          break;
-        default:
-          console.log('fell to the default');
-      }
       state = {
         ...state,
         client: {
           ...state.client,
-          bundleName: name,
-          bundleId: action.payload
+          bundle: action.payload
         }
       };
       break;
@@ -264,6 +246,12 @@ const appReducer = (state = appState, action) => {
       state = {
         ...state,
         currentGoal: action.payload
+      };
+      break;
+    case "SET_BUNDLES":
+      state = {
+        ...state,
+        bundles: action.payload
       };
       break;
     default:

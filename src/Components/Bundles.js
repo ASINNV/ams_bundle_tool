@@ -19,63 +19,95 @@ class Bundles extends Component {
     this.props.setCurrentStep(2); // sets current step to 2
   }
   setBundle(e) {
+    let bundles = this.props.appReducer.bundles;
+    let bundle = null;
     // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
     let target = e.target;
     while (!target.id || target.id.indexOf("card-") === -1) { // while id doesn't match
       target = target.parentNode; // set target equal to its parent
     }
-    this.props.setClientBundle(Number(target.id.slice(Number(target.id.search(/\d/g)))) - 1);
-    console.log(this.props.clientReducer.client.bundle);
+    switch (Number(target.id.slice(target.id.search(/\d/g)))) {
+      case 1:
+        bundle = bundles[0];
+        break;
+      case 2:
+        bundle = bundles[1];
+        break;
+      case 3:
+        bundle = bundles[2];
+        break;
+      case 4:
+        bundle = bundles[3];
+        break;
+      default:
+        console.log('fell to the default on the bundles.js page.');
+    }
+    this.props.setClientBundle(bundle);
   }
 
   render() {
+    let bundles = this.props.appReducer.bundles;
 
     return (
       <div id="bundles-body" className="page-body">
         <div id="container-0" className="container">
-          <div id="card-1" className="cards">
-            <div id="info-1" className="info">
-              <p className="name">STARTER</p>
-              <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
-                <div id="button-1" className="button-bg"></div>
-                <span id="button-text-1" className="button-text">select</span>
-              </Link>
-            </div>
-          </div>
+          {bundles.map((bundle, i) => {
+            return (
+              <div id={"card-" + bundle.id} className="cards" key={i}>
+                <div id={"info-" + bundle.id} className="info">
+                  <p className="name">{bundle.name.toUpperCase()}</p>
+                  <p className="desc">{bundle.description}</p>
+                  <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
+                    <div id={"button-" + bundle.id} className="button-bg"></div>
+                    <span id={"button-text-" + bundle.id} className="button-text">select</span>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+          {/*<div id="card-1" className="cards">*/}
+            {/*<div id="info-1" className="info">*/}
+              {/*<p className="name">STARTER</p>*/}
+              {/*<p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>*/}
+              {/*<Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>*/}
+                {/*<div id="button-1" className="button-bg"></div>*/}
+                {/*<span id="button-text-1" className="button-text">select</span>*/}
+              {/*</Link>*/}
+            {/*</div>*/}
+          {/*</div>*/}
 
-          <div id="card-2" className="cards">
-            <div id="info-2" className="info">
-              <p className="name">ACCELERATOR</p>
-              <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
-                <div id="button-1" className="button-bg"></div>
-                <span id="button-text-1" className="button-text">select</span>
-              </Link>
-            </div>
-          </div>
+          {/*<div id="card-2" className="cards">*/}
+            {/*<div id="info-2" className="info">*/}
+              {/*<p className="name">ACCELERATOR</p>*/}
+              {/*<p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>*/}
+              {/*<Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>*/}
+                {/*<div id="button-1" className="button-bg"></div>*/}
+                {/*<span id="button-text-1" className="button-text">select</span>*/}
+              {/*</Link>*/}
+            {/*</div>*/}
+          {/*</div>*/}
 
-          <div id="card-3" className="cards">
-            <div id="info-3" className="info">
-              <p className="name">TURBO</p>
-              <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
-                <div id="button-1" className="button-bg"></div>
-                <span id="button-text-1" className="button-text">select</span>
-              </Link>
-            </div>
-          </div>
+          {/*<div id="card-3" className="cards">*/}
+            {/*<div id="info-3" className="info">*/}
+              {/*<p className="name">TURBO</p>*/}
+              {/*<p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>*/}
+              {/*<Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>*/}
+                {/*<div id="button-1" className="button-bg"></div>*/}
+                {/*<span id="button-text-1" className="button-text">select</span>*/}
+              {/*</Link>*/}
+            {/*</div>*/}
+          {/*</div>*/}
 
-          <div id="card-4" className="cards">
-            <div id="info-4" className="info">
-              <p className="name">CUSTOM</p>
-              <p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>
-              <Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>
-                <div id="button-1" className="button-bg"></div>
-                <span id="button-text-1" className="button-text">select</span>
-              </Link>
-            </div>
-          </div>
+          {/*<div id="card-4" className="cards">*/}
+            {/*<div id="info-4" className="info">*/}
+              {/*<p className="name">CUSTOM</p>*/}
+              {/*<p className="desc">This is a description and I don't know if you know what it means but hey, here it is.</p>*/}
+              {/*<Link to="/review" className="buttons" onClick={this.setBundle.bind(this)}>*/}
+                {/*<div id="button-1" className="button-bg"></div>*/}
+                {/*<span id="button-text-1" className="button-text">select</span>*/}
+              {/*</Link>*/}
+            {/*</div>*/}
+          {/*</div>*/}
         </div>
       </div>
     );
@@ -165,10 +197,22 @@ const mapDispatchToProps = (dispatch) => {
         payload: step
       });
     },
+    setGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_GOALS",
+        payload: goalsArray
+      });
+    },
     setCurrentGoal: (goal) => {
       dispatch({
         type: "SET_CURRENT_GOAL",
         payload: goal
+      });
+    },
+    setBundles: (bundles) => {
+      dispatch({
+        type: "SET_CURRENT_GOAL",
+        payload: bundles
       });
     }
 

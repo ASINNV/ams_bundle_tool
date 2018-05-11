@@ -284,10 +284,22 @@ const mapDispatchToProps = (dispatch) => {
         payload: step
       });
     },
+    setGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_GOALS",
+        payload: goalsArray
+      });
+    },
     setCurrentGoal: (goal) => {
       dispatch({
         type: "SET_CURRENT_GOAL",
         payload: goal
+      });
+    },
+    setBundles: (bundles) => {
+      dispatch({
+        type: "SET_CURRENT_GOAL",
+        payload: bundles
       });
     }
 

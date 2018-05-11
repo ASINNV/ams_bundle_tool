@@ -416,7 +416,7 @@ table {
   box-shadow: 0 5px 15px 0 rgba(0,0,0,0.3);
   text-decoration: none;
   color: #37a9ff;
-  transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
 }
 
 
@@ -665,6 +665,8 @@ table {
   height: 100%;
   background-color: #222;
   color: #fff;
+  z-index: 10;
+  transition: transform .5s ease-in-out;
 }
 
 .container {
@@ -858,7 +860,8 @@ table {
 }
 
 #review-goals-container, #review-client-container {
-  height: 37px;
+  height: 45px;
+  padding: 0 10px;
   overflow: hidden;
 }
 #review-client-container {
@@ -870,30 +873,44 @@ table {
 .review-info-item-container {
   position: relative;
   width: 100%;
-  background: #191919;
+  background: #111;
   border-radius: 8px;
 }
 
 .dropper {
   position: absolute;
-  top: 5px;
+  top: 9px;
   right: 10px;
   color: #444;
   font-size: 1.75em;
+}
+.show-all {
+  position: absolute;
+  top: 0;
+  right: 38px;
+  color: #444;
+  background: #111;
+  padding: 15px 0 0 10px;
+}
+
+.dropper, .show-all {
   transition: color .1s ease-in-out, transform .2s ease-in-out;
 }
 
-.review-info-item-container:hover .dropper {
+.review-info-item-container:hover .dropper, .review-info-item-container:hover .show-all {
   color: #1ee9bd;
 }
 
 .review-info-item {
-  padding: 0 5px 5px 5px;
+  padding: 5px 0;
   font-size: 1.5em;
   line-height: 1.5em;
   font-weight: 100;
   color: #fff;
-  border-bottom: 1px solid #222;
+  border-top: 1px solid #222;
+}
+.review-info-item:first-child {
+  border-top: 0;
 }
 .last-review-info-item {
   border-bottom: 0;
@@ -906,6 +923,9 @@ table {
 .alt-flair {
   color: #e9b71f;
 }
+.bad-flair {
+  color: #ff3737;
+}
 
 .subdued {
   color: #777;
@@ -916,6 +936,90 @@ table {
   font-weight: 700;
   /*line-height: 1.5em;*/
   color: #1ee9bd;
+}
+
+#outer-edit-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  /*width: 100%;*/
+  /*transform: translateX(25vw);*/
+  /*transition: transform .2s ease-in-out;*/
+}
+
+#edit-client-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  background: #333;
+  color: #fff;
+  padding: 75px 20px;
+  transform: translateX(25vw);
+  transition: transform .65s ease-in-out, opacity .75s ease-in-out;
+  z-index: 9;
+}
+.edit-heading-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 30px;
+}
+.edit-couplets > .question, .edit-couplets > .answer {
+  margin: 10px;
+}
+.edit-couplets > div > input {
+  outline: none;
+  font-size: 1.25em;
+  width: 100%;
+  color: #1ee9bd;
+  background: #222;
+  padding: 10px;
+  margin: 10px 0 20px 0;
+  border: 0;
+  border-radius: 8px;
+}
+.edit-couplets > div > input::placeholder {
+  color: rgba(255,255,255,0.2);
+}
+.edit-client-container-buttons-container {
+  display: flex;
+}
+.edit-client-container-button {
+  background-color: #fff;
+  padding: 15px;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px 0 rgba(0,0,0,0.3);
+  text-decoration: none;
+  color: #37a9ff;
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
+  cursor: pointer;
+}
+.save-button {
+  width: 75%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.cancel-button {
+  width: 25%;
+  color: #ccc;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.cancel-button:hover {
+  color: #ff3737;
+}
+.edit-client-container-button:hover, .main-button:hover {
+  background: #ddd;
 }
 
 /* REVIEW ELEMENTS - END */
@@ -992,17 +1096,18 @@ table {
 .info {
   position: absolute;
   height: 100vh;
+  width: 100%;
   padding: 40vh 25px 0 25px;
   color: #333;
   transition: padding-top .25s ease-in-out;
 }
 .info .name {
-  font-size: 32px;
+  font-size: 2em;
   font-weight: 400;
   margin-bottom: 20px;
 }
 .info .desc {
-  font-size: 24px;
+  font-size: 1.5em;
   font-weight: 100;
   line-height: 1.4em;
 }

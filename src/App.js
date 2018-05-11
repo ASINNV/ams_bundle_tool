@@ -204,6 +204,8 @@ class ProgressBar extends Component {
 class App extends Component {
   // BEFORE COMPONENT MOUNTS, DO THE FOLLOWING:
   componentWillMount() {
+
+    // FETCH GOALS FROM DATABASE AND SET LOCAL APP GOALS TO THEM
     let setGoals = this.props.setGoals;
     fetch('/api/goals')
       .then(function(res) {
@@ -218,10 +220,20 @@ class App extends Component {
         console.log(err, ' in the app.js apiCaller else block');
       });
 
-    // console.log(goals);
-    // if (goals !== undefined) {
-    //   this.props.setGoals(goals);
-    // }
+    // FETCH BUNDLES FROM DATABASE AND SET LOCAL APP BUNDLES TO THEM
+    let setBundles = this.props.setBundles;
+    fetch('/api/bundles')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(data) {
+        console.log('bundles should be here: ', data);
+        setBundles(data);
+        return data;
+      })
+      .catch(function(err) {
+        console.log(err, ' in the app.js apiCaller else block');
+      });
   }
 
   openMenu(e) {
@@ -331,22 +343,28 @@ const mapDispatchToProps = (dispatch) => {
         payload: discount
       });
     },
+    setClientBundle: (bundle) => {
+      dispatch({
+        type: "SET_CLIENT_BUNDLE",
+        payload: bundle
+      });
+    },
+    setClientGoals: (goals) => {
+      dispatch({
+        type: "SET_CLIENT_GOALS",
+        payload: goals
+      });
+    },
+    setClientStats: (stats) => {
+      dispatch({
+        type: "SET_CLIENT_STATS",
+        payload: stats
+      });
+    },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",
         payload: dataObj
-      });
-    },
-    setGoals: (goalsArray) => {
-      dispatch({
-        type: "SET_GOALS",
-        payload: goalsArray
-      });
-    },
-    setChosenBundle: (bundleNumber) => {
-      dispatch({
-        type: "SET_CHOSEN_BUNDLE",
-        payload: bundleNumber
       });
     },
     setCurrentQuestion: (currentQuestion) => {
@@ -360,7 +378,26 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_CURRENT_STEP",
         payload: step
       });
+    },
+    setGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_GOALS",
+        payload: goalsArray
+      });
+    },
+    setCurrentGoal: (goal) => {
+      dispatch({
+        type: "SET_CURRENT_GOAL",
+        payload: goal
+      });
+    },
+    setBundles: (bundles) => {
+      dispatch({
+        type: "SET_BUNDLES",
+        payload: bundles
+      });
     }
+
   };
 };
 
