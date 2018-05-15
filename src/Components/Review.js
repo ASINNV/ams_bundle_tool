@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { updateClientInfo, fetchWrapper } from "./Functions";
 // import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown';
@@ -14,6 +15,25 @@ import faPencilAlt from '@fortawesome/fontawesome-free-solid/faPencilAlt';
 //   theBody=theDoc.getElementsByTagName('body')[0],
 //   theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
 //   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
+
+// function updateClientInfo(appProps) {
+//   let client = appProps.clientReducer.client;
+//   let inputs = document.getElementsByTagName('INPUT');
+//
+//   // UPDATE EACH CLIENT INFO FIELD INDIVIDUALLY
+//   if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
+//     appProps.setClientName(inputs[0].value); // set client name to value of first input field
+//   }
+//   if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
+//     appProps.setClientCompany(inputs[1].value); // set client company to value of second input field
+//   }
+//   if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
+//     appProps.setClientEmail(inputs[2].value); // set client email to value of third input field
+//   }
+//   if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
+//     appProps.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+//   }
+// }
 
 function phoneFormat(input) {
   input = input.replace(/\D/g, '');
@@ -174,27 +194,33 @@ class Review extends Component {
       editClientContainer.style.opacity = 0;
     }
   }
-  updateClientInfo() {
-    let client = this.props.clientReducer.client;
-    let inputs = document.getElementsByTagName('INPUT');
+  saveClientInfo() {
+    // UPDATES CLIENT INFO
+    updateClientInfo(this.props);
+    // let clientReducer = this.props.clientReducer;
+    // let setClientId = this.props.setClientId;
+    // let appHistory = this.props.history;
+    // let dataObj = {
+    //   company: clientReducer.client.company,
+    //   name: clientReducer.client.name,
+    //   email: clientReducer.client.email,
+    //   phone: clientReducer.client.phone,
+    //   clientId: clientReducer.project.clientId
+    // };
+    // console.log('ANUS ANUS ANUS ANUS', this.props.clientReducer);
+    // fetchWrapper('/api/update-client', {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application.json"
+    //   },
+    //   body: JSON.stringify({name: "adrus", company: "galt", email: "mailhouse", phone: "93843948", id: 74})
+    // }, setClientId, appHistory);
+
+    // INITIALIZE NECESSARY VARIABLES
     let editClientContainer = document.getElementById('edit-client-container');
     let goalsShoulder = document.getElementById('goals-shoulder');
 
-    // UPDATE EACH CLIENT INFO FIELD INDIVIDUALLY
-    if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
-      this.props.setClientName(inputs[0].value); // set client name to value of first input field
-    }
-    if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
-      this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
-    }
-    if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
-      this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
-    }
-    if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
-      this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
-    }
-
-    // CLOSE EDIT WINDOW
+    // CLOSE EDIT WINDOW USING INITIALIZED VARIABLES
     if (editClientContainer.style.transform === '') {
       goalsShoulder.style.transform = 'translateX(25vw)';
       editClientContainer.style.transform = 'translateX(0)';
@@ -225,9 +251,10 @@ class Review extends Component {
     // if (count === 4) {
     //
     // }
-    let myHistory = this.props.history;
+    let appHistory = this.props.history;
     let setProjectId = this.props.setProjectId;
-    fetch('/api/new-project', {
+
+    fetchWrapper('/api/new-project', {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -242,18 +269,36 @@ class Review extends Component {
           price: 7777
         }
       })
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setProjectId(data.id);
-        myHistory.push('/capitalize');
-        console.log('RETURNED FROM CLIENT INSERT: ', data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }, setProjectId, appHistory, "/capitalize");
+
+
+    // fetch('/api/new-project', {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     clientId: clientId,
+    //     name: "Testicles 123",
+    //     paymentMethod: 3,
+    //     bundle: {
+    //       id: 2,
+    //       name: 'Accelerator',
+    //       price: 7777
+    //     }
+    //   })
+    // })
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     setProjectId(data.id);
+    //     myHistory.push('/capitalize');
+    //     console.log('RETURNED FROM CLIENT INSERT: ', data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
 
   render() {
@@ -309,15 +354,16 @@ class Review extends Component {
 
                 </div>
               </div>
-              <div id="" className="info-panel">
-                <div className="goal-sidebar-heading-container">
+              <div id="" className="info-panel no-bottom-margin">
+                <div className="goal-sidebar-heading-container no-bottom-margin">
                   <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
                   <Link to="/decide"><FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil"/></Link>
                 </div>
                 <p className="review-info-item emphasis">{this.props.clientReducer.project.bundle.name || "None"}</p>
+                <hr/>
               </div>
               <div id="" className="info-panel">
-                <div className="goal-sidebar-heading-container">
+                <div className="goal-sidebar-heading-container ten-bottom-margin">
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
                 <p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price || "0"}</p>
@@ -369,7 +415,7 @@ class Review extends Component {
           </div>
           <div className="edit-client-container-buttons-container">
             <p className="cancel-button edit-client-container-button" onClick={this.toggleEditWindow.bind(this)}>Cancel</p>
-            <p className="save-button edit-client-container-button" onClick={this.updateClientInfo.bind(this)}>Save</p>
+            <p className="save-button edit-client-container-button" onClick={this.saveClientInfo.bind(this)}>Save</p>
           </div>
         </div>
       </div>

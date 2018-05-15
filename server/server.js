@@ -39,6 +39,22 @@ function insertProject(dataObj) {
 function insertClient(dataObj) {
   return db.one('INSERT INTO clients (company_name, contact_name, email, phone) VALUES (${company}, ${name}, ${email}, ${phone}) RETURNING id;', dataObj);
 }
+function updateName(dataObj) {
+  return db.one('UPDATE clients SET contact_name = ${name} WHERE id = ${clientId} RETURNING id;', dataObj);
+}
+function updateCompany(dataObj) {
+  return db.one('UPDATE clients SET company_name = ${company} WHERE id = ${clientId} RETURNING id;', dataObj);
+}
+function updateEmail(dataObj) {
+  return db.one('UPDATE clients SET email = ${email} WHERE id = ${clientId} RETURNING id;', dataObj);
+}
+function updatePhone(dataObj) {
+  return db.one('UPDATE clients SET phone = ${phone} WHERE id = ${clientId} RETURNING id;', dataObj);
+}
+
+// function updateClient(dataObj) {
+//   return db.one('UPDATE clients SET company_name = ${company}, contact_name = ${name}, email = ${email}, phone = ${phone} WHERE id = ${clientId} RETURNING id;', dataObj);
+// }
 
 
 app.get('/api/goals', function(req, res, next) {
@@ -105,6 +121,56 @@ app.post('/api/new-client', function(req, res, next) {
       res.status(500).send('err from POST client block of server code.');
     });
 });
+app.post('/api/update-name', function(req, res, next) {
+  updateName(req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from POST update client block of server code.');
+      res.status(500).send('err from POST update client block of server code.');
+    });
+});
+app.post('/api/update-company', function(req, res, next) {
+  updateCompany(req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from POST update client block of server code.');
+      res.status(500).send('err from POST update client block of server code.');
+    });
+});
+app.post('/api/update-email', function(req, res, next) {
+  updateEmail(req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from POST update client block of server code.');
+      res.status(500).send('err from POST update client block of server code.');
+    });
+});
+app.post('/api/update-phone', function(req, res, next) {
+  updatePhone(req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from POST update client block of server code.');
+      res.status(500).send('err from POST update client block of server code.');
+    });
+});
+// app.post('/api/update-client', function(req, res, next) {
+//   updateClient(req.body)
+//     .then(function(data) {
+//       res.send(data);
+//     })
+//     .catch(function(err) {
+//       console.log(err, 'err from POST update client block of server code.');
+//       res.status(500).send('err from POST update client block of server code.');
+//     });
+// });
 
 
 const server = http.createServer(app);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchWrapper } from "./Functions";
 
 const lowOpacity = 0.125;
 const zeroOpacity = 0;
@@ -53,6 +54,67 @@ function phoneFormat(input) {
     input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6) + '-' + input.substring(6, 10);
   }
   return input;
+}
+
+function handleInfoOnLeave(path, appProps) {
+  // SETS CLIENT INFORMATION
+  // let client = this.props.clientReducer.client;
+  let dataObj = {}; // object for client details going to the database
+  // let count = 0; // count to see if client object is full and ready to send to the database
+  let inputs = document.getElementsByTagName('input'); // grab all inputs on page
+  let stats = appProps.clientReducer.stats;
+  let appHistory = appProps.history;
+  let meetsRequirements = true;
+
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].value.length <= 0) {
+      meetsRequirements = false;
+    }
+  }
+
+  if (meetsRequirements === true) {
+    appProps.setClientName(inputs[0].value); // set client name to value of first input field
+    // SET NAME ON dataObj AND INCREMENT COUNT VARIABLE
+    dataObj.name = inputs[0].value;
+
+    appProps.setClientCompany(inputs[1].value); // set client company to value of second input field
+    // SET COMPANY ON dataObj AND INCREMENT COUNT VARIABLE
+    dataObj.company = inputs[1].value;
+
+    appProps.setClientEmail(inputs[2].value); // set client email to value of third input field
+    // SET EMAIL ON dataObj AND INCREMENT COUNT VARIABLE
+    dataObj.email = inputs[2].value;
+
+    appProps.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+    // SET PHONE ON dataObj AND INCREMENT COUNT VARIABLE
+    dataObj.phone = inputs[3].value;
+
+    stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+    appProps.setClientStats(stats); // set client stats to value of fourth input field
+
+    stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+    appProps.setClientStats(stats); // set client stats to value of fourth input field
+
+    stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+    appProps.setClientStats(stats); // set client stats to value of fourth input field
+
+    stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+    appProps.setClientStats(stats); // set client stats to value of fourth input field
+
+    let setClientId = appProps.setClientId;
+    console.log('appProps.clientReducer.client', dataObj);
+
+    fetchWrapper('/api/new-client', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(dataObj)
+    }, setClientId, appHistory, "/personalize");
+
+  } else {
+    console.log("DON'T FORGET THE REQUIRED FIELD FUNCTIONALITY HERE");
+  }
 }
 
 class ClientInfo extends Component {
@@ -133,80 +195,139 @@ class ClientInfo extends Component {
     // apiCaller('/api/clients');
   }
 
-  componentWillUnmount() {
-    // SETS CLIENT INFORMATION
-    let client = this.props.clientReducer.client;
-    let dataObj = {}; // object for client details going to the database
-    let count = 0; // count to see if client object is full and ready to send to the database
-    let inputs = document.getElementsByTagName('input'); // grab all inputs on page
-    let stats = this.props.clientReducer.stats;
+  // componentWillUnmount() {
+    // // SETS CLIENT INFORMATION
+    // // let client = this.props.clientReducer.client;
+    // let dataObj = {}; // object for client details going to the database
+    // // let count = 0; // count to see if client object is full and ready to send to the database
+    // let inputs = document.getElementsByTagName('input'); // grab all inputs on page
+    // let stats = this.props.clientReducer.stats;
+    // let meetsRequirements = true;
+    //
+    // for (let i = 0; i < inputs.length; i++) {
+    //   if (inputs[i].value.length <= 0) {
+    //     meetsRequirements = false;
+    //   }
+    // }
+    //
+    // if (meetsRequirements === true) {
+    //   this.props.setClientName(inputs[0].value); // set client name to value of first input field
+    //   // SET NAME ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.name = inputs[0].value;
+    //
+    //   this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
+    //   // SET COMPANY ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.company = inputs[1].value;
+    //
+    //   this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
+    //   // SET EMAIL ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.email = inputs[2].value;
+    //
+    //   this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+    //   // SET PHONE ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.phone = inputs[3].value;
+    //
+    //   stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    //
+    //   stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    //
+    //   stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    //
+    //   stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    //
+    //   let setClientId = this.props.setClientId;
+    //   console.log('this.props.clientReducer.client', dataObj);
+    //   fetch('/api/new-client', {
+    //     method: "POST",
+    //     headers: {
+    //       "content-type": "application/json"
+    //     },
+    //     body: JSON.stringify(dataObj)
+    //   })
+    //     .then((res) => {
+    //       return res.json();
+    //     })
+    //     .then((data) => {
+    //       setClientId(data.id);
+    //       console.log('RETURNED FROM CLIENT INSERT: ', data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // } else {
+    //   console.log("DON'T FORGET THE REQUIRED FIELD FUNCTIONALITY HERE");
+    // }
 
-    if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
-      this.props.setClientName(inputs[0].value); // set client name to value of first input field
-      // SET NAME ON dataObj AND INCREMENT COUNT VARIABLE
-      dataObj.name = inputs[0].value;
-      ++count;
-    }
-    if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
-      this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
-      // SET COMPANY ON dataObj AND INCREMENT COUNT VARIABLE
-      dataObj.company = inputs[1].value;
-      ++count;
-    }
-    if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
-      this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
-      // SET EMAIL ON dataObj AND INCREMENT COUNT VARIABLE
-      dataObj.email = inputs[2].value;
-      ++count;
-
-    }
-    if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
-      this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
-      // SET PHONE ON dataObj AND INCREMENT COUNT VARIABLE
-      dataObj.phone = inputs[3].value;
-      ++count;
-    }
-    if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
-      stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
-      this.props.setClientStats(stats); // set client stats to value of fourth input field
-    }
-    if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
-      stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
-      this.props.setClientStats(stats); // set client stats to value of fourth input field
-    }
-    if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
-      stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
-      this.props.setClientStats(stats); // set client stats to value of fourth input field
-    }
-    if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
-      stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
-      this.props.setClientStats(stats); // set client stats to value of fourth input field
-    }
+    // if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
+    //   this.props.setClientName(inputs[0].value); // set client name to value of first input field
+    //   // SET NAME ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.name = inputs[0].value;
+    //   ++count;
+    // }
+    // if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
+    //   this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
+    //   // SET COMPANY ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.company = inputs[1].value;
+    //   ++count;
+    // }
+    // if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
+    //   this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
+    //   // SET EMAIL ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.email = inputs[2].value;
+    //   ++count;
+    //
+    // }
+    // if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
+    //   this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+    //   // SET PHONE ON dataObj AND INCREMENT COUNT VARIABLE
+    //   dataObj.phone = inputs[3].value;
+    //   ++count;
+    // }
+    // if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
+    //   stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    // }
+    // if (inputs[5].value.length > 0 && inputs[5].value !== client.stats) {
+    //   stats[1].value = Number(inputs[5].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    // }
+    // if (inputs[6].value.length > 0 && inputs[6].value !== client.stats) {
+    //   stats[2].value = Number(inputs[6].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    // }
+    // if (inputs[7].value.length > 0 && inputs[7].value !== client.stats) {
+    //   stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
+    //   this.props.setClientStats(stats); // set client stats to value of fourth input field
+    // }
 
     // CHECK COUNT TO VERIFY FULL dataObj, THEN SEND dataObj TO DATABASE
-    if (count === 4) {
-      let setClientId = this.props.setClientId;
-      console.log('this.props.clientReducer.client', dataObj);
-      fetch('/api/new-client', {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify(dataObj)
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setClientId(data.id);
-          console.log('RETURNED FROM CLIENT INSERT: ', data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    // if (count === 4) {
+    //   let setClientId = this.props.setClientId;
+    //   console.log('this.props.clientReducer.client', dataObj);
+    //   fetch('/api/new-client', {
+    //     method: "POST",
+    //     headers: {
+    //       "content-type": "application/json"
+    //     },
+    //     body: JSON.stringify(dataObj)
+    //   })
+    //     .then((res) => {
+    //       return res.json();
+    //     })
+    //     .then((data) => {
+    //       setClientId(data.id);
+    //       console.log('RETURNED FROM CLIENT INSERT: ', data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
 
-  }
+  // }
 
 
   nextQuestion(e) {
@@ -233,8 +354,9 @@ class ClientInfo extends Component {
 
         if (currentQuestion === (couplets.length - 1)) {
 
-          this.props.setCurrentStep(1);
-          this.props.history.push('/personalize');
+          // this.props.setCurrentStep(1);
+          handleInfoOnLeave('/personalize', this.props);
+          // this.props.history.push('/personalize');
           return false;
 
         }
@@ -418,8 +540,9 @@ class ClientInfo extends Component {
 
   }
 
-  nextPhase() {
-    this.props.setCurrentStep(1);
+  nextPhase(e) {
+    e.preventDefault();
+    handleInfoOnLeave('/personalize', this.props);
 
   }
 
