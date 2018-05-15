@@ -48,46 +48,46 @@ class ProgressBar extends Component {
     let newArray = this.props.steps.map(function(step, i) {
       let firstTriangleClassName = null;
       let secondTriangleClassName = null;
-      let phaseClassName = null;
+      let phaseClassName = "";
       let phaseStepClassName = null;
       let phaseNameClassName = null;
 
 
       if (currentStep === -1) {
-        firstTriangleClassName = 'incomplete-first-triangle';
-        secondTriangleClassName = 'incomplete-second-triangle';
+        firstTriangleClassName = ' incomplete-first-triangle';
+        secondTriangleClassName = ' incomplete-second-triangle';
         // phaseClassName = 'incomplete-phase';
-        phaseStepClassName = 'incomplete-phase-step';
-        phaseNameClassName = 'incomplete-phase-name';
+        phaseStepClassName = ' incomplete-phase-step';
+        phaseNameClassName = ' incomplete-phase-name';
       } else {
         if (i < currentStep) {
-          firstTriangleClassName = 'complete-first-triangle';
-          secondTriangleClassName = 'complete-second-triangle';
-          phaseClassName = 'complete-phase';
-          phaseStepClassName = 'complete-phase-step';
-          phaseNameClassName = 'complete-phase-name';
+          firstTriangleClassName = ' complete-first-triangle';
+          secondTriangleClassName = ' complete-second-triangle';
+          phaseClassName = ' complete-phase';
+          phaseStepClassName = ' complete-phase-step';
+          phaseNameClassName = ' complete-phase-name';
         } else if (i === currentStep) {
-          firstTriangleClassName = 'active-first-triangle';
-          secondTriangleClassName = 'active-second-triangle';
-          phaseClassName = 'active-phase';
-          phaseStepClassName = 'active-phase-step';
-          phaseNameClassName = 'active-phase-name';
+          firstTriangleClassName = ' active-first-triangle';
+          secondTriangleClassName = ' active-second-triangle';
+          phaseClassName = ' active-phase';
+          phaseStepClassName = ' active-phase-step';
+          phaseNameClassName = ' active-phase-name';
         } else {
-          firstTriangleClassName = 'incomplete-first-triangle';
-          secondTriangleClassName = 'incomplete-second-triangle';
-          phaseClassName = 'incomplete-phase';
-          phaseStepClassName = 'incomplete-phase-step';
-          phaseNameClassName = 'incomplete-phase-name';
+          firstTriangleClassName = ' incomplete-first-triangle';
+          secondTriangleClassName = ' incomplete-second-triangle';
+          phaseClassName = ' incomplete-phase';
+          phaseStepClassName = ' incomplete-phase-step';
+          phaseNameClassName = ' incomplete-phase-name';
         }
       }
 
       return (
-        <Link to={"/" + step.toLowerCase()} id={step} className={"phase " + phaseClassName} key={i}>
-          {(i === currentStep && i !== 0) ? <div className={"triangle " + firstTriangleClassName}></div> : null}
+        <Link to={"/" + step.toLowerCase()} id={step} className={"phase" + phaseClassName} key={i}>
+          {(i === currentStep && i !== 0) ? <div className={"triangle" + firstTriangleClassName}></div> : null}
           <h1 className="phase-header">
-            <span className={"phase-step " + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name " + phaseNameClassName}>{i<currentStep ? "COMPLETE" : step}</span>
+            <span className={"phase-step" + phaseStepClassName}>STEP {i + 1}: </span><span className={"phase-name" + phaseNameClassName}>{i<currentStep ? "COMPLETE" : step}</span>
           </h1>
-          {i === currentStep && currentStep !== 4 ? <div className={"triangle " + secondTriangleClassName}></div> : null}
+          {i === currentStep && currentStep !== 4 ? <div className={"triangle" + secondTriangleClassName}></div> : null}
         </Link>
       );
 

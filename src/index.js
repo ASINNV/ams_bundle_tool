@@ -13,39 +13,37 @@ const clientState = {
     name: null,
     company: null,
     email: null,
-    phone: null,
-    discount: null,
-    bundle: {},
-    goals: [],
-    stats: [
-      {
-        name: 'Sales',
-        value: null
-      },
-      {
-        name: 'Reach',
-        value: null
-      },
-      {
-        name: 'Accessibility',
-        value: null
-      },
-      {
-        name: 'Modernity',
-        value: null
-      }
-      ]
+    phone: null
   },
   project: {
+    id: null,
     clientId: null,
     name: null,
-    status: null,
     paymentMethod: null,
-    total: null,
+    bundle: {},
     services: null,
     startDate: null,
     dueDate: null
   },
+  goals: [],
+  stats: [
+    {
+      name: 'Sales',
+      value: null
+    },
+    {
+      name: 'Reach',
+      value: null
+    },
+    {
+      name: 'Accessibility',
+      value: null
+    },
+    {
+      name: 'Modernity',
+      value: null
+    }
+  ]
 
 };
 
@@ -116,8 +114,8 @@ const clientReducer = (state = clientState, action) => {
     case "SET_CLIENT_BUNDLE":
       state = {
         ...state,
-        client: {
-          ...state.client,
+        project: {
+          ...state.project,
           bundle: action.payload
         }
       };
@@ -134,9 +132,15 @@ const clientReducer = (state = clientState, action) => {
     case "SET_CLIENT_GOALS":
       state = {
         ...state,
-        client: {
-          ...state.client,
-          goals: action.payload
+        goals: action.payload
+      };
+      break;
+    case "SET_CLIENT_ID":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          clientId: action.payload
         }
       };
       break;
@@ -146,15 +150,6 @@ const clientReducer = (state = clientState, action) => {
         project: {
           ...state.project,
           name: action.payload
-        }
-      };
-      break;
-    case "SET_PROJECT_STATUS":
-      state = {
-        ...state,
-        project: {
-          ...state.project,
-          status: action.payload
         }
       };
       break;
@@ -200,6 +195,15 @@ const clientReducer = (state = clientState, action) => {
         project: {
           ...state.project,
           dueDate: action.payload
+        }
+      };
+      break;
+    case "SET_PROJECT_ID":
+      state = {
+        ...state,
+        project: {
+          ...state.project,
+          id: action.payload
         }
       };
       break;

@@ -216,6 +216,46 @@ class Review extends Component {
     }
   }
 
+  createProject(e) {
+    e.preventDefault();
+    // let dataObj = {}; // object for project details going to the database
+    // let count = 0; // count to see if project object is full and ready to send to the database
+    let clientId = this.props.clientReducer.project.clientId;
+    // CHECK COUNT TO VERIFY FULL dataObj, THEN SEND dataObj TO DATABASE
+    // if (count === 4) {
+    //
+    // }
+    let myHistory = this.props.history;
+    let setProjectId = this.props.setProjectId;
+    fetch('/api/new-project', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        clientId: clientId,
+        name: "Testicles 123",
+        paymentMethod: 3,
+        bundle: {
+          id: 2,
+          name: 'Accelerator',
+          price: 7777
+        }
+      })
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setProjectId(data.id);
+        myHistory.push('/capitalize');
+        console.log('RETURNED FROM CLIENT INSERT: ', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   render() {
     let name = this.props.clientReducer.client.name || null;
     let company = this.props.clientReducer.client.company || null;
@@ -260,12 +300,12 @@ class Review extends Component {
                 </div>
                 <div id="review-goals-container" className="review-info-item-container" onClick={this.showAllItems.bind(this)}>
                   {/*<p className="review-info-item subdued">Click to view…</p>*/}
-                  {this.props.clientReducer.client.goals.length > 0 ? this.props.clientReducer.client.goals.map(function(goal, i, goals) {
+                  {this.props.clientReducer.goals.length > 0 ? this.props.clientReducer.goals.map(function(goal, i, goals) {
                     return <p key={i} className="review-info-item flair">{goal.name}</p>;
                   }) : null}
 
-                  {this.props.clientReducer.client.goals.length > 1 ? <p id="goal-show-all" className="show-all">SHOW ALL</p> : false}
-                  {this.props.clientReducer.client.goals.length > 1 ? <FontAwesomeIcon icon={faAngleDown} id="goal-dropdown" className="dropper"/> : false}
+                  {this.props.clientReducer.goals.length > 1 ? <p id="goal-show-all" className="show-all">SHOW ALL</p> : false}
+                  {this.props.clientReducer.goals.length > 1 ? <FontAwesomeIcon icon={faAngleDown} id="goal-dropdown" className="dropper"/> : false}
 
                 </div>
               </div>
@@ -274,16 +314,16 @@ class Review extends Component {
                   <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
                   <Link to="/decide"><FontAwesomeIcon icon={faPencilAlt} id="2-edit" className="fontawesome-pencil"/></Link>
                 </div>
-                <p className="review-info-item emphasis">{this.props.clientReducer.client.bundle.name || "None"}</p>
+                <p className="review-info-item emphasis">{this.props.clientReducer.project.bundle.name || "None"}</p>
               </div>
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
-                <p className="review-info-item emphasis">${this.props.clientReducer.client.bundle.price || "0"}</p>
-                {/*{this.props.clientReducer.client.bundle.price ? <p className="review-info-item emphasis">${this.props.clientReducer.client.bundle.price}</p> : <p className="review-info-item emphasis">Quote</p>}*/}
+                <p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price || "0"}</p>
+                {/*{this.props.clientReducer.project.bundle.price ? <p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price}</p> : <p className="review-info-item emphasis">Quote</p>}*/}
               </div>
-              <Link to="/capitalize" className="buttons continue-button">
+              <Link to="/capitalize" className="buttons continue-button" onClick={this.createProject.bind(this)}>
                 <div id="button-1" className="button-bg"></div>
                 <p id="button-text-1" className="button-text"><span role="img" aria-label="lock">&#x1f512;</span> BUY NOW &rarr;</p>
               </Link>
@@ -400,6 +440,18 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CLIENT_STATS",
         payload: stats
+      });
+    },
+    setClientId: (id) => {
+      dispatch({
+        type: "SET_CLIENT_ID",
+        payload: id
+      });
+    },
+    setProjectId: (id) => {
+      dispatch({
+        type: "SET_PROJECT_ID",
+        payload: id
       });
     },
     setAppData: (dataObj) => {

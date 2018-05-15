@@ -188,13 +188,15 @@ table {
 .text-buttons {
   cursor: pointer;
 }
+#foundation-header, #pb-hover-area {
+  transition: transform .5s ease-in-out;
+}
 #pb-hover-area {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 75px;
-  transition: transform .5s ease-in-out;
   z-index: 100;
 }
 #progress-bar {
@@ -209,7 +211,7 @@ table {
   background: #222;
   /*opacity: .5;*/
   overflow: hidden;
-  cursor: default;
+  cursor: default !important;
 
   /*margin: 0 20px;*/
   /*border-radius: 8px;*/
@@ -227,6 +229,7 @@ table {
   position: relative;
   display: inline-block;
   width: 20%;
+  cursor: default;
   /* padding at 7px to center the element in the 14px of space allowed to it when the progress bar is hidden */
   /*padding: 7px;*/
   font-weight: 600;
@@ -254,8 +257,9 @@ table {
 .phase-header {
   display: inline-block;
   vertical-align: top;
-  padding-top: 7px;
-  padding-left: 7px;
+  margin-top: 7px;
+  margin-left: 7px;
+  cursor: pointer !important;
 }
 
 .active-phase {

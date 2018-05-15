@@ -17,7 +17,7 @@ class Goals extends Component {
     // SET CURRENT STEP TO GOALS (1)
     this.props.setCurrentStep(1); // sets current step to 1
 
-    let clientGoals = this.props.clientReducer.client.goals;
+    let clientGoals = this.props.clientReducer.goals;
     let cards = document.getElementsByClassName('goal-card');
 
     for (let i = 0; i < cards.length; i++) {
@@ -67,7 +67,7 @@ class Goals extends Component {
   addGoal(e) {
     let appReducer = this.props.appReducer;
     let currentGoal = appReducer.currentGoal;
-    let clientGoals = this.props.clientReducer.client.goals;
+    let clientGoals = this.props.clientReducer.goals;
 
     // SET TARGET EQUAL TO UPPERMOST PARENT
     let target = e.target;
@@ -162,7 +162,7 @@ class Goals extends Component {
                       <h3 className="goal-sidebar-heading">COMPANY STATS</h3>
                     </div>
                     <div id="graph">
-                      {this.props.clientReducer.client.stats.map((stat, i) => {
+                      {this.props.clientReducer.stats.map((stat, i) => {
                         return (
                           <div className="stat-info" key={i}>
                             <h4 className="stat-name">{stat.name}</h4>
@@ -264,6 +264,18 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CLIENT_STATS",
         payload: stats
+      });
+    },
+    setClientId: (id) => {
+      dispatch({
+        type: "SET_CLIENT_ID",
+        payload: id
+      });
+    },
+    setProjectId: (id) => {
+      dispatch({
+        type: "SET_PROJECT_ID",
+        payload: id
       });
     },
     setAppData: (dataObj) => {

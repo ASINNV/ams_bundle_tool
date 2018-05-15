@@ -123,6 +123,18 @@ const mapDispatchToProps = (dispatch) => {
         payload: stats
       });
     },
+    setClientId: (id) => {
+      dispatch({
+        type: "SET_CLIENT_ID",
+        payload: id
+      });
+    },
+    setProjectId: (id) => {
+      dispatch({
+        type: "SET_PROJECT_ID",
+        payload: id
+      });
+    },
     setAppData: (dataObj) => {
       dispatch({
         type: "SET_APP_DATA",

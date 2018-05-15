@@ -21,10 +21,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-
-function insertProject(dataObj) {
-  return db.one('INSERT INTO projects (name, total) VALUES (${name}, ${total}) RETURNING id;', dataObj);
-}
 function getClients() {
   return db.many('SELECT * FROM clients;');
 }
@@ -37,6 +33,13 @@ function getGoalRelations() {
 function getBundles() {
   return db.many('SELECT id, name, description, price, discount FROM bundles;');
 }
+function insertProject(dataObj) {
+  return db.one('INSERT INTO projects (client_id, name, payment_method, total, bundle_name, bundle_id) VALUES (${clientId}, ${name}, ${paymentMethod}, ${bundle.price}, ${bundle.name}, ${bundle.id}) RETURNING id;', dataObj);
+}
+function insertClient(dataObj) {
+  return db.one('INSERT INTO clients (company_name, contact_name, email, phone) VALUES (${company}, ${name}, ${email}, ${phone}) RETURNING id;', dataObj);
+}
+
 
 app.get('/api/goals', function(req, res, next) {
   getGoals()
@@ -90,6 +93,16 @@ app.post('/api/new-project', function(req, res, next) {
     .catch(function(err) {
       console.log(err, 'err from POST project block of server code.');
       res.status(500).send('err from POST project block of server code.');
+    });
+});
+app.post('/api/new-client', function(req, res, next) {
+  insertClient(req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from POST client block of server code.');
+      res.status(500).send('err from POST client block of server code.');
     });
 });
 

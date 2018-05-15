@@ -93,24 +93,24 @@ class ClientInfo extends Component {
     // this.props.setAppData(appData);
 
     // let submitButton = document.getElementById('submit-button-1');
-    let clientData = this.props.clientReducer.client;
+    let clientData = this.props.clientReducer;
 
     let inputs = document.getElementsByTagName('input');
 
     for (let i = 0; i < inputs.length; i++) {
       switch (inputs.item(i).name) {
         case 'name':
-          inputs.item(i).value = clientData.name;
+          inputs.item(i).value = clientData.client.name;
           inputs.item(i).focus();
           break;
         case 'company':
-          inputs.item(i).value = clientData.company;
+          inputs.item(i).value = clientData.client.company;
           break;
         case 'email':
-          inputs.item(i).value = clientData.email;
+          inputs.item(i).value = clientData.client.email;
           break;
         case 'phone':
-          inputs.item(i).value = clientData.phone;
+          inputs.item(i).value = clientData.client.phone;
           break;
         case 'sales':
           inputs.item(i).value = clientData.stats[0].value;
@@ -136,20 +136,35 @@ class ClientInfo extends Component {
   componentWillUnmount() {
     // SETS CLIENT INFORMATION
     let client = this.props.clientReducer.client;
+    let dataObj = {}; // object for client details going to the database
+    let count = 0; // count to see if client object is full and ready to send to the database
     let inputs = document.getElementsByTagName('input'); // grab all inputs on page
-    let stats = this.props.clientReducer.client.stats;
+    let stats = this.props.clientReducer.stats;
 
     if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
       this.props.setClientName(inputs[0].value); // set client name to value of first input field
+      // SET NAME ON dataObj AND INCREMENT COUNT VARIABLE
+      dataObj.name = inputs[0].value;
+      ++count;
     }
     if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
       this.props.setClientCompany(inputs[1].value); // set client company to value of second input field
+      // SET COMPANY ON dataObj AND INCREMENT COUNT VARIABLE
+      dataObj.company = inputs[1].value;
+      ++count;
     }
     if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
       this.props.setClientEmail(inputs[2].value); // set client email to value of third input field
+      // SET EMAIL ON dataObj AND INCREMENT COUNT VARIABLE
+      dataObj.email = inputs[2].value;
+      ++count;
+
     }
     if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
       this.props.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
+      // SET PHONE ON dataObj AND INCREMENT COUNT VARIABLE
+      dataObj.phone = inputs[3].value;
+      ++count;
     }
     if (inputs[4].value.length > 0 && inputs[4].value !== client.stats) {
       stats[0].value = Number(inputs[4].value.replace(/\D/g, ''));
@@ -167,6 +182,30 @@ class ClientInfo extends Component {
       stats[3].value = Number(inputs[7].value.replace(/\D/g, ''));
       this.props.setClientStats(stats); // set client stats to value of fourth input field
     }
+
+    // CHECK COUNT TO VERIFY FULL dataObj, THEN SEND dataObj TO DATABASE
+    if (count === 4) {
+      let setClientId = this.props.setClientId;
+      console.log('this.props.clientReducer.client', dataObj);
+      fetch('/api/new-client', {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(dataObj)
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setClientId(data.id);
+          console.log('RETURNED FROM CLIENT INSERT: ', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
   }
 
 
@@ -555,6 +594,18 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CLIENT_STATS",
         payload: stats
+      });
+    },
+    setClientId: (id) => {
+      dispatch({
+        type: "SET_CLIENT_ID",
+        payload: id
+      });
+    },
+    setProjectId: (id) => {
+      dispatch({
+        type: "SET_PROJECT_ID",
+        payload: id
       });
     },
     setAppData: (dataObj) => {

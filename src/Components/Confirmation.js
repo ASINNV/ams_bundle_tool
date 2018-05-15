@@ -22,10 +22,35 @@ class Review extends Component {
   }
 
   handlePrint() {
+    // HIDES PROGRESS BAR AND FOUNDATION HEADER TO ELIMINATE NAVIGATION POSSIBILITY
+    let foundationHeader = document.getElementById('foundation-header');
+    let pbHoverArea = document.getElementById('pb-hover-area');
+    let printButtonContainer = document.getElementById('print-button-container');
+    let foundationHeaderRect = foundationHeader.getBoundingClientRect();
+    let pbRect = pbHoverArea.getBoundingClientRect();
+    foundationHeader.style.transform = 'translateY(-' + foundationHeaderRect.height + 'px)';
+    pbHoverArea.style.transform = 'translateY(' + pbRect.height + 'px)';
+    printButtonContainer.style.opacity = '0';
+    setTimeout(function() {
+      foundationHeader.style.transform = '';
+      pbHoverArea.style.transform = '';
+      printButtonContainer.style.opacity = '';
+      // foundation.removeChild(pbHoverArea);
+    }, 1);
     window.print();
   }
 
   render() {
+    let date = new Date();
+    let newdate = new Date(date);
+
+    newdate.setDate(newdate.getDate() + 14);
+
+    let dd = newdate.getDate();
+    let mm = newdate.getMonth() + 1;
+    let y = newdate.getFullYear();
+
+    let someFormattedDate = mm + '/' + dd + '/' + y;
     return (
       <div id="goals-body" className="page-body">
         <div id="goals-torso">
@@ -36,37 +61,37 @@ class Review extends Component {
 
             <div id="" className="info-section">
               <div className="info-panel">
-                <h1 className="heading noselect">Important Details</h1>
+                <h1 className="heading noselect">Project Details</h1>
               </div>
               <div id="" className="confirmation-info-panel">
                 <div className="confirmation-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">PROJECT ID</h3>
                 </div>
-                <p className="confirmation-info-item">23</p>
+                <p className="confirmation-info-item">{this.props.clientReducer.project.id || "N/A"}</p>
               </div>
               <div id="" className="confirmation-info-panel">
                 <div className="confirmation-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">CLIENT ID</h3>
                 </div>
-                <p className="confirmation-info-item">97</p>
+                <p className="confirmation-info-item">{this.props.clientReducer.project.clientId || "N/A"}</p>
               </div>
               <div id="" className="confirmation-info-panel">
                 <div className="confirmation-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">YOUR BUNDLE</h3>
                 </div>
-                <p className="confirmation-info-item">{this.props.clientReducer.client.bundle.name || "None"}</p>
+                <p className="confirmation-info-item">{this.props.clientReducer.project.bundle.name || "N/A"}</p>
               </div>
               <div id="" className="confirmation-info-panel">
                 <div className="confirmation-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
-                <p className="confirmation-info-item">${this.props.clientReducer.client.bundle.price || "0"}</p>
+                <p className="confirmation-info-item">${this.props.clientReducer.project.bundle.price || "0"}</p>
               </div>
               <div id="" className="confirmation-info-panel">
                 <div className="confirmation-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">START DATE</h3>
                 </div>
-                <p className="confirmation-info-item">5/11/2019</p>
+                <p className="confirmation-info-item">{someFormattedDate}</p>
               </div>
               <div id="print-button-container" className="buttons continue-button" onClick={this.handlePrint.bind(this)}>
                 <div id="button-1" className="button-bg"></div>
@@ -145,6 +170,18 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CLIENT_STATS",
         payload: stats
+      });
+    },
+    setClientId: (id) => {
+      dispatch({
+        type: "SET_CLIENT_ID",
+        payload: id
+      });
+    },
+    setProjectId: (id) => {
+      dispatch({
+        type: "SET_PROJECT_ID",
+        payload: id
       });
     },
     setAppData: (dataObj) => {
