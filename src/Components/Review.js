@@ -313,13 +313,17 @@ class Review extends Component {
       <div id="goals-body" className="page-body">
         <div id="goals-torso">
 
+          <div className="goals-torso-heading-container">
+            <h1 className="heading">Review Your Order</h1>
+          </div>
+
         </div>
         <div id="goals-shoulder">
           <div id="container-0" className="container">
 
             <div id="" className="info-section">
               <div className="info-panel">
-                <h1 className="heading noselect">Review Your Order</h1>
+                <h1 className="heading noselect">Project Details</h1>
               </div>
               <div id="" className="info-panel">
                 <div className="goal-sidebar-heading-container">

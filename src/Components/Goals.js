@@ -10,60 +10,8 @@ import { connect } from "react-redux";
 //   theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
 //   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
 
+class GoalsWindow extends Component {
 
-class Goals extends Component {
-
-  componentDidMount(e) {
-    // SET CURRENT STEP TO GOALS (1)
-    this.props.setCurrentStep(1); // sets current step to 1
-
-    let clientGoals = this.props.clientReducer.goals;
-    let cards = document.getElementsByClassName('goal-card');
-
-    for (let i = 0; i < cards.length; i++) {
-      for (let j = 0; j < clientGoals.length; j++) {
-        let cardId = Number(cards.item(i).id.slice(Number(cards.item(i).id.search(/\d/g))));
-        let goalId = Number(clientGoals[j].id) - 1;
-
-        if (cardId === goalId) {
-          let checkmark = document.createElement('p');
-          checkmark.className = 'checkmark';
-          cards.item(i).appendChild(checkmark);
-          console.log(cardId, " - cardId inside block");
-          console.log(goalId, " - goalId inside block");
-        }
-        // console.log(cardId, " - outside block");
-        // console.log(goalId, " - outside block");
-      }
-    }
-
-
-    // let appData = this.props.appReducer;
-    // appData.steps.forEach(function(step, i, steps) {
-    //   if (step === steps[0]) {
-    //     step.active = false;
-    //     step.complete = true;
-    //   } else if (step === steps[1]) {
-    //     step.active = true;
-    //     step.complete = false;
-    //   } else {
-    //     step.active = false;
-    //     step.complete = false;
-    //   }
-    // });
-
-    // let goals = document.getElementById('goals-body');
-    // goals.style.transition = "transform .5s ease-in-out";
-    // setTimeout(function() {
-    //   goals.style.transform = "translateX(0)";
-    // }, 10);
-
-    // let context = this;
-    // function nextPage() {
-    //   context.props.history.push('/goals');
-    // }
-    // setTimeout(nextPage, 500);
-  }
   addGoal(e) {
     let appReducer = this.props.appReducer;
     let currentGoal = appReducer.currentGoal;
@@ -75,16 +23,14 @@ class Goals extends Component {
       target = target.parentNode; // set target equal to its parent
     }
 
-    let checkmark = document.createElement('p');
-    checkmark.className = 'checkmark';
-
-
-
-    if (target.lastChild.className === "checkmark") {
-      target.removeChild(target.lastChild);
-    } else {
-      target.appendChild(checkmark);
-    }
+    // let checkmark = document.createElement('p');
+    // checkmark.className = 'checkmark';
+    //
+    // if (target.lastChild.className === "checkmark") {
+    //   target.removeChild(target.lastChild);
+    // } else {
+    //   target.appendChild(checkmark);
+    // }
 
     // FUNCTION TO DETERMINE IF SAVED CLIENT GOALS ALREADY INCLUDES CLICKED GOAL
     let count = 0; // element match count
@@ -129,7 +75,215 @@ class Goals extends Component {
     }
 
   }
+  checkIfClientGoal(clientGoals, categoryGoal) {
+    for (let i = 0; i < clientGoals.length; i++) {
+      if (clientGoals[i].name === categoryGoal.name) {
+        return true;
+      }
+    }
+  }
+
   render() {
+    let clientGoals = this.props.clientReducer.goals;
+    // let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+    //   if (goal.category === "CREATE") {
+    //     return goal;
+    //   } else {
+    //     return false;
+    //   }
+    // });
+
+    return (
+      <div id="goals-torso-goals">
+        {this.props.appReducer.categoryGoals.map((goal, i) => {
+          return (
+            <div id={"goal-" + (goal.id - 1)} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
+              <p className="goal-heading">{goal.name}</p>
+              {this.checkIfClientGoal(clientGoals, goal) ? <p className="checkmark" /> : false}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}
+
+
+class Goals extends Component {
+
+  componentDidMount(e) {
+    // SET CURRENT STEP TO GOALS (1)
+    this.props.setCurrentStep(1); // sets current step to 1
+
+    let currentCategory = this.props.appReducer.currentCategory;
+    let categoryButtons = document.getElementsByClassName('pill-button');
+
+
+    for (let i = 0; i < categoryButtons.length; i++) {
+      categoryButtons.item(i).className = 'pill-button';
+    }
+
+    switch (currentCategory) {
+      case 'CREATE':
+        categoryButtons.item(0).className += " active-goal-page";
+        break;
+      case 'UPDATE':
+        categoryButtons.item(1).className += " active-goal-page";
+        break;
+      case 'MANAGE':
+        categoryButtons.item(2).className += " active-goal-page";
+        break;
+      case 'OTHER':
+        categoryButtons.item(3).className += " active-goal-page";
+        break;
+      default:
+        categoryButtons.item(0).className += " active-goal-page";
+    }
+
+    // let clientGoals = this.props.clientReducer.goals;
+    // let cards = document.getElementsByClassName('goal-card');
+
+    // for (let i = 0; i < cards.length; i++) {
+    //   for (let j = 0; j < clientGoals.length; j++) {
+    //     let cardId = Number(cards.item(i).id.slice(Number(cards.item(i).id.search(/\d/g))));
+    //     let goalId = Number(clientGoals[j].id) - 1;
+    //
+    //     if (cardId === goalId) {
+    //       let checkmark = document.createElement('p');
+    //       checkmark.className = 'checkmark';
+    //       cards.item(i).appendChild(checkmark);
+    //       console.log(cardId, " - cardId inside block");
+    //       console.log(goalId, " - goalId inside block");
+    //     }
+    //     // console.log(cardId, " - outside block");
+    //     // console.log(goalId, " - outside block");
+    //   }
+    // }
+
+
+    // let appData = this.props.appReducer;
+    // appData.steps.forEach(function(step, i, steps) {
+    //   if (step === steps[0]) {
+    //     step.active = false;
+    //     step.complete = true;
+    //   } else if (step === steps[1]) {
+    //     step.active = true;
+    //     step.complete = false;
+    //   } else {
+    //     step.active = false;
+    //     step.complete = false;
+    //   }
+    // });
+
+    // let goals = document.getElementById('goals-body');
+    // goals.style.transition = "transform .5s ease-in-out";
+    // setTimeout(function() {
+    //   goals.style.transform = "translateX(0)";
+    // }, 10);
+
+    // let context = this;
+    // function nextPage() {
+    //   context.props.history.push('/goals');
+    // }
+    // setTimeout(nextPage, 500);
+  }
+
+  changeGoalPage(e) {
+    console.log(e.target);
+    let targe = e.target;
+    let pillButtons = document.getElementsByClassName('pill-button');
+
+    if (targe.id !== 'pill') {
+      console.log('whoa there');
+      if (targe.className.indexOf(" active-goal-page") === -1) {
+        console.log('hey it worked');
+        for (let i = 0; i < pillButtons.length; i++) {
+          if (pillButtons.item(i).className.indexOf(" active-goal-page") !== -1) {
+            pillButtons.item(i).className = "pill-button";
+          }
+        }
+        targe.className += " active-goal-page";
+      } else {
+        // targe.className = targe.className.slice(0, targe.className.indexOf(" active-goal-page"));
+      }
+
+      switch (targe.id) {
+        case "pill-button-0":
+
+          if (this.props.appReducer.currentCategory !== "CREATE") {
+            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.category === "CREATE") {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("CREATE");
+          }
+
+          break;
+        case "pill-button-1":
+
+          if (this.props.appReducer.currentCategory !== "UPDATE") {
+            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.category === "UPDATE") {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("UPDATE");
+          }
+
+          break;
+        case "pill-button-2":
+
+          if (this.props.appReducer.currentCategory !== "MANAGE") {
+            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.category === "MANAGE") {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("MANAGE");
+          }
+
+          break;
+        case "pill-button-3":
+
+          if (this.props.appReducer.currentCategory !== "OTHER") {
+            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.category === "OTHER") {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("OTHER");
+          }
+
+          break;
+        default:
+          console.log('fell to the default case in changeGoalPage()');
+      }
+    }
+  }
+
+  render() {
+
     return (
       <div id="goals-body" className="page-body">
 
@@ -137,13 +291,17 @@ class Goals extends Component {
 
         <div id="goals-torso">
 
-          {this.props.appReducer.goals.map((goal, i) => {
-            return (
-              <div id={"goal-" + (goal.id - 1)} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
-                <p className="goal-heading">{goal.name}</p>
-              </div>
-            );
-          })}
+          <div className="goals-torso-heading-container">
+            <h1 className="heading">Pick Your Goals</h1>
+            <div id="pill" className="pill-buttons-container" onClick={this.changeGoalPage.bind(this)}>
+              <p id="pill-button-0" className="pill-button">Create</p>
+              <p id="pill-button-1" className="pill-button">Update</p>
+              <p id="pill-button-2" className="pill-button">Manage</p>
+              <p id="pill-button-3" className="pill-button">Other</p>
+            </div>
+          </div>
+
+          <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
 
         </div>
 
@@ -153,7 +311,7 @@ class Goals extends Component {
           <div id="container-0" className="container">
             <div className="info-section">
               <div className="info-panel">
-                <h1 className="heading noselect">Pick Your Goals</h1>
+                <h1 className="heading noselect">Detail Panel</h1>
               </div>
               <div className="info-panel">
                 <div id="stats" className="">
@@ -306,6 +464,18 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CURRENT_GOAL",
         payload: goal
+      });
+    },
+    setCategoryGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_CATEGORY_GOALS",
+        payload: goalsArray
+      });
+    },
+    setCurrentCategory: (category) => {
+      dispatch({
+        type: "SET_CURRENT_CATEGORY",
+        payload: category
       });
     },
     setBundles: (bundles) => {

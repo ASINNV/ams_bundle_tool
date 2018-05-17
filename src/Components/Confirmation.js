@@ -55,6 +55,10 @@ class Review extends Component {
       <div id="goals-body" className="page-body">
         <div id="goals-torso">
 
+          <div className="goals-torso-heading-container">
+            <h1 className="heading">Confirmation Receipt</h1>
+          </div>
+
         </div>
         <div id="goals-shoulder">
           <div id="container-0" className="container">

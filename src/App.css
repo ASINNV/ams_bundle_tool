@@ -212,6 +212,37 @@ table {
 /* MENU ICON - END */
 /* MENU ICON - END */
 
+.pill-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.pill-buttons-container {
+  display: flex;
+  background: #fff;
+  color: #777;
+  border: 2px solid #eee;
+  border-radius: 50px;
+  overflow: hidden;
+  width: fit-content;
+}
+.pill-button {
+  padding: 10px 15px;
+  border-right: 1px solid #eee;
+  transition: background .1s ease-in-out, box-shadow .1s ease-in-out, color .1s ease-in-out;
+}
+.pill-button:hover {
+  background: #eee;
+}
+.pill-button:last-child {
+  border-right: 0;
+}
+
+.active-goal-page {
+  color: #ccc;
+  box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.2);
+}
+
 /* LOGO - START */
 /* LOGO - START */
 
@@ -463,9 +494,11 @@ table {
   font-weight: 600;
   border-radius: 8px;
   box-shadow: 0 5px 15px 0 rgba(0,0,0,0.3);
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
+}
+.main-button a {
   text-decoration: none;
   color: #37a9ff;
-  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
 }
 
 
@@ -499,12 +532,11 @@ table {
   font-weight: 600;
   text-shadow: 0 4px 4px rgba(0,0,0,0.5);
   color: #37a9ff;
-  margin: 0 0 50px 0;
+  margin: 40px 0 50px 0;
 }
 .heading-1 h2 {
   font-size: 2em;
   font-weight: 100;
-  margin: 10px 0;
 }
 
 /* LANDING ELEMENTS - END */
@@ -664,17 +696,31 @@ table {
   width: 75%;
   height: 100%;
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
   padding: 75px 50px;
   /*overflow: scroll;*/
   /*background: radial-gradient(#1ee9bd, #5d6aff 140%);*/
 }
+#goals-torso-goals {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.goals-torso-heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px 40px 20px;
+}
+.goals-torso-heading {
+  font-size: 2em;
+  font-weight: 600;
+  color: #fff;
+}
 .goal-card {
   width: 200px;
-  height: 300px;
+  height: 350px;
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -855,6 +901,7 @@ table {
 
 .goal-sidebar-name {
   font-size: 1.75em;
+  line-height: 1.25em;
   /*line-height: 1.5em;*/
   color: #1ee9bd;
 }
@@ -897,8 +944,7 @@ table {
 .heading {
   font-size: 2em;
   font-weight: 600;
-  line-height: 1.5em;
-
+  color: #fff;
   /*color: #37a9ff;*/
 }
 
@@ -957,6 +1003,7 @@ table {
 }
 
 .review-info-item {
+  width: 210px;
   padding: 5px 0;
   font-size: 1.5em;
   line-height: 1.5em;

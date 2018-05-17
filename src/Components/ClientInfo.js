@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchWrapper } from "./Functions";
+import { fetchWrapper, createErrorPopup } from "./Functions";
 
 const lowOpacity = 0.125;
 const zeroOpacity = 0;
@@ -114,6 +114,7 @@ function handleInfoOnLeave(path, appProps) {
 
   } else {
     console.log("DON'T FORGET THE REQUIRED FIELD FUNCTIONALITY HERE");
+    createErrorPopup("Blank Fields", "Please fill in every field before moving on to the next phase.");
   }
 }
 
@@ -644,7 +645,9 @@ class ClientInfo extends Component {
               </div>
 
               <div id="submit-container-1" className="submit-container">
-                <Link to="/personalize" id="submit-button-1" className="main-button" onClick={this.nextPhase.bind(this)}>NEXT STEP &rarr;</Link>
+                <div className="main-button">
+                  <Link to="/personalize" id="submit-button-1" onClick={this.nextPhase.bind(this)}>NEXT STEP &rarr;</Link>
+                </div>
               </div>
 
             </div>

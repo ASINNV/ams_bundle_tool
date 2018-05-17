@@ -131,6 +131,8 @@ class App extends Component {
 
     // FETCH GOALS FROM DATABASE AND SET LOCAL APP GOALS TO THEM
     let setGoals = this.props.setGoals;
+    let setCategoryGoals = this.props.setCategoryGoals;
+    let setCurrentCategory = this.props.setCurrentCategory;
     fetch('/api/goals')
       .then(function(res) {
         return res.json();
@@ -138,6 +140,18 @@ class App extends Component {
       .then(function(data) {
         console.log(data);
         setGoals(data);
+
+        let categoryGoals = data.filter((goal) => {
+          if (goal.category === "CREATE") {
+            return goal;
+          } else {
+            return false;
+          }
+        });
+
+        setCategoryGoals(categoryGoals);
+        setCurrentCategory("CREATE");
+
         return data;
       })
       .catch(function(err) {
@@ -175,20 +189,26 @@ class App extends Component {
       right.className += ' right-x-arm';
     }
   }
+
+
+
   render() {
     return (
       <Router>
         <div id="foundation">
           <div id="foundation-header">
+
             <div className="x-container" onClick={this.openMenu.bind(this)}>
               <div className="x">
                 <p className="left-arm" />
                 <p className="right-arm" />
               </div>
             </div>
+
             <div className="button-shadow">
               <p className="text-buttons">SUPPORT</p>
             </div>
+
           </div>
 
           {/*<Route render={({location}) => (*/}
@@ -314,6 +334,18 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CURRENT_GOAL",
         payload: goal
+      });
+    },
+    setCategoryGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_CATEGORY_GOALS",
+        payload: goalsArray
+      });
+    },
+    setCurrentCategory: (category) => {
+      dispatch({
+        type: "SET_CURRENT_CATEGORY",
+        payload: category
       });
     },
     setBundles: (bundles) => {
