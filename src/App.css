@@ -243,7 +243,7 @@ table {
 .pill-button {
   padding: 10px 15px;
   border-right: 1px solid #eee;
-  transition: background .1s ease-in-out, box-shadow .1s ease-in-out, color .1s ease-in-out;
+  transition: background .1s ease-in-out;
 }
 .pill-button:hover {
   background: #eee;

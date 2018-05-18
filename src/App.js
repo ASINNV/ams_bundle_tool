@@ -141,16 +141,16 @@ class App extends Component {
         console.log(data);
         setGoals(data);
 
-        let categoryGoals = data.filter((goal) => {
-          if (goal.category === "CREATE") {
-            return goal;
-          } else {
-            return false;
-          }
-        });
+        // let categoryGoals = data.filter((goal) => {
+        //   if (goal.category === "CREATE") {
+        //     return goal;
+        //   } else {
+        //     return false;
+        //   }
+        // });
 
-        setCategoryGoals(categoryGoals);
-        setCurrentCategory("CREATE");
+        setCategoryGoals(data);
+        setCurrentCategory("ALL");
 
         return data;
       })

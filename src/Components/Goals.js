@@ -123,7 +123,12 @@ class Goals extends Component {
     this.props.setCurrentStep(1); // sets current step to 1
 
     let currentCategory = this.props.appReducer.currentCategory;
+    let currentCategoryPage = this.props.appReducer.currentCategoryPage;
     let categoryButtons = document.getElementsByClassName('pill-button');
+
+    if (currentCategoryPage === 1) {
+      document.getElementById('left-arrow').style.display = 'none';
+    }
 
 
     for (let i = 0; i < categoryButtons.length; i++) {
@@ -131,17 +136,20 @@ class Goals extends Component {
     }
 
     switch (currentCategory) {
-      case 'CREATE':
+      case 'ALL':
         categoryButtons.item(0).className += " active-goal-page";
         break;
-      case 'UPDATE':
+      case 'CREATE':
         categoryButtons.item(1).className += " active-goal-page";
         break;
-      case 'MANAGE':
+      case 'UPDATE':
         categoryButtons.item(2).className += " active-goal-page";
         break;
-      case 'OTHER':
+      case 'MANAGE':
         categoryButtons.item(3).className += " active-goal-page";
+        break;
+      case 'OTHER':
+        categoryButtons.item(4).className += " active-goal-page";
         break;
       default:
         categoryButtons.item(0).className += " active-goal-page";
@@ -217,6 +225,14 @@ class Goals extends Component {
       switch (targe.id) {
         case "pill-button-0":
 
+          if (this.props.appReducer.currentCategory !== "ALL") {
+            this.props.setCategoryGoals(this.props.appReducer.goals);
+            this.props.setCurrentCategory("ALL");
+          }
+
+          break;
+        case "pill-button-1":
+
           if (this.props.appReducer.currentCategory !== "CREATE") {
             let categoryGoals = this.props.appReducer.goals.filter((goal) => {
 
@@ -232,7 +248,7 @@ class Goals extends Component {
           }
 
           break;
-        case "pill-button-1":
+        case "pill-button-2":
 
           if (this.props.appReducer.currentCategory !== "UPDATE") {
             let categoryGoals = this.props.appReducer.goals.filter((goal) => {
@@ -249,7 +265,7 @@ class Goals extends Component {
           }
 
           break;
-        case "pill-button-2":
+        case "pill-button-3":
 
           if (this.props.appReducer.currentCategory !== "MANAGE") {
             let categoryGoals = this.props.appReducer.goals.filter((goal) => {
@@ -266,7 +282,7 @@ class Goals extends Component {
           }
 
           break;
-        case "pill-button-3":
+        case "pill-button-4":
 
           if (this.props.appReducer.currentCategory !== "OTHER") {
             let categoryGoals = this.props.appReducer.goals.filter((goal) => {
@@ -286,32 +302,57 @@ class Goals extends Component {
         default:
           console.log('fell to the default case in changeGoalPage()');
       }
+
+      this.props.setCurrentCategoryPage(1);
+
     }
   }
 
   showMoreGoals(e) {
     // SET TARGET EQUAL TO UPPERMOST PARENT
     let target = e.target;
+
     let categoryGoals = this.props.appReducer.categoryGoals;
     let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+    let totalPages = Math.ceil(categoryGoals.length/8);
+
+    let leftArrow = document.getElementById('left-arrow');
+    let rightArrow = document.getElementById('right-arrow');
+    let workingPage = 1;
+
 
     switch (target.id) {
       case "left-arrow":
         if (currentCategoryPage > 1) {
-          this.props.setCurrentCategoryPage(currentCategoryPage - 1);
+          workingPage = currentCategoryPage - 1;
+          this.props.setCurrentCategoryPage(workingPage);
         } else {
           console.log("You want to go to the previous page of goals, don't you? No dice!");
         }
         break;
       case "right-arrow":
-        if (currentCategoryPage < Math.ceil(categoryGoals.length/8)) {
-          this.props.setCurrentCategoryPage(currentCategoryPage + 1);
+        if (currentCategoryPage < totalPages) {
+          workingPage = currentCategoryPage + 1;
+          this.props.setCurrentCategoryPage(workingPage);
         } else {
           console.log("You want to go to the next page of goals, don't you? No dice!");
         }
         break;
       default:
         console.log('Fell to the default block in showMoreGoals() switch statement');
+    }
+
+    if (workingPage > 1 && leftArrow.style.display !== '') {
+      leftArrow.style.display = '';
+    } else if (workingPage === 1 && leftArrow.style.display === '') {
+      leftArrow.style.display = 'none';
+      console.log('this one this one this one this one this one');
+    }
+
+    if (workingPage === totalPages) {
+      rightArrow.style.display = 'none';
+    } else {
+      rightArrow.style.display = '';
     }
 
 
@@ -336,10 +377,11 @@ class Goals extends Component {
                 <FontAwesomeIcon icon={faFilter} id="" className="filter-icon" />
               </div>
               <div id="pill" className="pill-buttons-container" onClick={this.changeGoalPage.bind(this)}>
-                <p id="pill-button-0" className="pill-button">Create</p>
-                <p id="pill-button-1" className="pill-button">Update</p>
-                <p id="pill-button-2" className="pill-button">Manage</p>
-                <p id="pill-button-3" className="pill-button">Other</p>
+                <p id="pill-button-0" className="pill-button">All</p>
+                <p id="pill-button-1" className="pill-button">Create</p>
+                <p id="pill-button-2" className="pill-button">Update</p>
+                <p id="pill-button-3" className="pill-button">Manage</p>
+                <p id="pill-button-4" className="pill-button">Other</p>
               </div>
             </div>
           </div>
