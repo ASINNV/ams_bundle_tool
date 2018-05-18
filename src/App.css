@@ -717,24 +717,29 @@ table {
 .nav-arrow {
   position: absolute;
   top: 50%;
-  font-size: 2em;
-  color: #aaa;
-  background: #fff;
+  font-size: 4em;
+  color: #fff;
+  /*background: #fff;*/
   opacity: 0.25;
-  border: 2px solid #eee;
-  border-radius: 50px;
+  /*border: 2px solid #eee;*/
+  padding: 10px;
+  border-radius: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, box-shadow .2s ease-in-out;
 }
 .nav-arrow:hover {
   opacity: 1;
 }
+.nav-arrow:active {
+  background: rgba(0,0,0,0.10);
+  box-shadow: inset 0 0 20px 0 rgba(0,0,0,0.25);
+}
 #left-arrow {
-  left: 30px;
+  left: 25px;
 }
 #right-arrow {
-  right: 30px;
+  right: 25px;
 }
 #goals-torso-goals {
   position: relative;

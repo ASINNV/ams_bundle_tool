@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
+import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowLeft';
+import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
 
 // const theWindow=window,
 //   theDoc=document,
@@ -311,6 +313,9 @@ class Goals extends Component {
   showMoreGoals(e) {
     // SET TARGET EQUAL TO UPPERMOST PARENT
     let target = e.target;
+    while (target.id.indexOf("-arrow") === -1) { // while id doesn't match
+      target = target.parentNode; // set target equal to its parent
+    }
 
     let categoryGoals = this.props.appReducer.categoryGoals;
     let currentCategoryPage = this.props.appReducer.currentCategoryPage;
@@ -367,7 +372,7 @@ class Goals extends Component {
 
         <div id="goals-torso">
 
-          <div id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}>&larr;</div>
+          <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/>
 
           <div className="goals-torso-heading-container">
             <h1 className="heading">Pick Your Goals</h1>
@@ -388,7 +393,7 @@ class Goals extends Component {
 
           <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
 
-          <div id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}>&rarr;</div>
+          <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/>
 
         </div>
 
