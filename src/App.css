@@ -244,6 +244,7 @@ table {
   padding: 10px 15px;
   border-right: 1px solid #eee;
   transition: background .1s ease-in-out;
+  cursor: pointer;
 }
 .pill-button:hover {
   background: #eee;

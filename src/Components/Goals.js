@@ -89,6 +89,7 @@ class GoalsWindow extends Component {
 
   render() {
     let clientGoals = this.props.clientReducer.goals;
+
     // let categoryGoals = this.props.appReducer.goals.filter((goal) => {
     //   if (goal.category === "CREATE") {
     //     return goal;
@@ -125,12 +126,12 @@ class Goals extends Component {
     this.props.setCurrentStep(1); // sets current step to 1
 
     let currentCategory = this.props.appReducer.currentCategory;
-    let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+    // let currentCategoryPage = this.props.appReducer.currentCategoryPage;
     let categoryButtons = document.getElementsByClassName('pill-button');
 
-    if (currentCategoryPage === 1) {
-      document.getElementById('left-arrow').style.display = 'none';
-    }
+    // if (currentCategoryPage === 1) {
+    //   document.getElementById('left-arrow').style.display = 'none';
+    // }
 
 
     for (let i = 0; i < categoryButtons.length; i++) {
@@ -156,53 +157,6 @@ class Goals extends Component {
       default:
         categoryButtons.item(0).className += " active-goal-page";
     }
-
-    // let clientGoals = this.props.clientReducer.goals;
-    // let cards = document.getElementsByClassName('goal-card');
-
-    // for (let i = 0; i < cards.length; i++) {
-    //   for (let j = 0; j < clientGoals.length; j++) {
-    //     let cardId = Number(cards.item(i).id.slice(Number(cards.item(i).id.search(/\d/g))));
-    //     let goalId = Number(clientGoals[j].id) - 1;
-    //
-    //     if (cardId === goalId) {
-    //       let checkmark = document.createElement('p');
-    //       checkmark.className = 'checkmark';
-    //       cards.item(i).appendChild(checkmark);
-    //       console.log(cardId, " - cardId inside block");
-    //       console.log(goalId, " - goalId inside block");
-    //     }
-    //     // console.log(cardId, " - outside block");
-    //     // console.log(goalId, " - outside block");
-    //   }
-    // }
-
-
-    // let appData = this.props.appReducer;
-    // appData.steps.forEach(function(step, i, steps) {
-    //   if (step === steps[0]) {
-    //     step.active = false;
-    //     step.complete = true;
-    //   } else if (step === steps[1]) {
-    //     step.active = true;
-    //     step.complete = false;
-    //   } else {
-    //     step.active = false;
-    //     step.complete = false;
-    //   }
-    // });
-
-    // let goals = document.getElementById('goals-body');
-    // goals.style.transition = "transform .5s ease-in-out";
-    // setTimeout(function() {
-    //   goals.style.transform = "translateX(0)";
-    // }, 10);
-
-    // let context = this;
-    // function nextPage() {
-    //   context.props.history.push('/goals');
-    // }
-    // setTimeout(nextPage, 500);
   }
 
   changeGoalPage(e) {
@@ -321,7 +275,7 @@ class Goals extends Component {
     let currentCategoryPage = this.props.appReducer.currentCategoryPage;
     let totalPages = Math.ceil(categoryGoals.length/8);
 
-    let leftArrow = document.getElementById('left-arrow');
+    // let leftArrow = document.getElementById('left-arrow');
     let rightArrow = document.getElementById('right-arrow');
     let workingPage = 1;
 
@@ -347,13 +301,6 @@ class Goals extends Component {
         console.log('Fell to the default block in showMoreGoals() switch statement');
     }
 
-    if (workingPage > 1 && leftArrow.style.display !== '') {
-      leftArrow.style.display = '';
-    } else if (workingPage === 1 && leftArrow.style.display === '') {
-      leftArrow.style.display = 'none';
-      console.log('this one this one this one this one this one');
-    }
-
     if (workingPage === totalPages) {
       rightArrow.style.display = 'none';
     } else {
@@ -372,7 +319,7 @@ class Goals extends Component {
 
         <div id="goals-torso">
 
-          <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/>
+          {this.props.appReducer.currentCategoryPage > 1 ? <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
           <div className="goals-torso-heading-container">
             <h1 className="heading">Pick Your Goals</h1>
@@ -393,7 +340,7 @@ class Goals extends Component {
 
           <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
 
-          <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/>
+          {this.props.appReducer.categoryGoals.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
         </div>
 
