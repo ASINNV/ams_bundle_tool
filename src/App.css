@@ -736,10 +736,10 @@ table {
   box-shadow: inset 0 0 20px 0 rgba(0,0,0,0.25);
 }
 #left-arrow {
-  left: 25px;
+  left: 20px;
 }
 #right-arrow {
-  right: 25px;
+  right: 20px;
 }
 #goals-torso-goals {
   position: relative;
