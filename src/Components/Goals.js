@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
 
 // const theWindow=window,
 //   theDoc=document,
@@ -96,12 +98,17 @@ class GoalsWindow extends Component {
     return (
       <div id="goals-torso-goals">
         {this.props.appReducer.categoryGoals.map((goal, i) => {
-          return (
-            <div id={"goal-" + (goal.id - 1)} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
-              <p className="goal-heading">{goal.name}</p>
-              {this.checkIfClientGoal(clientGoals, goal) ? <p className="checkmark" /> : false}
-            </div>
-          );
+          let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+          if (i >= (currentCategoryPage - 1) * 8 && i < currentCategoryPage * 8) {
+            return (
+              <div id={"goal-" + (goal.id - 1)} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
+                <p className="goal-heading">{goal.name}</p>
+                {this.checkIfClientGoal(clientGoals, goal) ? <p className="checkmark" /> : false}
+              </div>
+            );
+          } else {
+            return false;
+          }
         })}
       </div>
     );
@@ -282,6 +289,34 @@ class Goals extends Component {
     }
   }
 
+  showMoreGoals(e) {
+    // SET TARGET EQUAL TO UPPERMOST PARENT
+    let target = e.target;
+    let categoryGoals = this.props.appReducer.categoryGoals;
+    let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+
+    switch (target.id) {
+      case "left-arrow":
+        if (currentCategoryPage > 1) {
+          this.props.setCurrentCategoryPage(currentCategoryPage - 1);
+        } else {
+          console.log("You want to go to the previous page of goals, don't you? No dice!");
+        }
+        break;
+      case "right-arrow":
+        if (currentCategoryPage < Math.ceil(categoryGoals.length/8)) {
+          this.props.setCurrentCategoryPage(currentCategoryPage + 1);
+        } else {
+          console.log("You want to go to the next page of goals, don't you? No dice!");
+        }
+        break;
+      default:
+        console.log('Fell to the default block in showMoreGoals() switch statement');
+    }
+
+
+  }
+
   render() {
 
     return (
@@ -291,17 +326,27 @@ class Goals extends Component {
 
         <div id="goals-torso">
 
+          <div id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}>&larr;</div>
+
           <div className="goals-torso-heading-container">
             <h1 className="heading">Pick Your Goals</h1>
-            <div id="pill" className="pill-buttons-container" onClick={this.changeGoalPage.bind(this)}>
-              <p id="pill-button-0" className="pill-button">Create</p>
-              <p id="pill-button-1" className="pill-button">Update</p>
-              <p id="pill-button-2" className="pill-button">Manage</p>
-              <p id="pill-button-3" className="pill-button">Other</p>
+            <div className="filter-container">
+              <div className="filter-label-container">
+                <p className="filter-label">Categories</p>
+                <FontAwesomeIcon icon={faFilter} id="" className="filter-icon" />
+              </div>
+              <div id="pill" className="pill-buttons-container" onClick={this.changeGoalPage.bind(this)}>
+                <p id="pill-button-0" className="pill-button">Create</p>
+                <p id="pill-button-1" className="pill-button">Update</p>
+                <p id="pill-button-2" className="pill-button">Manage</p>
+                <p id="pill-button-3" className="pill-button">Other</p>
+              </div>
             </div>
           </div>
 
           <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
+
+          <div id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}>&rarr;</div>
 
         </div>
 
@@ -476,6 +521,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CURRENT_CATEGORY",
         payload: category
+      });
+    },
+    setCurrentCategoryPage: (pageNumber) => {
+      dispatch({
+        type: "SET_CURRENT_CATEGORY_PAGE",
+        payload: pageNumber
       });
     },
     setBundles: (bundles) => {

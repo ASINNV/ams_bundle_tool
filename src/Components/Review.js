@@ -7,6 +7,7 @@ import { updateClientInfo, fetchWrapper } from "./Functions";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown';
 import faPencilAlt from '@fortawesome/fontawesome-free-solid/faPencilAlt';
+import faWrench from '@fortawesome/fontawesome-free-solid/faWrench';
 
 
 // const theWindow=window,
@@ -301,6 +302,10 @@ class Review extends Component {
     //   });
   }
 
+  customizeProject() {
+    console.log("This does nothing yet. Soon it will customize the user's project");
+  }
+
   render() {
     let name = this.props.clientReducer.client.name || null;
     let company = this.props.clientReducer.client.company || null;
@@ -313,8 +318,12 @@ class Review extends Component {
       <div id="goals-body" className="page-body">
         <div id="goals-torso">
 
-          <div className="goals-torso-heading-container">
+          <div className="review-torso-heading-container">
             <h1 className="heading">Review Your Order</h1>
+            <div id="customize-container" onClick={this.customizeProject.bind(this)}>
+              <FontAwesomeIcon icon={faWrench} />
+              <p className="customize-label">Customize</p>
+            </div>
           </div>
 
         </div>
@@ -332,7 +341,7 @@ class Review extends Component {
                 </div>
                 <div id="review-client-container" className="review-info-item-container" onClick={this.showAllItems.bind(this)}>
                   {/*<p className="review-info-item subdued">Click to view…</p>*/}
-                  {myArray.map(function(property, i, myArray) {
+                  {myArray.map(function(property, i) {
                     if (property !== null) {
                       return <p key={i} className="review-info-item flair">{property}</p>;
                     }

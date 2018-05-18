@@ -212,6 +212,20 @@ table {
 /* MENU ICON - END */
 /* MENU ICON - END */
 
+.filter-container {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.filter-label-container {
+  display: flex;
+  margin: 0 10px;
+}
+.filter-label {
+  margin: 0 10px;
+}
+
 .pill-container {
   display: flex;
   justify-content: flex-start;
@@ -696,9 +710,31 @@ table {
   width: 75%;
   height: 100%;
   position: relative;
-  padding: 75px 50px;
+  padding: 75px;
   /*overflow: scroll;*/
   /*background: radial-gradient(#1ee9bd, #5d6aff 140%);*/
+}
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 2em;
+  color: #aaa;
+  background: #fff;
+  opacity: 0.25;
+  border: 2px solid #eee;
+  border-radius: 50px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+}
+.nav-arrow:hover {
+  opacity: 1;
+}
+#left-arrow {
+  left: 30px;
+}
+#right-arrow {
+  right: 30px;
 }
 #goals-torso-goals {
   position: relative;
@@ -958,6 +994,31 @@ table {
   width: 100%;
   height: 100%;
   will-change: transform;
+}
+
+.review-torso-heading-container {
+  display: flex;
+  align-items: center;
+  margin: 0 20px 40px 20px;
+}
+#customize-container {
+  display: flex;
+  background: #fff;
+  padding: 5px 10px;
+  color: #777;
+  margin: 0 20px;
+  border: 2px solid #eee;
+  border-radius: 50px;
+  opacity: 0.25;
+  overflow: hidden;
+  transition: opacity .2s ease-in-out;
+  cursor: pointer;
+}
+#customize-container:hover {
+  opacity: 1;
+}
+.customize-label {
+  margin-left: 5px;
 }
 
 #review-goals-container, #review-client-container {

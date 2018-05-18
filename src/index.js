@@ -56,6 +56,7 @@ const appState = {
   steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize'],
   goals: [],
   categoryGoals: [],
+  currentCategoryPage: 1,
   currentCategory: null,
   bundles: []
 };
@@ -258,6 +259,12 @@ const appReducer = (state = appState, action) => {
       state = {
         ...state,
         currentCategory: action.payload
+      };
+      break;
+    case "SET_CURRENT_CATEGORY_PAGE":
+      state = {
+        ...state,
+        currentCategoryPage: action.payload
       };
       break;
     case "SET_CURRENT_GOAL":
