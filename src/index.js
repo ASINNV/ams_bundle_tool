@@ -58,7 +58,8 @@ const appState = {
   categoryGoals: [],
   currentCategoryPage: 1,
   currentCategory: null,
-  bundles: []
+  bundles: [],
+  services: []
 };
 
 const clientReducer = (state = clientState, action) => {
@@ -277,6 +278,12 @@ const appReducer = (state = appState, action) => {
       state = {
         ...state,
         bundles: action.payload
+      };
+      break;
+    case "SET_SERVICES":
+      state = {
+        ...state,
+        services: action.payload
       };
       break;
     default:

@@ -11,11 +11,13 @@ $$ language 'plpgsql';
 
 CREATE TABLE services (
     id SMALLSERIAL PRIMARY KEY,
-    service_code CHARACTER(5) UNIQUE,
+    code CHARACTER(5) UNIQUE,
     name VARCHAR(60) UNIQUE,
     description TEXT,
     price INTEGER,
     capacity BOOLEAN DEFAULT true,
+    relatedGoals CHARACTER(5)[],
+    dependencies CHARACTER(5)[],
     created TIMESTAMPTZ DEFAULT NOW(),
     updated TIMESTAMPTZ
 );
@@ -69,10 +71,9 @@ CREATE TABLE bundleRelations (
 
 CREATE TABLE goals (
     id SMALLSERIAL PRIMARY KEY,
+    code CHARACTER(5) UNIQUE,
     name VARCHAR(60),
     description TEXT,
-    category VARCHAR(40),
-    services VARCHAR(60)[],
     created TIMESTAMPTZ DEFAULT NOW(),
     updated TIMESTAMPTZ
 );

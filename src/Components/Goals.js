@@ -6,6 +6,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
 import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowLeft';
 import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
+import { GoalsWindow } from './AncillaryComponents';
 
 // const theWindow=window,
 //   theDoc=document,
@@ -13,110 +14,6 @@ import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
 //   theBody=theDoc.getElementsByTagName('body')[0],
 //   theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
 //   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
-
-class GoalsWindow extends Component {
-
-  addGoal(e) {
-    let appReducer = this.props.appReducer;
-    let currentGoal = appReducer.currentGoal;
-    let clientGoals = this.props.clientReducer.goals;
-
-    // SET TARGET EQUAL TO UPPERMOST PARENT
-    let target = e.target;
-    while (target.id.indexOf("goal-") === -1) { // while id doesn't match
-      target = target.parentNode; // set target equal to its parent
-    }
-
-    // let checkmark = document.createElement('p');
-    // checkmark.className = 'checkmark';
-    //
-    // if (target.lastChild.className === "checkmark") {
-    //   target.removeChild(target.lastChild);
-    // } else {
-    //   target.appendChild(checkmark);
-    // }
-
-    // FUNCTION TO DETERMINE IF SAVED CLIENT GOALS ALREADY INCLUDES CLICKED GOAL
-    let count = 0; // element match count
-    for (let i = 0; i < clientGoals.length; i++) { // iterates over stored client goals
-      if (clientGoals[i] === this.props.appReducer.goals[currentGoal]) { // if clicked goal is found in client goals already
-        count++; // increment count to indicate a match
-      }
-    }
-
-    // ADDS CLICKED GOAL TO SAVED CLIENT GOALS IF NOT ALREADY IN IT, OTHERWISE LOGS CLIENT GOALS
-    if (count === 0) { // if clicked goal isn't already in saved client goals
-      clientGoals.push(appReducer.goals[currentGoal]); // add clicked goal to working copy of client goals
-      this.props.setClientGoals(clientGoals); // overwrite stored client goals with working copy
-    } else {
-      let newClientGoals = clientGoals.filter((goal) => {
-        if (goal === appReducer.goals[currentGoal]) {
-          console.log('awesome');
-        } else {
-          return goal;
-        }
-        return false;
-      });
-      if (newClientGoals[0] === undefined) {
-        this.props.setClientGoals([]); // overwrite stored client goals with empty array
-      } else {
-        this.props.setClientGoals(newClientGoals); // overwrite stored client goals with working copy
-      }
-    }
-
-  }
-  highlightGoal(e) {
-    let target = e.target;
-
-    while (target.id.indexOf("goal-") === -1) {
-      target = target.parentNode;
-    }
-
-    let currentGoal = Number(target.id.slice(target.id.search(/\d/g)));
-
-    if (this.props.appReducer.currentGoal !== currentGoal) {
-      this.props.setCurrentGoal(currentGoal);
-    }
-
-  }
-  checkIfClientGoal(clientGoals, categoryGoal) {
-    for (let i = 0; i < clientGoals.length; i++) {
-      if (clientGoals[i].name === categoryGoal.name) {
-        return true;
-      }
-    }
-  }
-
-  render() {
-    let clientGoals = this.props.clientReducer.goals;
-
-    // let categoryGoals = this.props.appReducer.goals.filter((goal) => {
-    //   if (goal.category === "CREATE") {
-    //     return goal;
-    //   } else {
-    //     return false;
-    //   }
-    // });
-
-    return (
-      <div id="goals-torso-goals">
-        {this.props.appReducer.categoryGoals.map((goal, i) => {
-          let currentCategoryPage = this.props.appReducer.currentCategoryPage;
-          if (i >= (currentCategoryPage - 1) * 8 && i < currentCategoryPage * 8) {
-            return (
-              <div id={"goal-" + (goal.id - 1)} key={i} className="goal-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
-                <p className="goal-heading">{goal.name}</p>
-                {this.checkIfClientGoal(clientGoals, goal) ? <p className="checkmark" /> : false}
-              </div>
-            );
-          } else {
-            return false;
-          }
-        })}
-      </div>
-    );
-  }
-}
 
 
 class Goals extends Component {
@@ -138,20 +35,22 @@ class Goals extends Component {
       categoryButtons.item(i).className = 'pill-button';
     }
 
+    console.log('CURRENT CATEGORY IS THE FOLLOWING: ', currentCategory);
+
     switch (currentCategory) {
-      case 'ALL':
+      case null:
         categoryButtons.item(0).className += " active-goal-page";
         break;
-      case 'CREATE':
+      case 'XX1':
         categoryButtons.item(1).className += " active-goal-page";
         break;
-      case 'UPDATE':
+      case 'XX2':
         categoryButtons.item(2).className += " active-goal-page";
         break;
-      case 'MANAGE':
+      case 'XX3':
         categoryButtons.item(3).className += " active-goal-page";
         break;
-      case 'OTHER':
+      case 'XX4':
         categoryButtons.item(4).className += " active-goal-page";
         break;
       default:
@@ -162,7 +61,9 @@ class Goals extends Component {
   changeGoalPage(e) {
     console.log(e.target);
     let targe = e.target;
+    let rightArrow = document.getElementById('right-arrow');
     let pillButtons = document.getElementsByClassName('pill-button');
+    let categoryGoals = [];
 
     if (targe.id !== 'pill') {
       console.log('whoa there');
@@ -181,18 +82,19 @@ class Goals extends Component {
       switch (targe.id) {
         case "pill-button-0":
 
-          if (this.props.appReducer.currentCategory !== "ALL") {
-            this.props.setCategoryGoals(this.props.appReducer.goals);
-            this.props.setCurrentCategory("ALL");
+          if (this.props.appReducer.currentCategory !== null) {
+          categoryGoals = this.props.appReducer.goals;
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory(null);
           }
 
           break;
         case "pill-button-1":
 
-          if (this.props.appReducer.currentCategory !== "CREATE") {
-            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+          if (this.props.appReducer.currentCategory !== "XX1") {
+           categoryGoals = this.props.appReducer.goals.filter((goal) => {
 
-              if (goal.category === "CREATE") {
+              if (goal.code.indexOf("XX1") !== -1) {
                 return goal;
               } else {
                 return false;
@@ -200,16 +102,16 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("CREATE");
+            this.props.setCurrentCategory("XX1");
           }
 
           break;
         case "pill-button-2":
 
-          if (this.props.appReducer.currentCategory !== "UPDATE") {
-            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+          if (this.props.appReducer.currentCategory !== "XX2") {
+           categoryGoals = this.props.appReducer.goals.filter((goal) => {
 
-              if (goal.category === "UPDATE") {
+              if (goal.code.indexOf("XX2") !== -1) {
                 return goal;
               } else {
                 return false;
@@ -217,16 +119,16 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("UPDATE");
+            this.props.setCurrentCategory("XX2");
           }
 
           break;
         case "pill-button-3":
 
-          if (this.props.appReducer.currentCategory !== "MANAGE") {
-            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+          if (this.props.appReducer.currentCategory !== "XX3") {
+           categoryGoals = this.props.appReducer.goals.filter((goal) => {
 
-              if (goal.category === "MANAGE") {
+              if (goal.code.indexOf("XX3") !== -1) {
                 return goal;
               } else {
                 return false;
@@ -234,16 +136,16 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("MANAGE");
+            this.props.setCurrentCategory("XX3");
           }
 
           break;
         case "pill-button-4":
 
-          if (this.props.appReducer.currentCategory !== "OTHER") {
-            let categoryGoals = this.props.appReducer.goals.filter((goal) => {
+          if (this.props.appReducer.currentCategory !== "XX4") {
+           categoryGoals = this.props.appReducer.goals.filter((goal) => {
 
-              if (goal.category === "OTHER") {
+              if (goal.code.indexOf("XX4") !== -1) {
                 return goal;
               } else {
                 return false;
@@ -251,7 +153,7 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("OTHER");
+            this.props.setCurrentCategory("XX4");
           }
 
           break;
@@ -261,6 +163,10 @@ class Goals extends Component {
 
       this.props.setCurrentCategoryPage(1);
 
+      if (categoryGoals.length > 8 && rightArrow !== null) {
+        console.log('hey what the fuck is going on here!>!>!>!?!?!?!?!?!?!?!');
+        rightArrow.style.display = '';
+      }
     }
   }
 
@@ -339,7 +245,7 @@ class Goals extends Component {
           </div>
 
           <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
-
+          {console.log(this.props.appReducer.categoryGoals.length + ' is how many goals are in the category goals array')}
           {this.props.appReducer.categoryGoals.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
         </div>

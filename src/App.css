@@ -319,11 +319,12 @@ table {
   position: relative;
   display: inline-block;
   width: 20%;
-  cursor: default;
   /* padding at 7px to center the element in the 14px of space allowed to it when the progress bar is hidden */
   /*padding: 7px;*/
   font-weight: 600;
   /*transition: background-color .5s ease-in-out;*/
+  /*cursor: default;*/
+  cursor: pointer !important;
   transition: width .5s ease;
 }
 /*.phase:after {*/
@@ -349,7 +350,6 @@ table {
   vertical-align: top;
   margin-top: 7px;
   margin-left: 7px;
-  cursor: pointer !important;
 }
 
 .active-phase {
@@ -359,6 +359,9 @@ table {
 .complete-phase {
   background-color: #37a9ff;
   width: 16%;
+}
+.complete-phase:hover .complete-phase-name, .incomplete-phase:hover .incomplete-phase-name {
+  color: #fff;
 }
 .incomplete-phase {
   background-color: #222;
@@ -391,6 +394,7 @@ table {
 }
 .complete-phase-name {
   color: #0076d1;
+  transition: color .2s ease-in-out;
 }
 .complete-first-triangle {
   border: 40px solid transparent;
@@ -408,6 +412,7 @@ table {
 }
 .incomplete-phase-name {
   color: #777;
+  transition: color .2s ease-in-out;
 }
 .incomplete-first-triangle {
   border: 40px solid transparent;
@@ -717,6 +722,8 @@ table {
 }
 .nav-arrow {
   position: absolute;
+  width: 1em !important;
+  height: 1em !important;
   top: 50%;
   font-size: 4em;
   color: #fff;
@@ -761,8 +768,8 @@ table {
   color: #fff;
 }
 .goal-card {
-  width: 200px;
-  height: 350px;
+  width: 180px;
+  height: 300px;
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -800,7 +807,8 @@ table {
   display: inline-block;
   width: 25%;
   height: 100%;
-  background-color: #222;
+  /*background: #222;*/
+  background: linear-gradient(220deg, #222, #111);
   color: #fff;
   z-index: 10;
   transition: transform .5s ease-in-out;
@@ -1004,8 +1012,13 @@ table {
 
 .review-torso-heading-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin: 0 20px 40px 20px;
+}
+.flex {
+  display: flex;
+  align-items: center;
 }
 #customize-container {
   display: flex;

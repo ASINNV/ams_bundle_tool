@@ -56,6 +56,7 @@ export const updateClientInfo = (appProps) => {
 };
 
 export const createErrorPopup = (heading, message) => {
+
   let foundation = document.getElementById('foundation');
   let overlay = document.createElement('div');
   let errorPopup = document.createElement('div');
@@ -64,25 +65,30 @@ export const createErrorPopup = (heading, message) => {
   let confirmButton = document.createElement('p');
 
   overlay.className = 'full-overlay';
+  overlay.id = 'error-overlay';
 
-  errorPopup.className = 'error-popup';
+  if (document.getElementById('error-overlay') === null) {
+    errorPopup.className = 'error-popup';
 
-  errorHeading.innerText = heading;
-  errorHeading.className = "error-heading";
+    errorHeading.innerText = heading;
+    errorHeading.className = "error-heading";
 
-  errorMessage.innerText = message;
+    errorMessage.innerText = message;
 
-  confirmButton.className = 'error-button';
-  confirmButton.innerText = 'CLOSE WINDOW';
-  confirmButton.addEventListener('click', function() {
-    foundation.removeChild(overlay);
-  });
+    confirmButton.className = 'error-button';
+    confirmButton.innerText = 'CLOSE WINDOW';
+    confirmButton.addEventListener('click', function() {
+      foundation.removeChild(overlay);
+    });
 
-  errorPopup.appendChild(errorHeading);
-  errorPopup.appendChild(errorMessage);
-  errorPopup.appendChild(confirmButton);
-  overlay.appendChild(errorPopup);
-  foundation.appendChild(overlay);
+    errorPopup.appendChild(errorHeading);
+    errorPopup.appendChild(errorMessage);
+    errorPopup.appendChild(confirmButton);
+    overlay.appendChild(errorPopup);
+    foundation.appendChild(overlay);
+  }
+
+
 };
 
 export const fetchWrapper = (serverPath, initObj, settingFunction, appHistory, appPath) => {
@@ -100,7 +106,27 @@ export const fetchWrapper = (serverPath, initObj, settingFunction, appHistory, a
       }
     })
     .catch((err) => {
-      createErrorPopup("Client Already Exists!", "A client with your company name is already in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+
+      if (serverPath === '/api/new-project') {
+        createErrorPopup("Project Already Exists!", "We already have your project in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+      } else {
+        createErrorPopup("Client Already Exists!", "We already have you in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+      }
+
+      // switch (serverPath) {
+      //   case '/api/new-project':
+      //     createErrorPopup("Project Already Exists!", "We already have your project in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+      //     break;
+      //   case '/api/new-client':
+      //   case '/api/update-name':
+      //   case '/api/update-company':
+      //   case '/api/update-email':
+      //   case '/api/update-phone':
+      //     createErrorPopup("Client Already Exists!", "We already have you in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+      //     break;
+      //   default:
+      //     console.log('fell to the default inside of the fetchWrapper() function inside of the Functions.js component');
+      // }
       // alert("A client with your company name is already in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
       console.log(err);
     });

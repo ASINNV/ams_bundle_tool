@@ -150,7 +150,7 @@ class App extends Component {
         // });
 
         setCategoryGoals(data);
-        setCurrentCategory("ALL");
+        setCurrentCategory(null);
 
         return data;
       })
@@ -171,6 +171,21 @@ class App extends Component {
       })
       .catch(function(err) {
         console.log(err, ' in the app.js apiCaller else block');
+      });
+
+    // FETCH SERVICES FROM DATABASE AND SET LOCAL APP SERVICES TO THEM
+    let setServices = this.props.setServices;
+    fetch('/api/services')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(data) {
+        console.log('services should be here: ', data);
+        setServices(data);
+        return data;
+      })
+      .catch(function(err) {
+        console.log(err, ' in the app.js SERVICES / api caller else block');
       });
   }
 
@@ -352,6 +367,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_BUNDLES",
         payload: bundles
+      });
+    },
+    setServices: (services) => {
+      dispatch({
+        type: "SET_SERVICES",
+        payload: services
       });
     }
 

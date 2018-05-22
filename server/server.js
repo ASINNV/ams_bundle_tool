@@ -33,6 +33,9 @@ function getGoalRelations() {
 function getBundles() {
   return db.many('SELECT id, name, description, price, discount FROM bundles;');
 }
+function getServices() {
+  return db.many('SELECT id, code, name, description, price, capacity, relatedGoals, dependencies FROM services;');
+}
 function insertProject(dataObj) {
   return db.one('INSERT INTO projects (client_id, name, payment_method, total, bundle_name, bundle_id) VALUES (${clientId}, ${name}, ${paymentMethod}, ${bundle.price}, ${bundle.name}, ${bundle.id}) RETURNING id;', dataObj);
 }
@@ -87,6 +90,17 @@ app.get('/api/bundles', function(req, res, next) {
     .catch(function(err) {
       console.log(err, 'err from GET bundles block in server code.');
       res.status(500).send('error in GET bundles block of server code.');
+    });
+});
+
+app.get('/api/services', function(req, res, next) {
+  getServices()
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from GET services block in server code.');
+      res.status(500).send('error in GET services block of server code.');
     });
 });
 

@@ -3,11 +3,15 @@ import '../App.css';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateClientInfo, fetchWrapper } from "./Functions";
+import { GoalsWindow } from './AncillaryComponents';
 // import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown';
 import faPencilAlt from '@fortawesome/fontawesome-free-solid/faPencilAlt';
 import faWrench from '@fortawesome/fontawesome-free-solid/faWrench';
+import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
+import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowLeft';
+import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
 
 
 // const theWindow=window,
@@ -59,6 +63,41 @@ class Review extends Component {
 
     // SET CURRENT STEP TO REVIEW (3)
     this.props.setCurrentStep(3); // sets current step to 3
+
+    let currentCategory = this.props.appReducer.currentCategory;
+    // let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+    let categoryButtons = document.getElementsByClassName('pill-button');
+
+    // if (currentCategoryPage === 1) {
+    //   document.getElementById('left-arrow').style.display = 'none';
+    // }
+
+
+    for (let i = 0; i < categoryButtons.length; i++) {
+      categoryButtons.item(i).className = 'pill-button';
+    }
+
+    console.log('CURRENT CATEGORY IS THE FOLLOWING: ', currentCategory);
+
+    switch (currentCategory) {
+      case null:
+        categoryButtons.item(0).className += " active-goal-page";
+        break;
+      case 'XX1':
+        categoryButtons.item(1).className += " active-goal-page";
+        break;
+      case 'XX2':
+        categoryButtons.item(2).className += " active-goal-page";
+        break;
+      case 'XX3':
+        categoryButtons.item(3).className += " active-goal-page";
+        break;
+      case 'XX4':
+        categoryButtons.item(4).className += " active-goal-page";
+        break;
+      default:
+        categoryButtons.item(0).className += " active-goal-page";
+    }
 
   }
 
@@ -198,24 +237,6 @@ class Review extends Component {
   saveClientInfo() {
     // UPDATES CLIENT INFO
     updateClientInfo(this.props);
-    // let clientReducer = this.props.clientReducer;
-    // let setClientId = this.props.setClientId;
-    // let appHistory = this.props.history;
-    // let dataObj = {
-    //   company: clientReducer.client.company,
-    //   name: clientReducer.client.name,
-    //   email: clientReducer.client.email,
-    //   phone: clientReducer.client.phone,
-    //   clientId: clientReducer.project.clientId
-    // };
-    // console.log('ANUS ANUS ANUS ANUS', this.props.clientReducer);
-    // fetchWrapper('/api/update-client', {
-    //   method: "POST",
-    //   headers: {
-    //     "content-type": "application.json"
-    //   },
-    //   body: JSON.stringify({name: "adrus", company: "galt", email: "mailhouse", phone: "93843948", id: 74})
-    // }, setClientId, appHistory);
 
     // INITIALIZE NECESSARY VARIABLES
     let editClientContainer = document.getElementById('edit-client-container');
@@ -270,7 +291,7 @@ class Review extends Component {
           price: 7777
         }
       })
-    }, setProjectId, appHistory, "/capitalize");
+    }, setProjectId, appHistory, "/capitalize", "Project Already Exists!", "A project with your project ID is already in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
 
 
     // fetch('/api/new-project', {
@@ -302,6 +323,164 @@ class Review extends Component {
     //   });
   }
 
+  changeGoalPage(e) {
+    console.log(e.target);
+    let targe = e.target;
+    let rightArrow = document.getElementById('right-arrow');
+    let pillButtons = document.getElementsByClassName('pill-button');
+    let categoryGoals = [];
+
+    if (targe.id !== 'pill') {
+      console.log('whoa there');
+      if (targe.className.indexOf(" active-goal-page") === -1) {
+        console.log('hey it worked');
+        for (let i = 0; i < pillButtons.length; i++) {
+          if (pillButtons.item(i).className.indexOf(" active-goal-page") !== -1) {
+            pillButtons.item(i).className = "pill-button";
+          }
+        }
+        targe.className += " active-goal-page";
+      } else {
+        // targe.className = targe.className.slice(0, targe.className.indexOf(" active-goal-page"));
+      }
+
+      switch (targe.id) {
+        case "pill-button-0":
+
+          if (this.props.appReducer.currentCategory !== null) {
+            categoryGoals = this.props.appReducer.goals;
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory(null);
+          }
+
+          break;
+        case "pill-button-1":
+
+          if (this.props.appReducer.currentCategory !== "XX1") {
+            categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.code.indexOf("XX1") !== -1) {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("XX1");
+          }
+
+          break;
+        case "pill-button-2":
+
+          if (this.props.appReducer.currentCategory !== "XX2") {
+            categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.code.indexOf("XX2") !== -1) {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("XX2");
+          }
+
+          break;
+        case "pill-button-3":
+
+          if (this.props.appReducer.currentCategory !== "XX3") {
+            categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.code.indexOf("XX3") !== -1) {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("XX3");
+          }
+
+          break;
+        case "pill-button-4":
+
+          if (this.props.appReducer.currentCategory !== "XX4") {
+            categoryGoals = this.props.appReducer.goals.filter((goal) => {
+
+              if (goal.code.indexOf("XX4") !== -1) {
+                return goal;
+              } else {
+                return false;
+              }
+            });
+
+            this.props.setCategoryGoals(categoryGoals);
+            this.props.setCurrentCategory("XX4");
+          }
+
+          break;
+        default:
+          console.log('fell to the default case in changeGoalPage()');
+      }
+
+      this.props.setCurrentCategoryPage(1);
+
+      if (categoryGoals.length > 8 && rightArrow !== null) {
+        console.log('hey what the fuck is going on here!>!>!>!?!?!?!?!?!?!?!');
+        rightArrow.style.display = '';
+      }
+    }
+  }
+
+  showMoreGoals(e) {
+    // SET TARGET EQUAL TO UPPERMOST PARENT
+    let target = e.target;
+    while (target.id.indexOf("-arrow") === -1) { // while id doesn't match
+      target = target.parentNode; // set target equal to its parent
+    }
+
+    let categoryGoals = this.props.appReducer.categoryGoals;
+    let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+    let totalPages = Math.ceil(categoryGoals.length/8);
+
+    // let leftArrow = document.getElementById('left-arrow');
+    let rightArrow = document.getElementById('right-arrow');
+    let workingPage = 1;
+
+
+    switch (target.id) {
+      case "left-arrow":
+        if (currentCategoryPage > 1) {
+          workingPage = currentCategoryPage - 1;
+          this.props.setCurrentCategoryPage(workingPage);
+        } else {
+          console.log("You want to go to the previous page of goals, don't you? No dice!");
+        }
+        break;
+      case "right-arrow":
+        if (currentCategoryPage < totalPages) {
+          workingPage = currentCategoryPage + 1;
+          this.props.setCurrentCategoryPage(workingPage);
+        } else {
+          console.log("You want to go to the next page of goals, don't you? No dice!");
+        }
+        break;
+      default:
+        console.log('Fell to the default block in showMoreGoals() switch statement');
+    }
+
+    if (workingPage === totalPages) {
+      rightArrow.style.display = 'none';
+    } else {
+      rightArrow.style.display = '';
+    }
+
+
+  }
+
   customizeProject() {
     console.log("This does nothing yet. Soon it will customize the user's project");
   }
@@ -318,13 +497,37 @@ class Review extends Component {
       <div id="goals-body" className="page-body">
         <div id="goals-torso">
 
+          {this.props.appReducer.currentCategoryPage > 1 ? <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
+
           <div className="review-torso-heading-container">
-            <h1 className="heading">Review Your Order</h1>
-            <div id="customize-container" onClick={this.customizeProject.bind(this)}>
-              <FontAwesomeIcon icon={faWrench} />
-              <p className="customize-label">Customize</p>
+
+            <div className="flex">
+              <h1 className="heading">Review Your Order</h1>
+              <div id="customize-container" onClick={this.customizeProject.bind(this)}>
+                <FontAwesomeIcon icon={faWrench} />
+                <p className="customize-label">Customize</p>
+              </div>
             </div>
+
+            <div className="filter-container">
+              <div className="filter-label-container">
+                <p className="filter-label">Categories</p>
+                <FontAwesomeIcon icon={faFilter} id="" className="filter-icon" />
+              </div>
+              <div id="pill" className="pill-buttons-container" onClick={this.changeGoalPage.bind(this)}>
+                <p id="pill-button-0" className="pill-button">All</p>
+                <p id="pill-button-1" className="pill-button">Create</p>
+                <p id="pill-button-2" className="pill-button">Update</p>
+                <p id="pill-button-3" className="pill-button">Manage</p>
+                <p id="pill-button-4" className="pill-button">Other</p>
+              </div>
+            </div>
+
           </div>
+
+          <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
+          {console.log(this.props.appReducer.categoryGoals.length + ' is how many goals are in the category goals array')}
+          {this.props.appReducer.categoryGoals.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
         </div>
         <div id="goals-shoulder">
@@ -541,6 +744,24 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CURRENT_GOAL",
         payload: goal
+      });
+    },
+    setCategoryGoals: (goalsArray) => {
+      dispatch({
+        type: "SET_CATEGORY_GOALS",
+        payload: goalsArray
+      });
+    },
+    setCurrentCategory: (category) => {
+      dispatch({
+        type: "SET_CURRENT_CATEGORY",
+        payload: category
+      });
+    },
+    setCurrentCategoryPage: (pageNumber) => {
+      dispatch({
+        type: "SET_CURRENT_CATEGORY_PAGE",
+        payload: pageNumber
       });
     },
     setBundles: (bundles) => {
