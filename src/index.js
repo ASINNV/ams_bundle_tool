@@ -26,6 +26,7 @@ const clientState = {
     dueDate: null
   },
   goals: [],
+  services: [],
   stats: [
     {
       name: 'Sales',
@@ -52,14 +53,18 @@ const appState = {
   currentQuestion: 0,
   lastQuestion: -1,
   currentStep: -1,
-  currentGoal: null,
   steps: ['Calibrate', 'Personalize', 'Decide', 'Review', 'Capitalize'],
   goals: [],
+  currentGoal: null,
   categoryGoals: [],
-  currentCategoryPage: 1,
-  currentCategory: null,
+  currentGoalCategoryPage: 1,
+  currentGoalCategory: null,
+  services: [],
+  currentService: null,
+  categoryServices: [],
+  currentServiceCategoryPage: 1,
+  currentServiceCategory: null,
   bundles: [],
-  services: []
 };
 
 const clientReducer = (state = clientState, action) => {
@@ -137,6 +142,12 @@ const clientReducer = (state = clientState, action) => {
       state = {
         ...state,
         goals: action.payload
+      };
+      break;
+    case "SET_CLIENT_SERVICES":
+      state = {
+        ...state,
+        services: action.payload
       };
       break;
     case "SET_CLIENT_ID":
@@ -256,16 +267,16 @@ const appReducer = (state = appState, action) => {
         categoryGoals: action.payload
       };
       break;
-    case "SET_CURRENT_CATEGORY":
+    case "SET_CURRENT_GOAL_CATEGORY":
       state = {
         ...state,
-        currentCategory: action.payload
+        currentGoalCategory: action.payload
       };
       break;
-    case "SET_CURRENT_CATEGORY_PAGE":
+    case "SET_CURRENT_GOAL_CATEGORY_PAGE":
       state = {
         ...state,
-        currentCategoryPage: action.payload
+        currentGoalCategoryPage: action.payload
       };
       break;
     case "SET_CURRENT_GOAL":
@@ -284,6 +295,30 @@ const appReducer = (state = appState, action) => {
       state = {
         ...state,
         services: action.payload
+      };
+      break;
+    case "SET_CATEGORY_SERVICES":
+      state = {
+        ...state,
+        categoryServices: action.payload
+      };
+      break;
+    case "SET_CURRENT_SERVICE_CATEGORY":
+      state = {
+        ...state,
+        currentServiceCategory: action.payload
+      };
+      break;
+    case "SET_CURRENT_SERVICE_CATEGORY_PAGE":
+      state = {
+        ...state,
+        currentServiceCategoryPage: action.payload
+      };
+      break;
+    case "SET_CURRENT_SERVICE":
+      state = {
+        ...state,
+        currentService: action.payload
       };
       break;
     default:

@@ -132,7 +132,7 @@ class App extends Component {
     // FETCH GOALS FROM DATABASE AND SET LOCAL APP GOALS TO THEM
     let setGoals = this.props.setGoals;
     let setCategoryGoals = this.props.setCategoryGoals;
-    let setCurrentCategory = this.props.setCurrentCategory;
+    let setCurrentGoalCategory = this.props.setCurrentGoalCategory;
     fetch('/api/goals')
       .then(function(res) {
         return res.json();
@@ -150,7 +150,7 @@ class App extends Component {
         // });
 
         setCategoryGoals(data);
-        setCurrentCategory(null);
+        setCurrentGoalCategory(null);
 
         return data;
       })
@@ -175,6 +175,8 @@ class App extends Component {
 
     // FETCH SERVICES FROM DATABASE AND SET LOCAL APP SERVICES TO THEM
     let setServices = this.props.setServices;
+    let setCategoryServices = this.props.setCategoryServices;
+    let setCurrentServiceCategory = this.props.setCurrentServiceCategory;
     fetch('/api/services')
       .then(function(res) {
         return res.json();
@@ -182,6 +184,10 @@ class App extends Component {
       .then(function(data) {
         console.log('services should be here: ', data);
         setServices(data);
+
+        setCategoryServices(data);
+        setCurrentServiceCategory(null);
+
         return data;
       })
       .catch(function(err) {
@@ -357,10 +363,46 @@ const mapDispatchToProps = (dispatch) => {
         payload: goalsArray
       });
     },
-    setCurrentCategory: (category) => {
+    setCurrentGoalCategory: (category) => {
       dispatch({
-        type: "SET_CURRENT_CATEGORY",
+        type: "SET_CURRENT_GOAL_CATEGORY",
         payload: category
+      });
+    },
+    setCurrentGoalCategoryPage: (pageNumber) => {
+      dispatch({
+        type: "SET_CURRENT_GOAL_CATEGORY_PAGE",
+        payload: pageNumber
+      });
+    },
+    setServices: (servicesArray) => {
+      dispatch({
+        type: "SET_SERVICES",
+        payload: servicesArray
+      });
+    },
+    setCurrentService: (service) => {
+      dispatch({
+        type: "SET_CURRENT_SERVICE",
+        payload: service
+      });
+    },
+    setCategoryServices: (servicesArray) => {
+      dispatch({
+        type: "SET_CATEGORY_SERVICES",
+        payload: servicesArray
+      });
+    },
+    setCurrentServiceCategory: (category) => {
+      dispatch({
+        type: "SET_CURRENT_SERVICE_CATEGORY",
+        payload: category
+      });
+    },
+    setCurrentServiceCategoryPage: (pageNumber) => {
+      dispatch({
+        type: "SET_CURRENT_SERVICE_CATEGORY_PAGE",
+        payload: pageNumber
       });
     },
     setBundles: (bundles) => {
@@ -368,14 +410,7 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_BUNDLES",
         payload: bundles
       });
-    },
-    setServices: (services) => {
-      dispatch({
-        type: "SET_SERVICES",
-        payload: services
-      });
     }
-
   };
 };
 

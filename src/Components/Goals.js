@@ -85,7 +85,7 @@ class Goals extends Component {
           if (this.props.appReducer.currentCategory !== null) {
           categoryGoals = this.props.appReducer.goals;
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory(null);
+            this.props.setCurrentGoalCategoryPage(null);
           }
 
           break;
@@ -102,7 +102,7 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("XX1");
+            this.props.setCurrentGoalCategoryPage("XX1");
           }
 
           break;
@@ -119,7 +119,7 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("XX2");
+            this.props.setCurrentGoalCategoryPage("XX2");
           }
 
           break;
@@ -136,7 +136,7 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("XX3");
+            this.props.setCurrentGoalCategoryPage("XX3");
           }
 
           break;
@@ -153,7 +153,7 @@ class Goals extends Component {
             });
 
             this.props.setCategoryGoals(categoryGoals);
-            this.props.setCurrentCategory("XX4");
+            this.props.setCurrentGoalCategoryPage("XX4");
           }
 
           break;
@@ -161,7 +161,7 @@ class Goals extends Component {
           console.log('fell to the default case in changeGoalPage()');
       }
 
-      this.props.setCurrentCategoryPage(1);
+      this.props.setCurrentGoalCategoryPage(1);
 
       if (categoryGoals.length > 8 && rightArrow !== null) {
         console.log('hey what the fuck is going on here!>!>!>!?!?!?!?!?!?!?!');
@@ -178,7 +178,7 @@ class Goals extends Component {
     }
 
     let categoryGoals = this.props.appReducer.categoryGoals;
-    let currentCategoryPage = this.props.appReducer.currentCategoryPage;
+    let currentGoalCategoryPage = this.props.appReducer.currentGoalCategoryPage;
     let totalPages = Math.ceil(categoryGoals.length/8);
 
     // let leftArrow = document.getElementById('left-arrow');
@@ -188,17 +188,17 @@ class Goals extends Component {
 
     switch (target.id) {
       case "left-arrow":
-        if (currentCategoryPage > 1) {
-          workingPage = currentCategoryPage - 1;
-          this.props.setCurrentCategoryPage(workingPage);
+        if (currentGoalCategoryPage > 1) {
+          workingPage = currentGoalCategoryPage - 1;
+          this.props.setCurrentGoalCategoryPage(workingPage);
         } else {
           console.log("You want to go to the previous page of goals, don't you? No dice!");
         }
         break;
       case "right-arrow":
-        if (currentCategoryPage < totalPages) {
-          workingPage = currentCategoryPage + 1;
-          this.props.setCurrentCategoryPage(workingPage);
+        if (currentGoalCategoryPage < totalPages) {
+          workingPage = currentGoalCategoryPage + 1;
+          this.props.setCurrentGoalCategoryPage(workingPage);
         } else {
           console.log("You want to go to the next page of goals, don't you? No dice!");
         }
@@ -225,7 +225,7 @@ class Goals extends Component {
 
         <div id="goals-torso">
 
-          {this.props.appReducer.currentCategoryPage > 1 ? <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
+          {this.props.appReducer.currentGoalCategoryPage > 1 ? <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
           <div className="goals-torso-heading-container">
             <h1 className="heading">Pick Your Goals</h1>
@@ -244,7 +244,7 @@ class Goals extends Component {
             </div>
           </div>
 
-          <GoalsWindow appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
+          <GoalsWindow page="goals" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
           {console.log(this.props.appReducer.categoryGoals.length + ' is how many goals are in the category goals array')}
           {this.props.appReducer.categoryGoals.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
@@ -417,15 +417,45 @@ const mapDispatchToProps = (dispatch) => {
         payload: goalsArray
       });
     },
-    setCurrentCategory: (category) => {
+    setCurrentGoalCategory: (category) => {
       dispatch({
-        type: "SET_CURRENT_CATEGORY",
+        type: "SET_CURRENT_GOAL_CATEGORY",
         payload: category
       });
     },
-    setCurrentCategoryPage: (pageNumber) => {
+    setCurrentGoalCategoryPage: (pageNumber) => {
       dispatch({
-        type: "SET_CURRENT_CATEGORY_PAGE",
+        type: "SET_CURRENT_GOAL_CATEGORY_PAGE",
+        payload: pageNumber
+      });
+    },
+    setServices: (servicesArray) => {
+      dispatch({
+        type: "SET_SERVICES",
+        payload: servicesArray
+      });
+    },
+    setCurrentService: (service) => {
+      dispatch({
+        type: "SET_CURRENT_SERVICE",
+        payload: service
+      });
+    },
+    setCategoryServices: (servicesArray) => {
+      dispatch({
+        type: "SET_CATEGORY_SERVICES",
+        payload: servicesArray
+      });
+    },
+    setCurrentServiceCategory: (category) => {
+      dispatch({
+        type: "SET_CURRENT_SERVICE_CATEGORY",
+        payload: category
+      });
+    },
+    setCurrentServiceCategoryPage: (pageNumber) => {
+      dispatch({
+        type: "SET_CURRENT_SERVICE_CATEGORY_PAGE",
         payload: pageNumber
       });
     },

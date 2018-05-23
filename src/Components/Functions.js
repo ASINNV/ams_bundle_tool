@@ -9,19 +9,33 @@ export const updateClientInfo = (appProps) => {
     appProps.setClientName(inputs[0].value); // set client name to value of first input field
     dataObj.name = inputs[0].value;
 
-    fetchWrapper('/api/update-name', {
+    fetch('/api/update-name', {
       method: "POST",
       headers: {
         "content-type": "application/json"
       },
       body: JSON.stringify(dataObj)
-    }, appProps.setClientId);
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        if (appProps.setClientId) {
+          appProps.setClientId(data.id);
+        }
+        console.log('RETURNED FROM INSERT: ', data);
+      })
+      .catch((err) => {
+        console.log(err);
+        createErrorPopup("Client Name Already Exists!", "We already have a client with that name in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+      });
+
   }
   if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
     appProps.setClientCompany(inputs[1].value); // set client company to value of second input field
     dataObj.company = inputs[1].value;
 
-    fetchWrapper('/api/update-company', {
+    return fetchWrapper('/api/update-company', {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -33,7 +47,7 @@ export const updateClientInfo = (appProps) => {
     appProps.setClientEmail(inputs[2].value); // set client email to value of third input field
     dataObj.email = inputs[2].value;
 
-    fetchWrapper('/api/update-email', {
+    return fetchWrapper('/api/update-email', {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -45,7 +59,7 @@ export const updateClientInfo = (appProps) => {
     appProps.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
     dataObj.phone = inputs[3].value;
 
-    fetchWrapper('/api/update-phone', {
+    return fetchWrapper('/api/update-phone', {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -112,6 +126,8 @@ export const fetchWrapper = (serverPath, initObj, settingFunction, appHistory, a
       } else {
         createErrorPopup("Client Already Exists!", "We already have you in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
       }
+      console.log(err);
+      return false;
 
       // switch (serverPath) {
       //   case '/api/new-project':
@@ -128,6 +144,5 @@ export const fetchWrapper = (serverPath, initObj, settingFunction, appHistory, a
       //     console.log('fell to the default inside of the fetchWrapper() function inside of the Functions.js component');
       // }
       // alert("A client with your company name is already in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
-      console.log(err);
     });
 };

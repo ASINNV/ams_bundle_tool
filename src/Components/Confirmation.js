@@ -23,15 +23,18 @@ class Review extends Component {
 
   handlePrint() {
     // HIDES PROGRESS BAR AND FOUNDATION HEADER TO ELIMINATE NAVIGATION POSSIBILITY
+    let foundation = document.getElementById('foundation');
     let foundationHeader = document.getElementById('foundation-header');
     let pbHoverArea = document.getElementById('pb-hover-area');
     let printButtonContainer = document.getElementById('print-button-container');
     let foundationHeaderRect = foundationHeader.getBoundingClientRect();
     let pbRect = pbHoverArea.getBoundingClientRect();
+    foundation.style.size = 'landscape';
     foundationHeader.style.transform = 'translateY(-' + foundationHeaderRect.height + 'px)';
     pbHoverArea.style.transform = 'translateY(' + pbRect.height + 'px)';
     printButtonContainer.style.opacity = '0';
     setTimeout(function() {
+      foundation.style.size = '';
       foundationHeader.style.transform = '';
       pbHoverArea.style.transform = '';
       printButtonContainer.style.opacity = '';
