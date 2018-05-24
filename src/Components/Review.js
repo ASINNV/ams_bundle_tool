@@ -9,6 +9,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown';
 import faPencilAlt from '@fortawesome/fontawesome-free-solid/faPencilAlt';
 import faWrench from '@fortawesome/fontawesome-free-solid/faWrench';
+import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
 import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowLeft';
 import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
@@ -483,9 +484,41 @@ class Review extends Component {
 
   }
 
-  customizeProject() {
-    console.log("This does nothing yet. Soon it will customize the user's project");
+  customizeProject(e) {
+
+    // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
+    let target = e.target;
+    while (!target.id || target.id.indexOf("customize-container") === -1) { // while id doesn't match
+      target = target.parentNode; // set target equal to its parent
+    }
+
+    // let serviceSaver = document.getElementById('service-saver');
+    let interactionScreen = document.getElementById('interaction-screen');
+    let editWrench = document.getElementById('edit-wrench');
+    let editCheck = document.getElementById('edit-check');
+
+    if (interactionScreen.style.display === '') {
+      // serviceSaver.style.display = 'block';
+      interactionScreen.style.display = 'none';
+      editWrench.style.display = 'none';
+      editCheck.style.display = 'block';
+      target.lastElementChild.innerText = 'Save Changes';
+    } else {
+      // serviceSaver.style.display = 'none';
+      interactionScreen.style.display = '';
+      editWrench.style.display = 'block';
+      editCheck.style.display = 'none';
+      target.lastElementChild.innerText = 'Customize';
+    }
   }
+
+  // saveServiceChanges(e) {
+  //   let interactionScreen = document.getElementById('interaction-screen');
+  //   if (interactionScreen.style.display === 'none') {
+  //     interactionScreen.style.display = '';
+  //     e.target.style.display = 'none';
+  //   }
+  // }
 
   render() {
     let name = this.props.clientReducer.client.name || null;
@@ -506,7 +539,8 @@ class Review extends Component {
             <div className="flex">
               <h1 className="heading">Review Your Order</h1>
               <div id="customize-container" onClick={this.customizeProject.bind(this)}>
-                <FontAwesomeIcon icon={faWrench} />
+                <FontAwesomeIcon icon={faWrench} id="edit-wrench" />
+                <FontAwesomeIcon icon={faCheck} id="edit-check"/>
                 <p className="customize-label">Customize</p>
               </div>
             </div>
@@ -527,9 +561,18 @@ class Review extends Component {
 
           </div>
 
+          <div id="interaction-screen" className="">
+            <div>
+              <h1>Please Note…</h1>
+              <p>If you want to make a change to your order, please click the ‘Customize’ button above.</p>
+            </div>
+          </div>
+
           <GoalsWindow page="services" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentService={this.props.setCurrentService} setClientServices={this.props.setClientServices}/>
           {console.log(this.props.appReducer.categoryServices.length + ' is how many goals are in the category goals array')}
           {this.props.appReducer.categoryServices.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreServices.bind(this)}/> : false}
+
+          {/*<p id="service-saver" onClick={this.saveServiceChanges.bind(this)}>Save Services</p>*/}
 
         </div>
         <div id="goals-shoulder">

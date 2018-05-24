@@ -784,7 +784,7 @@ table {
   color: #fff;
   /*background: radial-gradient(#405ca9, #06062b);*/
   border: 4px solid #405ca9;
-  margin: 0 20px 40px 20px;
+  margin: 20px;
   padding: 10px;
   border-radius: 16px;
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.3);
@@ -1016,11 +1016,14 @@ table {
 }
 
 .review-torso-heading-container {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 20px 40px 20px;
+  z-index: 2;
 }
+
 .flex {
   display: flex;
   align-items: center;
@@ -1033,16 +1036,74 @@ table {
   margin: 0 20px;
   border: 2px solid #eee;
   border-radius: 50px;
-  opacity: 0.25;
   overflow: hidden;
-  transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out, transform .2s ease-in-out;
   cursor: pointer;
 }
 #customize-container:hover {
-  opacity: 1;
+  opacity: 0.75;
+}
+#customize-container:active {
+  transform: scale(0.9);
 }
 .customize-label {
   margin-left: 5px;
+}
+#edit-check {
+  display: none;
+}
+
+#interaction-screen {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 2.4em;
+  line-height: 1.5em;
+  background: rgba(0,0,0,0.5);
+  border-radius: 24px;
+  box-shadow: 0px 8px 8px 0 rgba(0,0,0,0.5);
+  z-index: 1;
+}
+#interaction-screen div {
+  width: 600px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.75), transparent);
+  padding: 30px;
+  border-radius: 8px;
+}
+#interaction-screen div h1 {
+  color: #1ee9bd;
+}
+#interaction-screen div p {
+  font-size: 0.75em;
+  line-height: 1.5em;
+}
+#service-saver {
+  display: none;
+  width: fit-content;
+  position: absolute;
+  right: 0;
+  background: #fff;
+  padding: 15px 20px;
+  margin: 30px 75px 30px 75px;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 5px 15px 0 rgba(0,0,0,0.3);
+  text-decoration: none;
+  color: #37a9ff;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
+  /*position: absolute;*/
+  /*right: 0;*/
+  /*bottom: 0;*/
+
 }
 
 #review-goals-container, #review-client-container {
