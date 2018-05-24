@@ -8,8 +8,6 @@ export class GoalsWindow extends Component {
     let currentGoalId = appReducer.currentGoal;
     let currentGoal = appReducer.goals[currentGoalId];
     let clientGoals = this.props.clientReducer.goals;
-    let clientServices = this.props.clientReducer.services;
-    let appServices = this.props.appReducer.services;
 
     // SET TARGET EQUAL TO UPPERMOST PARENT
     let target = e.target;
@@ -32,41 +30,6 @@ export class GoalsWindow extends Component {
       if (clientGoals[i] === currentGoal) { // if clicked goal is found in client goals already
         count++; // increment count to indicate a match
       }
-    }
-
-    // FUNCTION TO DETERMINE IF SAVED CLIENT SERVICES ALREADY INCLUDES BUNDLED SERVICES
-    let services = appServices.filter((service) => {
-      let parentGoals = service.relatedgoals;
-      let matches = parentGoals.filter((goalCode) => {
-        return (goalCode === currentGoal.code);
-      });
-      if (matches.length > 0) {
-        return true;
-      }
-    });
-
-    if (clientServices.length > 0) {
-
-      let thisProps = this.props;
-
-      clientServices.forEach((service) => {
-        let matchingServices = services.filter((goalService) => {
-          return (goalService === service);
-        });
-        matchingServices.forEach((matchingService) => {
-          let newClientServices = clientServices;
-          newClientServices.push(matchingService);
-          thisProps.setClientServices(newClientServices);
-        });
-      });
-    } else if (services.length > 0) {
-
-      this.props.setClientServices(services);
-
-    } else {
-
-
-
     }
 
     // ADDS CLICKED GOAL TO SAVED CLIENT GOALS IF NOT ALREADY IN IT, OTHERWISE LOGS CLIENT GOALS

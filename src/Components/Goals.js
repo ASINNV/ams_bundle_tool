@@ -57,6 +57,41 @@ class Goals extends Component {
         categoryButtons.item(0).className += " active-goal-page";
     }
   }
+  componentWillUnmount() {
+    // let clientServices = this.props.clientReducer.services;
+    let appServices = this.props.appReducer.services;
+    let clientGoals = this.props.clientReducer.goals;
+    let newClientServices = [];
+
+    clientGoals.forEach((selectedGoal) => { // for each selected client goal, do the following:
+
+      // console.log('selected goal' + ' ', selectedGoal);
+
+      let goalCode = selectedGoal.code;
+
+      // console.log('selcted goal code ', goalCode);
+
+
+      // add every service with 'goalCode' in its relatedgoals array if it's unique
+
+      appServices.forEach((appService) => {
+
+        let relatedGoals = appService.relatedgoals;
+
+        relatedGoals.forEach((relatedGoal) => {
+          let goalIncludesService = (relatedGoal === goalCode);
+          let serviceNotDuplicate = newClientServices.indexOf(appService) === -1;
+          if (goalIncludesService && serviceNotDuplicate) {
+            newClientServices.push(appService); // add service to new client services array
+          }
+        });
+      });
+
+    });
+
+    this.props.setClientServices(newClientServices); // replace current client service array with new client service array
+
+  }
 
   changeGoalPage(e) {
     console.log(e.target);
