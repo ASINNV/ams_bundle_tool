@@ -5,8 +5,11 @@ export class GoalsWindow extends Component {
   addGoal(e) {
 
     let appReducer = this.props.appReducer;
-    let currentGoal = appReducer.currentGoal;
+    let currentGoalId = appReducer.currentGoal;
+    let currentGoal = appReducer.goals[currentGoalId];
     let clientGoals = this.props.clientReducer.goals;
+    let clientServices = this.props.clientReducer.services;
+    let appServices = this.props.appReducer.services;
 
     // SET TARGET EQUAL TO UPPERMOST PARENT
     let target = e.target;
@@ -26,18 +29,53 @@ export class GoalsWindow extends Component {
     // FUNCTION TO DETERMINE IF SAVED CLIENT GOALS ALREADY INCLUDES CLICKED GOAL
     let count = 0; // element match count
     for (let i = 0; i < clientGoals.length; i++) { // iterates over stored client goals
-      if (clientGoals[i] === this.props.appReducer.goals[currentGoal]) { // if clicked goal is found in client goals already
+      if (clientGoals[i] === currentGoal) { // if clicked goal is found in client goals already
         count++; // increment count to indicate a match
       }
     }
 
+    // FUNCTION TO DETERMINE IF SAVED CLIENT SERVICES ALREADY INCLUDES BUNDLED SERVICES
+    let services = appServices.filter((service) => {
+      let parentGoals = service.relatedgoals;
+      let matches = parentGoals.filter((goalCode) => {
+        return (goalCode === currentGoal.code);
+      });
+      if (matches.length > 0) {
+        return true;
+      }
+    });
+
+    if (clientServices.length > 0) {
+
+      let thisProps = this.props;
+
+      clientServices.forEach((service) => {
+        let matchingServices = services.filter((goalService) => {
+          return (goalService === service);
+        });
+        matchingServices.forEach((matchingService) => {
+          let newClientServices = clientServices;
+          newClientServices.push(matchingService);
+          thisProps.setClientServices(newClientServices);
+        });
+      });
+    } else if (services.length > 0) {
+
+      this.props.setClientServices(services);
+
+    } else {
+
+
+
+    }
+
     // ADDS CLICKED GOAL TO SAVED CLIENT GOALS IF NOT ALREADY IN IT, OTHERWISE LOGS CLIENT GOALS
     if (count === 0) { // if clicked goal isn't already in saved client goals
-      clientGoals.push(appReducer.goals[currentGoal]); // add clicked goal to working copy of client goals
+      clientGoals.push(appReducer.goals[currentGoalId]); // add clicked goal to working copy of client goals
       this.props.setClientGoals(clientGoals); // overwrite stored client goals with working copy
     } else {
       let newClientGoals = clientGoals.filter((goal) => {
-        if (goal === appReducer.goals[currentGoal]) {
+        if (goal === appReducer.goals[currentGoalId]) {
           console.log('awesome');
         } else {
           return goal;

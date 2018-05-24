@@ -244,7 +244,7 @@ class Goals extends Component {
             </div>
           </div>
 
-          <GoalsWindow page="goals" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals}/>
+          <GoalsWindow page="goals" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentGoal={this.props.setCurrentGoal} setClientGoals={this.props.setClientGoals} setClientServices={this.props.setClientServices}/>
           {console.log(this.props.appReducer.categoryGoals.length + ' is how many goals are in the category goals array')}
           {this.props.appReducer.categoryGoals.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
 
@@ -361,6 +361,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_CLIENT_GOALS",
         payload: goals
+      });
+    },
+    setClientServices: (services) => {
+      dispatch({
+        type: "SET_CLIENT_SERVICES",
+        payload: services
       });
     },
     setClientStats: (stats) => {

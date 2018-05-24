@@ -21,7 +21,6 @@ const clientState = {
     name: null,
     paymentMethod: null,
     bundle: {},
-    services: null,
     startDate: null,
     dueDate: null
   },
