@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
+import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 
 export class GoalsWindow extends Component {
 
@@ -150,7 +153,7 @@ export class GoalsWindow extends Component {
               return (
                 <div id={"goal-" + (goal.id - 1)} key={i} className="item-card" onClick={this.addGoal.bind(this)} onMouseEnter={this.highlightGoal.bind(this)}>
                   <p className="item-heading">{goal.name}</p>
-                  {this.checkIfClientGoal(clientGoals, goal) ? <p className="checkmark" /> : false}
+                  {this.checkIfClientGoal(clientGoals, goal) ? <div className="checkmark"><FontAwesomeIcon icon={faCheck} id="" className="checkmark-icon" /></div> : false}
                 </div>
               );
             } else {
@@ -169,8 +172,8 @@ export class GoalsWindow extends Component {
             if (i >= (currentServiceCategoryPage - 1) * 8 && i < currentServiceCategoryPage * 8) {
               return (
                 <div id={"service-" + (service.id - 1)} key={i} className="item-card" onClick={this.addService.bind(this)} onMouseEnter={this.highlightService.bind(this)}>
-                  <p className="service-heading">{service.name}</p>
-                  {this.checkIfClientService(clientServices, service) ? <p className="checkmark" /> : false}
+                  <p className="item-heading">{service.name}</p>
+                  {this.checkIfClientGoal(clientServices, service) ? <div className="checkmark"><FontAwesomeIcon icon={faCheck} id="" className="checkmark-icon" /></div> : false}
                 </div>
               );
             } else {

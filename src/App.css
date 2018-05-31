@@ -437,6 +437,9 @@ table {
   height: 100vh;
   display: flex;
   overflow: hidden;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
   /*opacity: 1;*/
   /*transition: opacity .2s ease-in-out;*/
   /*z-index: 0;*/
@@ -759,6 +762,9 @@ table {
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
+  /*animation-name: fadeIn;*/
+  /*animation-iteration-count: 1;*/
+  /*animation-duration: 1s;*/
 }
 .goals-torso-heading-container {
   display: flex;
@@ -790,21 +796,68 @@ table {
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.3);
   transition: color .25s ease, border .25s ease, box-shadow .25s ease;
   hyphens: auto;
+  overflow: hidden;
 }
 .item-card:hover {
   border: 4px solid #fff;
   color: #fff;
   box-shadow: 0 12px 24px 0 rgba(0,0,0,0.3);
 }
+.item-heading {
+  position: relative;
+  z-index: 2;
+}
 .checkmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  top: -15px;
-  right: -15px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #e91e1e;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  /*top: -15px;*/
+  /*right: -15px;*/
+  /*top: 50%;*/
+  /*left: 50%;*/
+  /*transform: translateY(-50%) translateX(-50%);*/
+  /*width: 60px;*/
+  /*height: 60px;*/
+  /*border-radius: 50%;*/
+  /*font-size: 1.5em;*/
+  /*background: #e91e1e;*/
+  background: radial-gradient(#405ca9, #25336e);
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.3);
+  z-index: 1;
+  /*animation-name: fadeIn;*/
+  /*animation-iteration-count: 1;*/
+  /*animation-duration: .5s;*/
+}
+.checkmark-icon {
+  background: linear-gradient(30deg, #37a9ff, #1ee9bd);
+  color: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 2em;
+  /*animation-name: rotateCheck;*/
+  /*animation-iteration-count: 1;*/
+  /*animation-duration: .25s;*/
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes rotateCheck {
+  0% {
+    transform: rotate(-180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 #goals-shoulder {
@@ -1021,7 +1074,7 @@ table {
   justify-content: space-between;
   align-items: center;
   margin: 0 20px 40px 20px;
-  z-index: 2;
+  z-index: 4;
 }
 
 .flex {
@@ -1066,7 +1119,7 @@ table {
   font-size: 2.4em;
   line-height: 1.5em;
   background: rgba(0,0,0,0.5);
-  z-index: 1;
+  z-index: 3;
 }
 #interaction-screen div {
   width: 600px;
