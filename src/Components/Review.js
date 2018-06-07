@@ -488,34 +488,42 @@ class Review extends Component {
 
     // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
     let target = e.target;
-    while (!target.id || (target.id.indexOf("customize-container") === -1 && target.id.indexOf("other-customize-btn") === -1)) { // while id doesn't match
+    while (!target.id || target.id.indexOf("other-customize-btn") === -1) { // while id doesn't match
       target = target.parentNode; // set target equal to its parent
     }
-
+    // REMOVES SECONDARY CUSTOMIZE BUTTON FUNCTIONALITY
+    // (target.id.indexOf("customize-container") === -1 &&
     // let serviceSaver = document.getElementById('service-saver');
+    // let editWrench = document.getElementById('edit-wrench');
+    // let editCheck = document.getElementById('edit-check');
+    // let customizeLabel = document.getElementById('customize-label');
+
     let interactionScreen = document.getElementById('interaction-screen');
-    let editWrench = document.getElementById('edit-wrench');
-    let editCheck = document.getElementById('edit-check');
-    let customizeLabel = document.getElementById('customize-label');
     let otherEditWrench = document.getElementById('other-edit-wrench');
     let otherEditCheck = document.getElementById('other-edit-check');
     let otherCustomizeLabel = document.getElementById('other-customize-label');
 
     if (interactionScreen.style.display === '') {
       // serviceSaver.style.display = 'block';
+
+      // REMOVES SECONDARY CUSTOMIZE BUTTON FUNCTIONALITY
+      // editWrench.style.display = 'none';
+      // editCheck.style.display = 'inline-block';
+      // customizeLabel.innerText = 'Save Changes';
+
       interactionScreen.style.display = 'none';
-      editWrench.style.display = 'none';
-      editCheck.style.display = 'inline-block';
-      customizeLabel.innerText = 'Save Changes';
       otherEditWrench.style.display = 'none';
       otherEditCheck.style.display = 'inline-block';
       otherCustomizeLabel.innerText = 'SAVE CHANGES';
     } else {
       // serviceSaver.style.display = 'none';
+
+      // REMOVES SECONDARY CUSTOMIZE BUTTON FUNCTIONALITY
+      // editWrench.style.display = 'inline-block';
+      // editCheck.style.display = 'none';
+      // customizeLabel.innerText = 'Customize';
+
       interactionScreen.style.display = '';
-      editWrench.style.display = 'inline-block';
-      editCheck.style.display = 'none';
-      customizeLabel.innerText = 'Customize';
       otherEditWrench.style.display = 'inline-block';
       otherEditCheck.style.display = 'none';
       otherCustomizeLabel.innerText = 'CUSTOMIZE';
@@ -546,7 +554,20 @@ class Review extends Component {
           <div>
             {/*<h1>Please Note…</h1>*/}
             {/*<p>If you want to make a change to your order, please click the ‘Customize’ button above.</p>*/}
-            <h1>Your Services</h1>
+
+            <div className="review-torso-heading-container">
+
+              <div className="flex">
+                <h1 className="heading">Review Your Order</h1>
+
+                {/* REMOVES SECONDARY CUSTOMIZE BUTTON FUNCTIONALITY */}
+                {/*<div id="customize-container" onClick={this.customizeProject.bind(this)}>*/}
+                {/*<FontAwesomeIcon icon={faWrench} id="edit-wrench" />*/}
+                {/*<FontAwesomeIcon icon={faCheck} id="edit-check"/>*/}
+                {/*<p id="customize-label">Customize</p>*/}
+                {/*</div>*/}
+              </div>
+            </div>
             <ul id="service-list">
               {this.props.clientReducer.services.length > 0 ? this.props.clientReducer.services.map((service, i) => {
                 return (
@@ -567,12 +588,14 @@ class Review extends Component {
           <div className="review-torso-heading-container">
 
             <div className="flex">
-              <h1 className="heading">Review Your Order</h1>
-              <div id="customize-container" onClick={this.customizeProject.bind(this)}>
-                <FontAwesomeIcon icon={faWrench} id="edit-wrench" />
-                <FontAwesomeIcon icon={faCheck} id="edit-check"/>
-                <p id="customize-label">Customize</p>
-              </div>
+              <h1 className="heading">Pick Your Services</h1>
+
+              {/* REMOVES SECONDARY CUSTOMIZE BUTTON FUNCTIONALITY */}
+              {/*<div id="customize-container" onClick={this.customizeProject.bind(this)}>*/}
+                {/*<FontAwesomeIcon icon={faWrench} id="edit-wrench" />*/}
+                {/*<FontAwesomeIcon icon={faCheck} id="edit-check"/>*/}
+                {/*<p id="customize-label">Customize</p>*/}
+              {/*</div>*/}
             </div>
 
             <div className="filter-container">
@@ -599,8 +622,8 @@ class Review extends Component {
 
           {/*<p id="other-customize-btn" onClick={this.customizeProject.bind(this)}><FontAwesomeIcon icon={faWrench} id="other-edit-wrench" /> CUSTOMIZE</p>*/}
           <div id="other-customize-btn" onClick={this.customizeProject.bind(this)}>
-            <FontAwesomeIcon icon={faWrench} id="other-edit-wrench" />
-            <FontAwesomeIcon icon={faCheck} id="other-edit-check"/>
+            <FontAwesomeIcon icon={faWrench} id="other-edit-wrench" className="customize-btn-icons"/>
+            <FontAwesomeIcon icon={faCheck} id="other-edit-check" className="customize-btn-icons"/>
             <p id="other-customize-label">CUSTOMIZE</p>
           </div>
 
