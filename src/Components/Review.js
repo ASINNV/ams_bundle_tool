@@ -488,7 +488,7 @@ class Review extends Component {
 
     // SET TARGET VARIABLE TO ELEMENT WITH '-container' IN ITS ID
     let target = e.target;
-    while (!target.id || target.id.indexOf("customize-container") === -1) { // while id doesn't match
+    while (!target.id || (target.id.indexOf("customize-container") === -1 && target.id.indexOf("other-customize-btn") === -1)) { // while id doesn't match
       target = target.parentNode; // set target equal to its parent
     }
 
@@ -496,21 +496,32 @@ class Review extends Component {
     let interactionScreen = document.getElementById('interaction-screen');
     let editWrench = document.getElementById('edit-wrench');
     let editCheck = document.getElementById('edit-check');
+    let customizeLabel = document.getElementById('customize-label');
+    let otherEditWrench = document.getElementById('other-edit-wrench');
+    let otherEditCheck = document.getElementById('other-edit-check');
+    let otherCustomizeLabel = document.getElementById('other-customize-label');
 
     if (interactionScreen.style.display === '') {
       // serviceSaver.style.display = 'block';
       interactionScreen.style.display = 'none';
       editWrench.style.display = 'none';
-      editCheck.style.display = 'block';
-      target.lastElementChild.innerText = 'Save Changes';
+      editCheck.style.display = 'inline-block';
+      customizeLabel.innerText = 'Save Changes';
+      otherEditWrench.style.display = 'none';
+      otherEditCheck.style.display = 'inline-block';
+      otherCustomizeLabel.innerText = 'SAVE CHANGES';
     } else {
       // serviceSaver.style.display = 'none';
       interactionScreen.style.display = '';
-      editWrench.style.display = 'block';
+      editWrench.style.display = 'inline-block';
       editCheck.style.display = 'none';
-      target.lastElementChild.innerText = 'Customize';
+      customizeLabel.innerText = 'Customize';
+      otherEditWrench.style.display = 'inline-block';
+      otherEditCheck.style.display = 'none';
+      otherCustomizeLabel.innerText = 'CUSTOMIZE';
     }
   }
+
 
   // saveServiceChanges(e) {
   //   let interactionScreen = document.getElementById('interaction-screen');
@@ -530,6 +541,25 @@ class Review extends Component {
 
     return (
       <div id="goals-body" className="page-body">
+
+        <div id="interaction-screen" className="">
+          <div>
+            {/*<h1>Please Note…</h1>*/}
+            {/*<p>If you want to make a change to your order, please click the ‘Customize’ button above.</p>*/}
+            <h1>Your Services</h1>
+            <ul id="service-list">
+              {this.props.clientReducer.services.length > 0 ? this.props.clientReducer.services.map((service, i) => {
+                return (
+                  <li key={i}>
+                    <p className="service-list-name service-list-item">{service.name}</p>
+                    <p className="service-list-price service-list-item flair">${service.price}</p>
+                  </li>
+                );
+              }) : <p className="zero-services-message flair">Your cart is empty.</p>}
+            </ul>
+          </div>
+        </div>
+
         <div id="goals-torso">
 
           {this.props.appReducer.currentServiceCategoryPage > 1 ? <FontAwesomeIcon icon={faArrowLeft} id="left-arrow" className="nav-arrow" onClick={this.showMoreGoals.bind(this)}/> : false}
@@ -541,7 +571,7 @@ class Review extends Component {
               <div id="customize-container" onClick={this.customizeProject.bind(this)}>
                 <FontAwesomeIcon icon={faWrench} id="edit-wrench" />
                 <FontAwesomeIcon icon={faCheck} id="edit-check"/>
-                <p className="customize-label">Customize</p>
+                <p id="customize-label">Customize</p>
               </div>
             </div>
 
@@ -561,18 +591,18 @@ class Review extends Component {
 
           </div>
 
-          <div id="interaction-screen" className="">
-            <div>
-              <h1>Please Note…</h1>
-              <p>If you want to make a change to your order, please click the ‘Customize’ button above.</p>
-            </div>
-          </div>
-
           <GoalsWindow page="services" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentService={this.props.setCurrentService} setClientServices={this.props.setClientServices}/>
           {console.log(this.props.appReducer.categoryServices.length + ' is how many goals are in the category goals array')}
           {this.props.appReducer.categoryServices.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreServices.bind(this)}/> : false}
 
           {/*<p id="service-saver" onClick={this.saveServiceChanges.bind(this)}>Save Services</p>*/}
+
+          {/*<p id="other-customize-btn" onClick={this.customizeProject.bind(this)}><FontAwesomeIcon icon={faWrench} id="other-edit-wrench" /> CUSTOMIZE</p>*/}
+          <div id="other-customize-btn" onClick={this.customizeProject.bind(this)}>
+            <FontAwesomeIcon icon={faWrench} id="other-edit-wrench" />
+            <FontAwesomeIcon icon={faCheck} id="other-edit-check"/>
+            <p id="other-customize-label">CUSTOMIZE</p>
+          </div>
 
         </div>
         <div id="goals-shoulder">
@@ -627,7 +657,10 @@ class Review extends Component {
                 <div className="goal-sidebar-heading-container ten-bottom-margin">
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
-                <p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price || "0"}</p>
+                {/*<p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price || "0"}</p>*/}
+                <p className="review-info-item emphasis">{this.props.clientReducer.services.length > 0 ? "$" + this.props.clientReducer.services.reduce((accumulator, currentService) => {
+                  return accumulator + Number(currentService.price);
+                }, 0) : "$0"}</p>
                 {/*{this.props.clientReducer.project.bundle.price ? <p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price}</p> : <p className="review-info-item emphasis">Quote</p>}*/}
               </div>
               <Link to="/capitalize" className="buttons continue-button" onClick={this.createProject.bind(this)}>

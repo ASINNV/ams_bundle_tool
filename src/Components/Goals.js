@@ -88,8 +88,9 @@ class Goals extends Component {
       });
 
     });
-
-    this.props.setClientServices(newClientServices); // replace current client service array with new client service array
+    if (clientGoals.length > 0) {
+      this.props.setClientServices(newClientServices); // replace current client service array with new client service array
+    }
 
   }
 

@@ -437,9 +437,10 @@ table {
   height: 100vh;
   display: flex;
   overflow: hidden;
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-iteration-count: 1;
+  /*animation-name: fadeIn;*/
+  /*animation-duration: 1s;*/
+  /*animation-iteration-count: 1;*/
+
   /*opacity: 1;*/
   /*transition: opacity .2s ease-in-out;*/
   /*z-index: 0;*/
@@ -843,14 +844,14 @@ table {
   /*animation-iteration-count: 1;*/
   /*animation-duration: .25s;*/
 }
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+/*@keyframes fadeIn {*/
+  /*0% {*/
+    /*opacity: 0;*/
+  /*}*/
+  /*100% {*/
+    /*opacity: 1;*/
+  /*}*/
+/*}*/
 @keyframes rotateCheck {
   0% {
     transform: rotate(-180deg);
@@ -1096,44 +1097,94 @@ table {
 #customize-container:hover {
   opacity: 0.75;
 }
-#customize-container:active {
+#customize-container:active, #other-customize-btn:active {
   transform: scale(0.9);
 }
-.customize-label {
+#customize-label, #other-customize-label {
+  display: inline-block;
   margin-left: 5px;
 }
-#edit-check {
+#edit-check, #other-edit-check {
   display: none;
 }
 
 #interaction-screen {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 25%;
   left: 0;
   bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #fff;
-  font-size: 2.4em;
-  line-height: 1.5em;
-  background: rgba(0,0,0,0.5);
+  padding: 150px 95px;
   z-index: 3;
 }
-#interaction-screen div {
-  width: 600px;
-  background: linear-gradient(135deg, rgba(0,0,0,0.75), transparent);
+#interaction-screen > div {
+  width: 100%;
+  height: 100%;
+  /*background: linear-gradient(135deg, rgba(0,0,0,0.75), transparent);*/
+  background: linear-gradient(220deg, #222, #111);
   padding: 30px;
   border-radius: 8px;
+  box-shadow: 0 10px 30px 0 rgba(0,0,0,0.5);
 }
-#interaction-screen div h1 {
-  color: #1ee9bd;
+#interaction-screen > div > h1 {
+  margin-bottom: 30px;
+  font-size: 2.4em;
+  line-height: 1.5em;
+  font-weight: 600;
+  text-align: center;
 }
-#interaction-screen div p {
-  font-size: 0.75em;
+.zero-services-message {
+  text-align: center;
+}
+#service-list {
+  font-size: 1.5em;
   line-height: 1.5em;
 }
+#service-list li {
+  padding: 10px 20px;
+}
+#service-list li:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+#service-list li:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+#service-list li:nth-child(2n + 1) {
+  background: #333;
+}
+#service-list li:nth-child(2n + 2) {
+  background: #222;
+}
+.service-list-name {
+  width: 75%;
+}
+.service-list-price {
+  width: 25%;
+  text-align: right;
+}
+.service-list-item {
+  display: inline-block;
+}
+#other-customize-btn {
+  width: fit-content;
+  margin: 20px auto;
+  padding: 15px 20px;
+  background: #fff;
+  color: #37a9ff;
+  border-radius: 8px;
+  font-size: 1.25em;
+  font-weight: 600;
+  z-index: 100;
+  position: absolute;
+  right: 130px;
+  bottom: 160px;
+  cursor: pointer;
+  transition: transform .2s ease-in-out;
+}
+
 #service-saver {
   display: none;
   width: fit-content;
