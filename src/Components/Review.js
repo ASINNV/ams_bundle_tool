@@ -271,13 +271,19 @@ class Review extends Component {
     e.preventDefault();
     // let dataObj = {}; // object for project details going to the database
     // let count = 0; // count to see if project object is full and ready to send to the database
-    let clientId = this.props.clientReducer.project.clientId;
+    let clientReducer = this.props.clientReducer;
+    // let clientId = this.props.clientReducer.project.clientId;
     // CHECK COUNT TO VERIFY FULL dataObj, THEN SEND dataObj TO DATABASE
     // if (count === 4) {
     //
     // }
     let appHistory = this.props.history;
     let setProjectId = this.props.setProjectId;
+    let totalPrice = clientReducer.services.length > 0 ? clientReducer.services.reduce((accumulator, currentService) => {
+      return accumulator + Number(currentService.price);
+    }, 0) : 0;
+
+    this.props.setProjectTotal(totalPrice);
 
     fetchWrapper('/api/new-project', {
       method: "POST",
@@ -285,13 +291,13 @@ class Review extends Component {
         "content-type": "application/json"
       },
       body: JSON.stringify({
-        clientId: clientId,
-        name: "Testicles 123",
+        clientId: clientReducer.project.clientId,
+        name: "This must be a joke.",
         paymentMethod: 3,
         bundle: {
-          id: 2,
-          name: 'Accelerator',
-          price: 7777
+          id: clientReducer.project.bundle.id,
+          name: clientReducer.project.bundle.name,
+          price: totalPrice
         }
       })
     }, setProjectId, appHistory, "/capitalize", "Project Already Exists!", "A project with your project ID is already in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
@@ -614,7 +620,7 @@ class Review extends Component {
 
           </div>
 
-          <GoalsWindow page="services" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentService={this.props.setCurrentService} setClientServices={this.props.setClientServices}/>
+          <GoalsWindow page="services" appReducer={this.props.appReducer} clientReducer={this.props.clientReducer} setCurrentService={this.props.setCurrentService} setClientServices={this.props.setClientServices} setProjectTotal={this.props.setProjectTotal}/>
           {console.log(this.props.appReducer.categoryServices.length + ' is how many goals are in the category goals array')}
           {this.props.appReducer.categoryServices.length > 8 ? <FontAwesomeIcon icon={faArrowRight} id="right-arrow" className="nav-arrow" onClick={this.showMoreServices.bind(this)}/> : false}
 
@@ -622,8 +628,8 @@ class Review extends Component {
 
           {/*<p id="other-customize-btn" onClick={this.customizeProject.bind(this)}><FontAwesomeIcon icon={faWrench} id="other-edit-wrench" /> CUSTOMIZE</p>*/}
           <div id="other-customize-btn" onClick={this.customizeProject.bind(this)}>
-            <FontAwesomeIcon icon={faWrench} id="other-edit-wrench" className="customize-btn-icons"/>
-            <FontAwesomeIcon icon={faCheck} id="other-edit-check" className="customize-btn-icons"/>
+            <FontAwesomeIcon icon={faWrench} id="other-edit-wrench" className="customize-btn-icon"/>
+            <FontAwesomeIcon icon={faCheck} id="other-edit-check" className="customize-btn-icon"/>
             <p id="other-customize-label">CUSTOMIZE</p>
           </div>
 
@@ -681,9 +687,10 @@ class Review extends Component {
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
                 {/*<p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price || "0"}</p>*/}
-                <p className="review-info-item emphasis">{this.props.clientReducer.services.length > 0 ? "$" + this.props.clientReducer.services.reduce((accumulator, currentService) => {
-                  return accumulator + Number(currentService.price);
-                }, 0) : "$0"}</p>
+                {/*<p className="review-info-item emphasis">{this.props.clientReducer.services.length > 0 ? "$" + this.props.clientReducer.services.reduce((accumulator, currentService) => {*/}
+                  {/*return accumulator + Number(currentService.price);*/}
+                {/*}, 0) : "$0"}</p>*/}
+                <p className="review-info-item emphasis">{this.props.clientReducer.project.total > 0 ? "$" + this.props.clientReducer.project.total : "$0"}</p>
                 {/*{this.props.clientReducer.project.bundle.price ? <p className="review-info-item emphasis">${this.props.clientReducer.project.bundle.price}</p> : <p className="review-info-item emphasis">Quote</p>}*/}
               </div>
               <Link to="/capitalize" className="buttons continue-button" onClick={this.createProject.bind(this)}>
@@ -821,6 +828,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_PROJECT_ID",
         payload: id
+      });
+    },
+    setProjectTotal: (total) => {
+      dispatch({
+        type: "SET_PROJECT_TOTAL",
+        payload: total
       });
     },
     setAppData: (dataObj) => {

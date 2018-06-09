@@ -118,6 +118,12 @@ export class GoalsWindow extends Component {
       }
     }
 
+    let projectTotal = clientServices.length > 0 ? clientServices.reduce((accumulator, currentService) => {
+      return accumulator + Number(currentService.price);
+    }, 0) : 0;
+
+    this.props.setProjectTotal(projectTotal);
+
   }
   highlightService(e) {
     let target = e.target;

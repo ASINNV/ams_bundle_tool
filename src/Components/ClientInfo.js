@@ -556,7 +556,7 @@ class ClientInfo extends Component {
           {/*<p className="buttons" onClick={this.createProject.bind(this)}>create new project</p>*/}
           <div id="stream">
             <div id="floating-instruction">
-              <p>Tell us about your business</p>
+              <p>Tell us about yourself</p>
             </div>
             <div id="scrolling-stream">
 

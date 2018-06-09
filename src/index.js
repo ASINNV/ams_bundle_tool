@@ -19,6 +19,7 @@ const clientState = {
     id: null,
     clientId: null,
     name: null,
+    total: null,
     paymentMethod: null,
     bundle: {},
     startDate: null,

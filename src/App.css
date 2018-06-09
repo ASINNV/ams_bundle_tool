@@ -763,6 +763,8 @@ table {
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
+  perspective: 1000px;
+  perspective-origin: center;
   /*animation-name: fadeIn;*/
   /*animation-iteration-count: 1;*/
   /*animation-duration: 1s;*/
@@ -790,19 +792,22 @@ table {
   background: linear-gradient(30deg, #37a9ff, #1ee9bd);
   color: #fff;
   /*background: radial-gradient(#405ca9, #06062b);*/
-  border: 4px solid #405ca9;
+  /*border: 4px solid #405ca9;*/
+  border: 4px solid #1ee9bd;
   margin: 20px;
   padding: 10px;
   border-radius: 16px;
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.3);
-  transition: color .25s ease, border .25s ease, box-shadow .25s ease;
+  transition: color .25s ease, border .25s ease, box-shadow .25s ease, transform .2s ease;
   hyphens: auto;
   overflow: hidden;
 }
 .item-card:hover {
   border: 4px solid #fff;
   color: #fff;
-  box-shadow: 0 12px 24px 0 rgba(0,0,0,0.3);
+  /*box-shadow: 0 12px 24px 0 rgba(0,0,0,0.3);*/
+  box-shadow: 0 12px 100px 0 rgba(0,0,0,0.3);
+  transform: translate3d(0, 0, 15px);
 }
 .item-heading {
   position: relative;
@@ -827,9 +832,10 @@ table {
   /*border-radius: 50%;*/
   /*font-size: 1.5em;*/
   /*background: #e91e1e;*/
-  background: radial-gradient(#405ca9, #25336e);
+  background: rgba(0, 61, 107, 0.75);
+  /*background: radial-gradient(#405ca9, #25336e);*/
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.3);
-  z-index: 1;
+  z-index: 2;
   /*animation-name: fadeIn;*/
   /*animation-iteration-count: 1;*/
   /*animation-duration: .5s;*/
@@ -1183,6 +1189,9 @@ table {
 #other-customize-btn:hover {
   opacity: 0.75;
 }
+/*#other-customize-btn:hover .customize-btn-icon {*/
+  /*transform: rotate(360deg);*/
+/*}*/
 #other-customize-btn:active {
   transform: scale(0.95);
 }
@@ -1195,11 +1204,12 @@ table {
 #other-edit-check {
   display: none;
 }
-.customize-btn-icons {
-  background: #eee;
+.customize-btn-icon {
+  background: #ddd;
   padding: 7px;
   font-size: 1.5em;
   border-radius: 50%;
+  /*transition: transform .25s ease-in-out;*/
 }
 
 #service-saver {

@@ -66,30 +66,39 @@ class Goals extends Component {
     clientGoals.forEach((selectedGoal) => { // for each selected client goal, do the following:
 
       // console.log('selected goal' + ' ', selectedGoal);
+      if (selectedGoal !== undefined) {
+        let goalCode = selectedGoal.code;
 
-      let goalCode = selectedGoal.code;
-
-      // console.log('selcted goal code ', goalCode);
+        // console.log('selcted goal code ', goalCode);
 
 
-      // add every service with 'goalCode' in its relatedgoals array if it's unique
+        // add every service with 'goalCode' in its relatedgoals array if it's unique
 
-      appServices.forEach((appService) => {
+        appServices.forEach((appService) => {
 
-        let relatedGoals = appService.relatedgoals;
+          let relatedGoals = appService.relatedgoals;
 
-        relatedGoals.forEach((relatedGoal) => {
-          let goalIncludesService = (relatedGoal === goalCode);
-          let serviceNotDuplicate = newClientServices.indexOf(appService) === -1;
-          if (goalIncludesService && serviceNotDuplicate) {
-            newClientServices.push(appService); // add service to new client services array
-          }
+          relatedGoals.forEach((relatedGoal) => {
+            let goalIncludesService = (relatedGoal === goalCode);
+            let serviceNotDuplicate = newClientServices.indexOf(appService) === -1;
+            if (goalIncludesService && serviceNotDuplicate) {
+              newClientServices.push(appService); // add service to new client services array
+            }
+          });
         });
-      });
+      }
+
 
     });
     if (clientGoals.length > 0) {
       this.props.setClientServices(newClientServices); // replace current client service array with new client service array
+
+      // SET PROJECT TOTAL BASED ON SERVICES LIST
+      let projectTotal = newClientServices.length > 0 ? newClientServices.reduce((accumulator, currentService) => {
+        return accumulator + Number(currentService.price);
+      }, 0) : 0;
+
+      this.props.setProjectTotal(projectTotal);
     }
 
   }
@@ -421,6 +430,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_PROJECT_ID",
         payload: id
+      });
+    },
+    setProjectTotal: (total) => {
+      dispatch({
+        type: "SET_PROJECT_TOTAL",
+        payload: total
       });
     },
     setAppData: (dataObj) => {
