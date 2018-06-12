@@ -92,7 +92,7 @@ class Review extends Component {
                 <div className="confirmation-sidebar-heading-container">
                   <h3 className="goal-sidebar-heading">TOTAL</h3>
                 </div>
-                <p className="confirmation-info-item">${this.props.clientReducer.project.bundle.price || "0"}</p>
+                <p className="confirmation-info-item">${this.props.clientReducer.project.total || "0"}</p>
               </div>
               <div id="" className="confirmation-info-panel">
                 <div className="confirmation-sidebar-heading-container">

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
+// import faFilter from '@fortawesome/fontawesome-free-solid/faFilter';
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 
 export class GoalsWindow extends Component {

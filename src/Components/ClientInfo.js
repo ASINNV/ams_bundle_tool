@@ -645,9 +645,7 @@ class ClientInfo extends Component {
               </div>
 
               <div id="submit-container-1" className="submit-container">
-                <div className="main-button">
-                  <Link to="/personalize" id="submit-button-1" onClick={this.nextPhase.bind(this)}>NEXT STEP &rarr;</Link>
-                </div>
+                <Link to="/personalize" id="submit-button-1" className="main-button" onClick={this.nextPhase.bind(this)}>NEXT STEP &rarr;</Link>
               </div>
 
             </div>

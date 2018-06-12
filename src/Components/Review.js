@@ -41,6 +41,30 @@ import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
 //   }
 // }
 
+function departmentFilter(serviceCode) {
+  let department;
+  switch(serviceCode.slice(0, 2)) {
+    case "GD":
+      department = "Graphics";
+      break;
+    case "WB":
+      department = "Web";
+      break;
+    case "AG":
+      department = "Agency";
+      break;
+    case "IT":
+      department = "IT";
+      break;
+    case "VD":
+      department = "Video/Photo";
+      break;
+    default:
+      department = "N/A";
+  }
+  return department;
+}
+
 function phoneFormat(input) {
   input = input.replace(/\D/g, '');
   input = input.substring(0, 10);
@@ -575,10 +599,17 @@ class Review extends Component {
               </div>
             </div>
             <ul id="service-list">
+              {this.props.clientReducer.services.length > 0 ?
+                <li className="service-list-inner-container">
+                  <p className="service-list-name service-list-item subdued">Service</p>
+                  <p className="service-list-code service-list-item subdued">Category</p>
+                  <p className="service-list-price service-list-item subdued">Price</p>
+                </li> : false}
               {this.props.clientReducer.services.length > 0 ? this.props.clientReducer.services.map((service, i) => {
                 return (
-                  <li key={i}>
+                  <li key={i} className="service-list-inner-container">
                     <p className="service-list-name service-list-item">{service.name}</p>
+                    <p className="service-list-code service-list-item">{departmentFilter(service.code)}</p>
                     <p className="service-list-price service-list-item flair">${service.price}</p>
                   </li>
                 );

@@ -148,7 +148,7 @@ table {
   text-decoration: none;
   color: #37a9ff;
   cursor: pointer;
-  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out, transform .2s ease-in-out;
 }
 
 #foundation-header {
@@ -517,16 +517,15 @@ table {
 }
 
 .main-button {
+  text-decoration: none;
+  color: #37a9ff;
   background-color: #fff;
   padding: 15px 45px;
   font-weight: 600;
   border-radius: 8px;
   box-shadow: 0 5px 15px 0 rgba(0,0,0,0.3);
-  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out;
-}
-.main-button a {
-  text-decoration: none;
-  color: #37a9ff;
+  transform: scale(1);
+  transition: opacity .2s ease-in-out, background .2s ease-in-out, color .2s ease-in-out, transform .2s ease-in-out;
 }
 
 
@@ -704,7 +703,7 @@ table {
 }
 .submit-container a {
   opacity: 0;
-  transition: opacity .5s ease-in-out, background .2s ease-in-out;
+  transition: opacity .5s ease-in-out, background .2s ease-in-out, transform .2s ease-in-out;
 }
 
 .arrows {
@@ -800,6 +799,7 @@ table {
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.3);
   transition: color .25s ease, border .25s ease, box-shadow .25s ease, transform .2s ease;
   hyphens: auto;
+  cursor: pointer;
   overflow: hidden;
 }
 .item-card:hover {
@@ -1156,11 +1156,15 @@ table {
 #service-list li:nth-child(2n + 2) {
   background: #222;
 }
+
 .service-list-name {
-  width: 75%;
+  width: 60%;
+}
+.service-list-code {
+  width: 20%;
 }
 .service-list-price {
-  width: 25%;
+  width: 20%;
   text-align: right;
 }
 .service-list-item {
@@ -1192,7 +1196,7 @@ table {
 /*#other-customize-btn:hover .customize-btn-icon {*/
   /*transform: rotate(360deg);*/
 /*}*/
-#other-customize-btn:active {
+#other-customize-btn:active, .main-button:active, .error-button:active {
   transform: scale(0.95);
 }
 /*#customize-label, */

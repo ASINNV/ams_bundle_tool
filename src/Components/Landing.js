@@ -49,9 +49,8 @@ class Landing extends Component {
           <h2>Welcome to the</h2>
           <h1>AMS Bundle Tool</h1>
         </div>
-        <div className="main-button">
-          <Link to="/calibrate">OPEN APP</Link>
-        </div>
+
+        <Link className="main-button" to="/calibrate">OPEN APP</Link>
 
       </div>
     );
