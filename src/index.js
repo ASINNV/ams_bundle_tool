@@ -75,6 +75,12 @@ const clientReducer = (state = clientState, action) => {
         ...action.payload
       };
       break;
+    case "SET_CLIENT_INFO":
+      state = {
+        ...state,
+        client: action.payload
+      };
+      break;
     case "SET_CLIENT_NAME":
       state = {
         ...state,

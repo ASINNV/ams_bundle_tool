@@ -22,25 +22,6 @@ import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowRight';
 //   theWindowWidth=theWindow.innerWidth||theEle.clientWidth||theBody.clientWidth,
 //   theWindowHeight=theWindow.innerHeight||theEle.clientHeight||theBody.clientHeight;
 
-// function updateClientInfo(appProps) {
-//   let client = appProps.clientReducer.client;
-//   let inputs = document.getElementsByTagName('INPUT');
-//
-//   // UPDATE EACH CLIENT INFO FIELD INDIVIDUALLY
-//   if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
-//     appProps.setClientName(inputs[0].value); // set client name to value of first input field
-//   }
-//   if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
-//     appProps.setClientCompany(inputs[1].value); // set client company to value of second input field
-//   }
-//   if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
-//     appProps.setClientEmail(inputs[2].value); // set client email to value of third input field
-//   }
-//   if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
-//     appProps.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
-//   }
-// }
-
 function departmentFilter(serviceCode) {
   let department;
   switch(serviceCode.slice(0, 2)) {
@@ -795,28 +776,10 @@ const mapDispatchToProps = (dispatch) => {
         payload: dataObj
       });
     },
-    setClientName: (name) => {
+    setClientInfo: (myObj) => {
       dispatch({
-        type: "SET_CLIENT_NAME",
-        payload: name
-      });
-    },
-    setClientCompany: (company) => {
-      dispatch({
-        type: "SET_CLIENT_COMPANY",
-        payload: company
-      });
-    },
-    setClientEmail: (email) => {
-      dispatch({
-        type: "SET_CLIENT_EMAIL",
-        payload: email
-      });
-    },
-    setClientPhone: (phone) => {
-      dispatch({
-        type: "SET_CLIENT_PHONE",
-        payload: phone
+        type: "SET_CLIENT_INFO",
+        payload: myObj
       });
     },
     setClientDiscount: (discount) => {

@@ -6,67 +6,39 @@ export const updateClientInfo = (appProps) => {
 
   // UPDATE EACH CLIENT INFO FIELD INDIVIDUALLY
   if (inputs[0].value.length > 0 && inputs[0].value !== client.name) {
-    appProps.setClientName(inputs[0].value); // set client name to value of first input field
     dataObj.name = inputs[0].value;
-
-    fetch('/api/update-name', {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(dataObj)
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (appProps.setClientId) {
-          appProps.setClientId(data.id);
-        }
-        console.log('RETURNED FROM INSERT: ', data);
-      })
-      .catch((err) => {
-        console.log(err);
-        createErrorPopup("Client Name Already Exists!", "We already have a client with that name in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
-      });
-
   }
   if (inputs[1].value.length > 0 && inputs[1].value !== client.company) {
-    appProps.setClientCompany(inputs[1].value); // set client company to value of second input field
     dataObj.company = inputs[1].value;
-
-    return fetchWrapper('/api/update-company', {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(dataObj)
-    }, appProps.setClientId);
   }
   if (inputs[2].value.length > 0 && inputs[2].value !== client.email) {
-    appProps.setClientEmail(inputs[2].value); // set client email to value of third input field
     dataObj.email = inputs[2].value;
-
-    return fetchWrapper('/api/update-email', {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(dataObj)
-    }, appProps.setClientId);
   }
   if (inputs[3].value.length > 0 && inputs[3].value !== client.phone) {
-    appProps.setClientPhone(inputs[3].value); // set client phone to value of fourth input field
     dataObj.phone = inputs[3].value;
-
-    return fetchWrapper('/api/update-phone', {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(dataObj)
-    }, appProps.setClientId);
   }
+  let clientObj = {name: dataObj.name, company: dataObj.company, email: dataObj.email, phone: dataObj.phone};
+  appProps.setClientInfo(clientObj);
+  fetch('/api/update-client', {
+    method: "POST",
+    headers: {
+      "content-type": "application/json"
+    },
+    body: JSON.stringify(dataObj)
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      if (appProps.setClientId) {
+        appProps.setClientId(data.id);
+      }
+      console.log('RETURNED FROM INSERT: ', data);
+    })
+    .catch((err) => {
+      console.log(err);
+      createErrorPopup("Client Name Already Exists!", "We already have a client with that name in our database. If this is due to error, please give us a call: +1 (844) 426-7999");
+    });
 };
 
 export const createErrorPopup = (heading, message) => {

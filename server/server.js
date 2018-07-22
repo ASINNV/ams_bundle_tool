@@ -54,6 +54,9 @@ function updateEmail(dataObj) {
 function updatePhone(dataObj) {
   return db.one('UPDATE clients SET phone = ${phone} WHERE id = ${clientId} RETURNING id;', dataObj);
 }
+function updateClient(dataObj) {
+  return db.one('UPDATE clients SET contact_name = COALESCE(${name}, contact_name), company_name = COALESCE(${company}, company_name), email = COALESCE(${email}, email), phone = COALESCE(${phone}, phone) WHERE id = ${clientId} AND (${name} IS NOT NULL AND ${name} IS DISTINCT FROM contact_name OR ${company} IS NOT NULL AND ${company} IS DISTINCT FROM company_name OR ${email} IS NOT NULL AND ${email} IS DISTINCT FROM email OR ${phone} IS NOT NULL AND ${phone} IS DISTINCT FROM phone) RETURNING id;', dataObj);
+}
 
 // function updateClient(dataObj) {
 //   return db.one('UPDATE clients SET company_name = ${company}, contact_name = ${name}, email = ${email}, phone = ${phone} WHERE id = ${clientId} RETURNING id;', dataObj);
@@ -175,16 +178,16 @@ app.post('/api/update-phone', function(req, res, next) {
       res.status(500).send('err from POST update client block of server code.');
     });
 });
-// app.post('/api/update-client', function(req, res, next) {
-//   updateClient(req.body)
-//     .then(function(data) {
-//       res.send(data);
-//     })
-//     .catch(function(err) {
-//       console.log(err, 'err from POST update client block of server code.');
-//       res.status(500).send('err from POST update client block of server code.');
-//     });
-// });
+app.post('/api/update-client', function(req, res, next) {
+  updateClient(req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log(err, 'err from POST update client block of server code.');
+      res.status(500).send('err from POST update client block of server code.');
+    });
+});
 
 
 const server = http.createServer(app);
